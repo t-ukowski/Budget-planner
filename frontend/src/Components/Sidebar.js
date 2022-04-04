@@ -1,5 +1,5 @@
 import React from 'react';
-import '../App.css';
+import './Sidebar.css';
 import { SidebarData } from './SidebarData';
 
 function Sidebar() {
@@ -10,6 +10,7 @@ function Sidebar() {
                     return <li
                         key={key}
                         className="row"
+                        id={window.location.pathname == val.link ? "active" : ""}
                         onClick={() => {window.location.pathname = val.link}}>
                         {" "}
                         <div id="icon">{val.icon}</div>
