@@ -3,8 +3,8 @@ import { SidebarData } from './SidebarData';
 
 function Sidebar() {
   return (
-    <div className="Sidebar">
-      <ul className="SidebarList">
+    <div className="sidebar">
+      <ul className="sidebarList">
         {SidebarData.map((val, key) => {
           return (
             <li
