@@ -6,22 +6,27 @@ import SettingsIcon from '@mui/icons-material/Settings';
 
 export const SidebarData = [
     {
-        title: "Raz",
+        title: "Strona główna",
         icon: <HomeIcon />,
         link: "/home"
     },
     {
-        title: "Dwa",
+        title: "Saldo",
         icon: <CalendarMonthIcon />,
-        link: "/history"
+        link: "/balance"
     },
     {
-        title: "Trzy",
+        title: "Cashflow",
         icon: <CalculateIcon />,
-        link: "/objectives"
+        link: "/cashflow"
     },
     {
-        title: "Cztery",
+        title: "Cele",
+        icon: <SettingsIcon />,
+        link: "/goals"
+    },
+    {
+        title: "Ustawienia",
         icon: <SettingsIcon />,
         link: "/settings"
     }
