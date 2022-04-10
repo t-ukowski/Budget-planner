@@ -3,7 +3,7 @@
   height: 100%;
   width: $sidebar-closed-width;
   background-color: $bp-blue;
-  color: $background-base;
+  color: $bp-white;
 }
 
 .sidebarList {
@@ -30,7 +30,7 @@
 }
 
 .sidebarList #active {
-  background-color: tomato;
+  background-color: $bp-orange;
 }
 
 .row #icon {
