@@ -3,11 +3,11 @@ package com.example.backend.controller;
 import com.example.backend.Repositories.*;
 import com.example.backend.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 public class ApiController {
 
     @Autowired
@@ -55,4 +55,28 @@ public class ApiController {
         return "dodano";
     }
 
+    @GetMapping("/addIncome")
+    public String sendIncomeExpensesForm(Model model){
+
+
+        BalanceHistory balanceHistory;
+        model.addAttribute("balanceHistory", (balanceHistory = new BalanceHistory()));
+        System.out.println(balanceHistory);
+        return "new_income_expense";
+    }
+
+    @PostMapping("/addIncome")
+    public String processIncomeExpenseForm(@ModelAttribute BalanceHistory balanceHistory){
+        User user = new User("ktos","haszlo","mail@gmail.com");
+        userRepository.save(user);
+
+        BankAccount bankAccount = new BankAccount("PKO",100.43, user);
+        bankAccountRepository.save(bankAccount);
+
+        balanceHistory.setBankAccount(bankAccount);
+
+        System.out.println(balanceHistory);
+        balanceHistoryRepository.save(balanceHistory);
+        return "dodano_wydatek";
+    }
 }

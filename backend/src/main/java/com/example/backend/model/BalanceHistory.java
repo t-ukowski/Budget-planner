@@ -36,6 +36,14 @@ public class BalanceHistory {
         this.description = description;
     }
 
+    public BalanceHistory(String startBillingDate, String endBillingDate, int repeatInterval, double amount, String description) {
+        this.startBillingDate = java.sql.Date.valueOf(startBillingDate);
+        this.endBillingDate = java.sql.Date.valueOf(endBillingDate);
+        this.repeatInterval = repeatInterval;
+        this.amount = amount;
+        this.description = description;
+    }
+
     public BalanceHistory() {
     }
 
@@ -85,5 +93,18 @@ public class BalanceHistory {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "BalanceHistory{" +
+                "id=" + id +
+                ", bankAccount=" + bankAccount +
+                ", startBillingDate=" + startBillingDate +
+                ", endBillingDate=" + endBillingDate +
+                ", repeatInterval=" + repeatInterval +
+                ", amount=" + amount +
+                ", description='" + description + '\'' +
+                '}';
     }
 }
