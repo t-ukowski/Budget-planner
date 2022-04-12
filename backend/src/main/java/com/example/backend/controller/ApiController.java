@@ -4,6 +4,8 @@ import com.example.backend.Repositories.*;
 import com.example.backend.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -65,18 +67,15 @@ public class ApiController {
     }
 
     @PostMapping("/addIncome")
-    public String processIncomeExpenseForm(@ModelAttribute BalanceHistory balanceHistory){
+    public ResponseEntity processIncomeExpenseForm(@ModelAttribute BalanceHistory balanceHistory){
         List<User> users = userRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
         User user = users.get(0);
-        System.out.println("First user id: " + user.getId());
 
-        System.out.println("Konto: " + balanceHistory.getAccountName());
         List<BankAccount> userAccounts = bankAccountRepository.findBankAccountsByUserAndAccountName(user, balanceHistory.getAccountName());
         BankAccount bankAccount = userAccounts.get(0);
 
         balanceHistory.setBankAccount(bankAccount);
-        System.out.println(balanceHistory);
         balanceHistoryRepository.save(balanceHistory);
-        return "dodano_wydatek";
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 }
