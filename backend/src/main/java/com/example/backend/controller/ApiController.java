@@ -73,8 +73,8 @@ public class ApiController {
 
         List<BankAccount> userAccounts = bankAccountRepository.findBankAccountsByUserAndAccountName(user, balanceHistory.getAccountName());
         BankAccount bankAccount = userAccounts.get(0);
-
         balanceHistory.setBankAccount(bankAccount);
+        
         balanceHistoryRepository.save(balanceHistory);
         return new ResponseEntity(HttpStatus.CREATED);
     }
