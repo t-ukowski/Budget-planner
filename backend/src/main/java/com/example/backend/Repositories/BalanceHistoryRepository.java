@@ -1,7 +1,7 @@
 package com.example.backend.Repositories;
 
 import com.example.backend.model.BalanceHistory;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface BalanceHistoryRepository extends CrudRepository<BalanceHistory, Long> {
+public interface BalanceHistoryRepository extends JpaRepository<BalanceHistory, Long> {
 }
