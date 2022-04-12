@@ -27,21 +27,20 @@ public class BalanceHistory {
 
     private String description;
 
-    public BalanceHistory(BankAccount bankAccount, Date startBillingDate, Date endBillingDate, int repeatInterval, double amount, String description) {
+    @Enumerated(EnumType.STRING)
+    private ActionType type;
+
+    private String recipient;
+
+    public BalanceHistory(BankAccount bankAccount, Date startBillingDate, Date endBillingDate, int repeatInterval, double amount, String description, ActionType actionType, String recipient) {
         this.bankAccount = bankAccount;
         this.startBillingDate = startBillingDate;
         this.endBillingDate = endBillingDate;
         this.repeatInterval = repeatInterval;
         this.amount = amount;
         this.description = description;
-    }
-
-    public BalanceHistory(String startBillingDate, String endBillingDate, int repeatInterval, double amount, String description) {
-        this.startBillingDate = java.sql.Date.valueOf(startBillingDate);
-        this.endBillingDate = java.sql.Date.valueOf(endBillingDate);
-        this.repeatInterval = repeatInterval;
-        this.amount = amount;
-        this.description = description;
+        this.type = actionType;
+        this.recipient = recipient;
     }
 
     public BalanceHistory() {
@@ -95,16 +94,33 @@ public class BalanceHistory {
         this.description = description;
     }
 
+    public ActionType getType() {
+        return type;
+    }
+
+    public void setType(ActionType type) {
+        this.type = type;
+    }
+
+    public String getRecipient() {
+        return recipient;
+    }
+
+    public void setRecipient(String recipient) {
+        this.recipient = recipient;
+    }
+
     @Override
     public String toString() {
         return "BalanceHistory{" +
                 "id=" + id +
-                ", bankAccount=" + bankAccount +
                 ", startBillingDate=" + startBillingDate +
                 ", endBillingDate=" + endBillingDate +
                 ", repeatInterval=" + repeatInterval +
                 ", amount=" + amount +
                 ", description='" + description + '\'' +
+                ", type=" + type +
+                ", recipient='" + recipient + '\'' +
                 '}';
     }
 }

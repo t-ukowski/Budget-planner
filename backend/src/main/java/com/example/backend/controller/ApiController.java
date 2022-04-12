@@ -39,8 +39,8 @@ public class ApiController {
         bankAccountRepository.save(bankAccount1);
         bankAccountRepository.save(bankAccount2);
 
-        balanceHistoryRepository.save(new BalanceHistory(bankAccount1, java.sql.Date.valueOf("2020-11-15"), java.sql.Date.valueOf("2022-11-15"),30,200.00,"fajna platnosc"));
-        balanceHistoryRepository.save(new BalanceHistory(bankAccount1, java.sql.Date.valueOf("2021-11-15"), java.sql.Date.valueOf("2023-11-15"),30,230.00,"xdxdxxxdxdx"));
+        balanceHistoryRepository.save(new BalanceHistory(bankAccount1, java.sql.Date.valueOf("2020-11-15"), java.sql.Date.valueOf("2022-11-15"),30,200.00,"fajna platnosc", ActionType.Przychód, "Netflix"));
+        balanceHistoryRepository.save(new BalanceHistory(bankAccount1, java.sql.Date.valueOf("2021-11-15"), java.sql.Date.valueOf("2023-11-15"),30,230.00,"xdxdxxxdxdx", ActionType.Wydatek, "brak"));
 
         Goal goal = new Goal("remont",user);
 
@@ -57,11 +57,7 @@ public class ApiController {
 
     @GetMapping("/addIncome")
     public String sendIncomeExpensesForm(Model model){
-
-
-        BalanceHistory balanceHistory;
-        model.addAttribute("balanceHistory", (balanceHistory = new BalanceHistory()));
-        System.out.println(balanceHistory);
+        model.addAttribute("balanceHistory", new BalanceHistory());
         return "new_income_expense";
     }
 
