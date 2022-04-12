@@ -3,9 +3,12 @@ package com.example.backend.controller;
 import com.example.backend.Repositories.*;
 import com.example.backend.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class ApiController {
@@ -52,7 +55,7 @@ public class ApiController {
         goalElementRepository.save(goalElement1);
         goalElementRepository.save(goalElement2);
 
-        return "dodano";
+        return "dodano_wydatek";
     }
 
     @GetMapping("/addIncome")
@@ -63,14 +66,15 @@ public class ApiController {
 
     @PostMapping("/addIncome")
     public String processIncomeExpenseForm(@ModelAttribute BalanceHistory balanceHistory){
-        User user = new User("ktos","haszlo","mail@gmail.com");
-        userRepository.save(user);
+        List<User> users = userRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
+        User user = users.get(0);
+        System.out.println("First user id: " + user.getId());
 
-        BankAccount bankAccount = new BankAccount("PKO",100.43, user);
-        bankAccountRepository.save(bankAccount);
+        System.out.println("Konto: " + balanceHistory.getAccountName());
+        List<BankAccount> userAccounts = bankAccountRepository.findBankAccountsByUserAndAccountName(user, balanceHistory.getAccountName());
+        BankAccount bankAccount = userAccounts.get(0);
 
         balanceHistory.setBankAccount(bankAccount);
-
         System.out.println(balanceHistory);
         balanceHistoryRepository.save(balanceHistory);
         return "dodano_wydatek";

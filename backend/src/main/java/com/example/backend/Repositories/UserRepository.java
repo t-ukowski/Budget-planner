@@ -2,8 +2,13 @@ package com.example.backend.Repositories;
 
 import com.example.backend.model.User;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends CrudRepository<User, Long>{
+import java.util.List;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+    @Query("select u from User u")
+    List<User> findAll();
 }
 

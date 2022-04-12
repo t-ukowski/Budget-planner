@@ -32,6 +32,9 @@ public class BalanceHistory {
 
     private String recipient;
 
+    @Transient
+    private String accountName; // do not include it in the database
+
     public BalanceHistory(BankAccount bankAccount, Date startBillingDate, Date endBillingDate, int repeatInterval, double amount, String description, ActionType actionType, String recipient) {
         this.bankAccount = bankAccount;
         this.startBillingDate = startBillingDate;
@@ -110,10 +113,19 @@ public class BalanceHistory {
         this.recipient = recipient;
     }
 
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
+
     @Override
     public String toString() {
         return "BalanceHistory{" +
                 "id=" + id +
+                ", bankAccount=" + bankAccount.toString() +
                 ", startBillingDate=" + startBillingDate +
                 ", endBillingDate=" + endBillingDate +
                 ", repeatInterval=" + repeatInterval +

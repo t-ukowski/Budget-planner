@@ -1,6 +1,5 @@
 package com.example.backend.model;
 
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -54,5 +53,15 @@ public class BankAccount {
 
     public void setAccountName(String accountName) {
         this.accountName = accountName;
+    }
+
+    @Override
+    public String toString() {
+        return "BankAccount{" +
+                "id=" + id +
+                ", accountName='" + accountName + '\'' +
+                ", user=" + user.getId() +
+                ", accountBalance=" + accountBalance +
+                '}';
     }
 }

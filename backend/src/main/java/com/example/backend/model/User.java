@@ -1,8 +1,6 @@
 package com.example.backend.model;
 
-
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -70,5 +68,17 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", passwordHash='" + passwordHash + '\'' +
+                ", email='" + email + '\'' +
+                ", bankAccountList=" + bankAccountList +
+                ", goals=" + goals +
+                '}';
     }
 }
