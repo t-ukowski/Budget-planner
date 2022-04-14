@@ -9,26 +9,26 @@ export const SidebarData = [
   {
     title: 'Strona główna',
     icon: <HomeIcon />,
-    link: '/home'
+    link: 'home'
   },
   {
     title: 'Saldo',
     icon: <PieChartIcon />,
-    link: '/balance'
+    link: 'account'
   },
   {
     title: 'Cashflow',
     icon: <SsidChartIcon />,
-    link: '/objectives'
+    link: 'cashflow'
   },
   {
     title: 'Cele',
     icon: <FlagIcon />,
-    link: '/settings'
+    link: 'objectives'
   },
   {
     title: 'Ustawienia',
     icon: <SettingsIcon />,
-    link: '/settings'
+    link: 'settings'
   }
 ];

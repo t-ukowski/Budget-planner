@@ -20,7 +20,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  font-family: 'Roboto';
+  font-family: $basic-font;
   font-style: normal;
   font-weight: 400;
   font-size: 32px;
@@ -29,11 +29,7 @@
 
 .sidebarList .row:hover {
   cursor: pointer;
-  background-color: rgb(211, 211, 211);
-}
-
-.sidebarList #active {
-  background-color: $bp-orange;
+  background: rgb(16, 85, 97);
 }
 
 .row #icon {

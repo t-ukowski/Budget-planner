@@ -1,5 +1,6 @@
 import React from 'react';
 import { SidebarData } from './SidebarData';
+import { Link } from 'react-scroll';
 
 function Sidebar() {
   return (
@@ -7,15 +8,17 @@ function Sidebar() {
       <ul className="sidebarList">
         {SidebarData.map((val, key) => {
           return (
-            <li
-              key={key}
-              className="row"
-              id={window.location.pathname === val.link ? 'active' : ''}
-              onClick={() => {
-                window.location.pathname = val.link;
-              }}>
+            <li key={key} id={window.location.pathname === val.link ? 'active' : ''}>
               {' '}
-              <div id="icon">{val.icon}</div> <div id="title">{val.title}</div>
+              <Link
+                to={val.link}
+                containerId="main"
+                className="row"
+                smooth={true}
+                spy={true}
+                duration={500}>
+                <div id="icon">{val.icon}</div> <div id="title">{val.title}</div>
+              </Link>
             </li>
           );
         })}
