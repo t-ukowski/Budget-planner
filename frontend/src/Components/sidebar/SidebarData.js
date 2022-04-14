@@ -1,7 +1,8 @@
 import React from 'react';
 import HomeIcon from '@mui/icons-material/Home';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import CalculateIcon from '@mui/icons-material/Calculate';
+import PieChartIcon from '@mui/icons-material/PieChart';
+import SsidChartIcon from '@mui/icons-material/SsidChart';
+import FlagIcon from '@mui/icons-material/Flag';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 export const SidebarData = [
@@ -12,17 +13,17 @@ export const SidebarData = [
   },
   {
     title: 'Saldo',
-    icon: <CalendarMonthIcon />,
+    icon: <PieChartIcon />,
     link: '/balance'
   },
   {
     title: 'Cashflow',
-    icon: <CalculateIcon />,
+    icon: <SsidChartIcon />,
     link: '/objectives'
   },
   {
     title: 'Cele',
-    icon: <SettingsIcon />,
+    icon: <FlagIcon />,
     link: '/settings'
   },
   {

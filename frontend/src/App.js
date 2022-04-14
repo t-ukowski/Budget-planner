@@ -1,7 +1,8 @@
 import './styles/main.scss';
-import Sidebar from './components/Sidebar';
+import Sidebar from './components/sidebar/Sidebar';
 import Balance from './components/scoreboards/Balance';
-import Title from './components/Title';
+import Title from './components/page/Title';
+import Page from './components/page/Page';
 
 function App() {
   return (
@@ -10,8 +11,22 @@ function App() {
         <Sidebar />
       </aside>
       <main>
-        <Title text="Budget planner" />
-        <Balance />
+        <Page>
+          <Title text="Budget planner" />
+          <Balance />
+        </Page>
+        <Page>
+          <Title text="Saldo" />
+        </Page>
+        <Page>
+          <Title text="Przewidywania stanu konta" />
+        </Page>
+        <Page>
+          <Title text="Cele" />
+        </Page>
+        <Page>
+          <Title text="Ustawienia" />
+        </Page>
       </main>
     </div>
   );

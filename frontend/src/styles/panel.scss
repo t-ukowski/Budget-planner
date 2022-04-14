@@ -17,9 +17,19 @@ body {
 }
 
 aside {
-    flex: 1 0 10%;
+    flex: 0 1 8%;
+    display: flex;
+}
+aside:hover {
+    flex: 0 1 24%;
 }
 main {
+    flex: 1 0 auto;
     overflow-y: auto;
     background-color: $background-base;
+    height: 100vh;
+}
+
+.page {
+    height: 100%;
 }
