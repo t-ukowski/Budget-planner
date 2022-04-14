@@ -8,7 +8,7 @@ function Sidebar() {
       <ul className="sidebarList">
         {SidebarData.map((val, key) => {
           return (
-            <li key={key} id={window.location.pathname === val.link ? 'active' : ''}>
+            <li key={key}>
               {' '}
               <Link
                 to={val.link}
