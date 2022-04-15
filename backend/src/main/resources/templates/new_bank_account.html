@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Dodaj nowe konto bankowe</title>
+</head>
+<body>
+<form action="#" th:action="@{/addAccount}" th:object="${bankAccount}" method="post">
+    <p>Nazwa konta: <input type="text" th:field="*{accountName}" /></p>
+    <p>Kwota na koncie: <input type="text" th:field="*{accountBalance}" /></p>
+    <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+</form>
+</body>
+</html>
