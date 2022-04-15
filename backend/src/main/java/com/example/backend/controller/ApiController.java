@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.time.Instant;
 import java.util.List;
 
 @Controller
@@ -78,4 +80,56 @@ public class ApiController {
         balanceHistoryRepository.save(balanceHistory);
         return new ResponseEntity(HttpStatus.CREATED);
     }
+
+
+    @GetMapping("/addAccount")
+    public String sendBankAccountCreationForm(Model model){
+        model.addAttribute("bankAccount", new BankAccount());
+        return "new_bank_account";
+    }
+
+    @PostMapping("/addAccount")
+    public ResponseEntity processBankAccountCreationForm(@ModelAttribute BankAccount bankAccount){
+        List<User> users = userRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
+        User user = users.get(0); // to update when more users
+
+        bankAccount.setUser(user);
+        bankAccountRepository.save(bankAccount); //it also updates
+
+        Date action_date = new Date(Instant.now().toEpochMilli());
+        BalanceHistory account_change_log = new BalanceHistory(bankAccount,
+                action_date,
+                action_date,
+                0,
+                bankAccount.getAccountBalance(),
+                "account creation/update",
+                ActionType.Przychód,
+                bankAccount.getUser().toString());
+        balanceHistoryRepository.save(account_change_log);
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public String sendBankAccountDeletingForm(Model model){
+        return "delete_account";
+    }
+
+
+    @PostMapping
+    public ResponseEntity processBankAccountDeletingForm(long id){
+        BankAccount bankAccount = bankAccountRepository.findBankAccountsById(id).get(0);
+        bankAccountRepository.deleteById(id);
+        Date action_date = new Date(Instant.now().toEpochMilli());
+        BalanceHistory account_change_log = new BalanceHistory(bankAccount,
+                action_date,
+                action_date,
+                0,
+                bankAccount.getAccountBalance(),
+                "account deleting",
+                ActionType.Wydatek,
+                bankAccount.getUser().toString());
+        balanceHistoryRepository.save(account_change_log);
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
 }
