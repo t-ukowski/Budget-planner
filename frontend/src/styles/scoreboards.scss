@@ -1,24 +1,24 @@
 .scoreboard {
     background-color: $bp-white;
-    border-radius: 8px;
-}
+    border-radius: $border-radius-small-obejcts;
 
-.scoreboard .large {
-    width: 765px;
-    height: 195px;
-}
+    &.large {
+        width: $large-box-width;
+        height: $large-box-height;
+    }
 
-.scoreboard .small {
-    width: 360px;
-    height: 158px;
+    &.small {
+        width: $small-box-width;
+        height: $small-box-height;
+    }
 }
 
 .heading1 {
     font-family: $basic-font;
     font-style: normal;
-    font-weight: 600;
-    font-size: 64px;
-    line-height: 75px;
+    font-weight: $font-weight-bolder;
+    font-size: $font-size-large;
+    line-height: $line-height-large;
 
     color: $bp-black;
 }
@@ -26,9 +26,9 @@
 .heading2 {
     font-family: $basic-font;
     font-style: normal;
-    font-weight: 500;
-    font-size: 30px;
-    line-height: 35px;
+    font-weight: $font-weight-bold;
+    font-size: $font-size-medium;
+    line-height: $line-height-base;
 
     color: $bp-black;
 }

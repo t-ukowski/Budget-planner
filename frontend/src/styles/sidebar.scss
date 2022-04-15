@@ -3,7 +3,7 @@
   width: 100%;
   background-color: $bp-blue;
   color: $bp-white;
-  
+
   &:hover {
     .row #title {
       display: grid;
@@ -27,14 +27,13 @@
     align-items: center;
     font-family: $basic-font;
     font-style: normal;
-    font-weight: 400;
-    font-size: 32px;
-    line-height: 38px;
+    font-weight: $font-weight-base;
+    font-size: $font-size-medium-2;
+    line-height: $line-height-base;
 
     &:hover {
       cursor: pointer;
-      background:rgb(16, 85, 97)
-
+      background: $bp-blue-highlighted;
     }
 
     #icon {
