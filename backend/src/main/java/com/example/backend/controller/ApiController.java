@@ -3,6 +3,8 @@ package com.example.backend.controller;
 import com.example.backend.Repositories.*;
 import com.example.backend.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,13 +70,12 @@ public class ApiController {
 
     @PostMapping("/addIncome")
     public ResponseEntity processIncomeExpenseForm(@ModelAttribute BalanceHistory balanceHistory){
-        List<User> users = userRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
-        User user = users.get(0);
+        User user = userRepository.findTopByOrderByIdAsc();
 
         List<BankAccount> userAccounts = bankAccountRepository.findBankAccountsByUserAndAccountName(user, balanceHistory.getAccountName());
         BankAccount bankAccount = userAccounts.get(0);
         balanceHistory.setBankAccount(bankAccount);
-        
+
         balanceHistoryRepository.save(balanceHistory);
         return new ResponseEntity(HttpStatus.CREATED);
     }
