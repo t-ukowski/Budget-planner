@@ -20,11 +20,13 @@ aside {
     flex: 0 0 7%;
     min-width: 5rem;
     display: flex;
+    
+    &:hover {
+        flex: 0 0 21%;
+        min-width: 18rem;
+    }
 }
-aside:hover {
-    flex: 0 0 21%;
-    min-width: 18rem;
-}
+
 main {
     flex: 1 1 auto;
     overflow-y: auto;
