@@ -1,12 +1,36 @@
-.App {
-    position: absolute;
-    height: 100vh;
-    width: 100vw;
-    //background-color: $background-base;
-    background-color: tomato;
+.app {
+    height: 100%;
+    display: flex;
 }
   
 body {
     margin: 0;
     padding: 0;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+}
+
+aside {
+    flex: 0 0 7%;
+    min-width: 5rem;
+    display: flex;
+    
+    &:hover {
+        flex: 0 0 21%;
+        min-width: 18rem;
+    }
+}
+
+main {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    background-color: $background-base;
+    height: 100vh;
+}
+
+.page {
+    height: 100%;
+    position: relative;
+    left: 50px;
 }

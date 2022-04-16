@@ -1,33 +1,34 @@
 import React from 'react';
 import HomeIcon from '@mui/icons-material/Home';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import CalculateIcon from '@mui/icons-material/Calculate';
+import PieChartIcon from '@mui/icons-material/PieChart';
+import SsidChartIcon from '@mui/icons-material/SsidChart';
+import FlagIcon from '@mui/icons-material/Flag';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 export const SidebarData = [
   {
     title: 'Strona główna',
     icon: <HomeIcon />,
-    link: '/home'
+    link: 'home'
   },
   {
     title: 'Saldo',
-    icon: <CalendarMonthIcon />,
-    link: '/balance'
+    icon: <PieChartIcon />,
+    link: 'account'
   },
   {
     title: 'Cashflow',
-    icon: <CalculateIcon />,
-    link: '/objectives'
+    icon: <SsidChartIcon />,
+    link: 'cashflow'
   },
   {
     title: 'Cele',
-    icon: <SettingsIcon />,
-    link: '/settings'
+    icon: <FlagIcon />,
+    link: 'objectives'
   },
   {
     title: 'Ustawienia',
     icon: <SettingsIcon />,
-    link: '/settings'
+    link: 'settings'
   }
 ];

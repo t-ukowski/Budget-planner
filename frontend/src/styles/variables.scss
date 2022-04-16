@@ -7,9 +7,39 @@ $bp-yellow: #FCBF49;
 $bp-green: #A7C957;
 $bp-white: #FEFAE0;
 
-//Base
-$background-base: $bp-orange 50%;
+// Base
+$background-base: rgba(252, 191, 73, 0.5);
+
+// Color highlights
+$bp-blue-highlighted: rgb(16, 85, 97);
 
 // Sidebar
 $sidebar-closed-width: 132px;
 $sidebar-open-width: 431px;
+
+// Fonts
+$basic-font: 'Roboto', sans-serif;
+$title-font: 'Vidaloka';
+
+$font-size-medium: 30px;
+$font-size-medium-2: 32px;
+$font-size-large: 64px;
+
+$line-height-small: 35px;
+$line-height-base: 38px;
+$line-height-large: 75px;
+
+$font-weight-base: 400;
+$font-weight-bold: 500;
+$font-weight-bolder: 600;
+
+// Roundness
+$border-radius-small-obejcts: 8px;
+$border-radius-large-objects: 30px;
+
+// Scoreboards
+$small-box-width: 360px;
+$small-box-height: 158px;
+
+$large-box-width: 765px !important;
+$large-box-height: 195px;
