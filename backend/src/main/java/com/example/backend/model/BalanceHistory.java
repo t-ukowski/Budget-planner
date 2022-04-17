@@ -134,13 +134,11 @@ public class BalanceHistory {
     }
 
     public void addToStartBillingDate(){
-        System.out.println("najpierw "+this.startBillingDate);
         java.sql.Date logicalDate = this.startBillingDate;
         Calendar c = Calendar.getInstance();
         c.setTime(logicalDate);
         c.add(Calendar.DATE, this.repeatInterval);
         this.startBillingDate = new java.sql.Date(c.getTimeInMillis());
-        System.out.println("po "+this.startBillingDate);
     }
 
     @Override

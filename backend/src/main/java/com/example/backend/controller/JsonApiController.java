@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -42,16 +43,15 @@ public class JsonApiController {
     }
 
 
-    @GetMapping("/BalanceOperations/{id}")
-    public String getBalanceOperations(@PathVariable String id) {
+    @GetMapping("/BalanceOperations")
+    public String getBalanceOperations(@RequestParam(value = "page") int page) {
         java.sql.Date currentDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
         updateRepetitiveTransaction(currentDate);
 
         Calendar c = Calendar.getInstance();
         c.setTime(currentDate);
-        c.add(Calendar.DATE, Integer.parseInt(id) * 7);
+        c.add(Calendar.DATE, page * 7);
         java.sql.Date futureDate = new java.sql.Date(c.getTimeInMillis());
-        System.out.println(futureDate);
 
         List<BalanceHistory> balanceHistoryList = getBalanceHistoryForNextDays(futureDate);
 
