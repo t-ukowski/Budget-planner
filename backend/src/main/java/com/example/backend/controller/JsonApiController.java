@@ -49,7 +49,7 @@ public class JsonApiController {
 
         Calendar c = Calendar.getInstance();
         c.setTime(currentDate);
-        c.add(Calendar.DATE, page * 7);
+        c.add(Calendar.DATE, page * CHART_INTERVAL);
         java.sql.Date futureDate = new java.sql.Date(c.getTimeInMillis());
 
         List<BalanceHistory> balanceHistoryList = getBalanceHistoryForNextDays(futureDate);
