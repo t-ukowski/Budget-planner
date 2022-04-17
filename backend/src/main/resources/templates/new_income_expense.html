@@ -6,7 +6,12 @@
 </head>
 <body>
 <form action="#" th:action="@{/addIncome}" th:object="${balanceHistory}" method="post">
-    <p>Rodzaj: <input type="text" th:field="*{type}" /></p>
+    <p>Rodzaj:
+        <select th:field="*{type}" class="form-control" id="dropDownList0">
+            <option value="0">Wybierz...</option>
+            <option th:each="t : ${types}" th:value="${t}" th:text="${t.toString()}"></option>
+        </select>
+    </p>
     <p>Nazwa: <input type="text" th:field="*{description}" /></p>
     <p>Kwota: <input type="text" th:field="*{amount}" /></p>
     <p>Data początkowa: <input type="text" th:field="*{billingDate}" /></p>

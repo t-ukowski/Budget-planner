@@ -63,9 +63,13 @@ public class ApiController {
 
     @GetMapping("/addIncome")
     public String sendIncomeExpensesForm(Model model){
+        ActionType[] types = ActionType.values();
+        model.addAttribute("types", types);
+
         User user = userRepository.findTopByOrderByIdAsc();
         ArrayList<BankAccount> accounts = bankAccountRepository.findBankAccountsByUser(user);
         model.addAttribute("accounts", accounts);
+
         model.addAttribute("balanceHistory", new BalanceHistory());
         return "new_income_expense";
     }
