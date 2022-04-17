@@ -66,7 +66,6 @@ public class ApiController {
         ActionType[] types = ActionType.values();
         model.addAttribute("types", types);
 
-        User user = userRepository.findTopByOrderByIdAsc();
         ArrayList<BankAccount> accounts = new ArrayList<>(userRepository.findTopByOrderByIdAsc().getBankAccountList());
         model.addAttribute("accounts", accounts);
 
