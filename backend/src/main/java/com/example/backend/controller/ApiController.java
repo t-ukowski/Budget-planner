@@ -78,7 +78,7 @@ public class ApiController {
     public ResponseEntity processIncomeExpenseForm(@ModelAttribute BalanceHistory balanceHistory){
         User user = userRepository.findTopByOrderByIdAsc();
 
-        List<BankAccount> userAccounts = bankAccountRepository.findBankAccountsByUserAndAccountName(user, "PKO");
+        List<BankAccount> userAccounts = bankAccountRepository.findBankAccountsByUserAndAccountName(user, balanceHistory.getAccountName());
         BankAccount bankAccount = userAccounts.get(0);
         balanceHistory.setBankAccount(bankAccount);
 
