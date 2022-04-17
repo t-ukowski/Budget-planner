@@ -6,14 +6,24 @@
 </head>
 <body>
 <form action="#" th:action="@{/addIncome}" th:object="${balanceHistory}" method="post">
-    <p>Rodzaj: <input type="text" th:field="*{type}" /></p>
+    <p>Rodzaj:
+        <select th:field="*{type}" class="form-control" id="dropDownList0">
+            <option value="0">Wybierz...</option>
+            <option th:each="t : ${types}" th:value="${t}" th:text="${t.toString()}"></option>
+        </select>
+    </p>
     <p>Nazwa: <input type="text" th:field="*{description}" /></p>
     <p>Kwota: <input type="text" th:field="*{amount}" /></p>
     <p>Data początkowa: <input type="text" th:field="*{billingDate}" /></p>
     <p>Data końcowa: <input type="text" th:field="*{endBillingDate}" /></p>
     <p>Co ile dni powtarzać: <input type="text" th:field="*{repeatInterval}" /></p>
     <p>Odbiorca:<input type="text" th:field="*{recipient}" /></p>
-    <p>Konto:<input type="text" th:field="*{accountName}" /></p>
+    <p>Konto:
+        <select th:field="*{accountName}" class="form-control" id="dropDownList">
+            <option value="0">Wybierz...</option>
+            <option th:each="option : ${accounts}" th:value="${option.accountName}" th:text="${option.getAccountName()}"></option>
+        </select>
+    </p>
     <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
 </form>
 </form>
