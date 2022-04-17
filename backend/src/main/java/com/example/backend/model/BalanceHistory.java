@@ -46,9 +46,6 @@ public class BalanceHistory {
     @Transient
     private String accountName; // do not include it in the database
 
-    @Transient
-    private static final int daysPerSite = 7;
-
     public BalanceHistory(BankAccount bankAccount, Date startBillingDate, Date endBillingDate, int repeatInterval, double amount, String description, ActionType actionType, String recipient) {
         this.bankAccount = bankAccount;
         this.startBillingDate = startBillingDate;
@@ -151,13 +148,9 @@ public class BalanceHistory {
         java.sql.Date logicalDate = this.startBillingDate;
         Calendar c = Calendar.getInstance();
         c.setTime(logicalDate);
-        c.add(Calendar.DATE, 1);
-        java.sql.Date startDate= new java.sql.Date(c.getTimeInMillis());
-        System.out.println(startDate);
-//        LocalDateTime date = (LocalDateTime) this.startBillingDate;
-//        LocalDateTime tomorrow = today.plusDays(1);
-
-
+        c.add(Calendar.DATE, this.repeatInterval);
+        this.startBillingDate = new java.sql.Date(c.getTimeInMillis());
+        System.out.println(startBillingDate);
     }
 
     @Override

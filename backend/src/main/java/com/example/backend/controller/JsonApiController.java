@@ -19,6 +19,8 @@ import java.util.List;
 @RestController
 public class JsonApiController {
 
+    private static final int CHART_INTERVAL = 7;
+
     @Autowired
     private UserRepository userRepository;
 
@@ -43,7 +45,12 @@ public class JsonApiController {
     @GetMapping("/BalanceOperations/{id}")
     public String getBalanceOperations(@PathVariable String id){
         java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-        List<BalanceHistory> balanceHistoryList = new ArrayList<>();
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.DATE, Integer.parseInt(id) * 7);
+        java.sql.Date futureDate = new java.sql.Date(c.getTimeInMillis());
+
+        List<BalanceHistory> balanceHistoryList = getBalanceHistoryForNextDays(futureDate);
 
 //        userRepository.findTopByOrderByIdAsc().getBankAccountList()
 //                .forEach(bankAccount -> bankAccount.getBalanceHistories().stream()
@@ -52,20 +59,56 @@ public class JsonApiController {
 //                                    .filter(balanceHistory -> balanceHistory.getStartBillingDate().before(date))
 //                                        .forEach(balanceHistory -> ));
 
-        userRepository.findTopByOrderByIdAsc().getBankAccountList()
-                .forEach(bankAccount -> bankAccount.getBalanceHistories().stream()
-                    .filter(balanceHistory -> balanceHistory.getEndBillingDate().after(date))
-                        .forEach(balanceHistoryList::add));
+//        userRepository.findTopByOrderByIdAsc().getBankAccountList()
+//                .forEach(bankAccount -> bankAccount.getBalanceHistories().stream()
+//                    .filter(balanceHistory -> balanceHistory.getEndBillingDate().after(date))
+//                        .forEach(balanceHistoryList::add));
 
         //start billing date + id*7
 
-        balanceHistoryList.forEach(BalanceHistory::addToStartBillingDate);
+//        balanceHistoryList.forEach(BalanceHistory::addToStartBillingDate);
 //        balanceHistoryList.stream().filter(balanceHistory -> balanceHistory.getStartBillingDate())
 
         System.out.println(balanceHistoryList);
 
         Gson gsonBuilder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         return gsonBuilder.toJson(balanceHistoryList);
+    }
+
+
+    private List<BalanceHistory>  getBalanceHistoryForNextDays(java.sql.Date startDate){
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(startDate);
+        c.add(Calendar.DATE, CHART_INTERVAL);
+        java.sql.Date endDate = new java.sql.Date(c.getTimeInMillis());
+
+        List<BalanceHistory> resultList = new ArrayList<>();
+        List<BankAccount> bankAccountList = userRepository.findTopByOrderByIdAsc().getBankAccountList();
+
+        bankAccountList.forEach(bankAccount -> bankAccount.getBalanceHistories().stream()
+                .filter(balanceHistory -> balanceHistory.getEndBillingDate().after(startDate))
+                        .filter(balanceHistory -> balanceHistory.getRepeatInterval() != 0)
+                            .filter(balanceHistory -> balanceHistory.getStartBillingDate().before(startDate))
+                                .forEach(balanceHistory -> {
+                                            balanceHistory.addToStartBillingDate();
+                                            if(balanceHistory.getStartBillingDate().after(startDate) && balanceHistory.getStartBillingDate().before(endDate)) {
+                                                resultList.add(balanceHistory);
+                                            }
+                                        }
+                                       ));
+
+        bankAccountList.forEach(bankAccount -> bankAccount.getBalanceHistories().stream()
+                .filter(balanceHistory -> balanceHistory.getRepeatInterval() == 0)
+                .forEach(balanceHistory -> {
+                            if(balanceHistory.getStartBillingDate().after(startDate) && balanceHistory.getStartBillingDate().before(endDate)) {
+                                resultList.add(balanceHistory);
+                            }
+                        }
+                ));
+
+
+        return resultList;
     }
 
 
