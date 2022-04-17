@@ -10,7 +10,4 @@ import java.util.List;
 
 public interface BalanceHistoryRepository extends JpaRepository<BalanceHistory, Long> {
 
-    @Query("select b from BalanceHistory b where b.startBillingDate <= ?1")
-    List<BalanceHistory> findBalanceHistoriesByStartBillingDate_DateAfter(java.sql.Date date);
-
 }

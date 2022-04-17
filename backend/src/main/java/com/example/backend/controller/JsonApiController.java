@@ -9,7 +9,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -74,9 +73,9 @@ public class JsonApiController {
         bankAccountList.forEach(bankAccount -> bankAccount.getBalanceHistories().stream()
                 .filter(balanceHistory -> balanceHistory.getEndBillingDate().after(startDate))
                 .filter(balanceHistory -> balanceHistory.getRepeatInterval() != 0)
-                .filter(balanceHistory -> balanceHistory.getStartBillingDate().before(startDate))
+                .filter(balanceHistory -> balanceHistory.getBillingDate().before(startDate))
                 .forEach(balanceHistory -> {
-                            while (balanceHistory.getStartBillingDate().before(startDate)) {
+                            while (balanceHistory.getBillingDate().before(startDate)) {
                                 balanceHistory.addToStartBillingDate();
                             }
                         }
@@ -84,7 +83,7 @@ public class JsonApiController {
 
         bankAccountList.forEach(bankAccount -> bankAccount.getBalanceHistories()
                 .forEach(balanceHistory -> {
-                            if (balanceHistory.getStartBillingDate().after(startDate) && balanceHistory.getStartBillingDate().before(endDate)) {
+                            if (balanceHistory.getBillingDate().after(startDate) && balanceHistory.getBillingDate().before(endDate)) {
                                 resultList.add(balanceHistory);
                             }
                         }
@@ -100,9 +99,9 @@ public class JsonApiController {
                 .forEach(bankAccount -> bankAccount.getBalanceHistories().stream()
                         .filter(balanceHistory -> balanceHistory.getEndBillingDate().after(currentDate))
                         .filter(balanceHistory -> balanceHistory.getRepeatInterval() != 0)
-                        .filter(balanceHistory -> balanceHistory.getStartBillingDate().before(currentDate))
+                        .filter(balanceHistory -> balanceHistory.getBillingDate().before(currentDate))
                         .forEach(balanceHistory -> {
-                                    while (balanceHistory.getStartBillingDate().before(currentDate)) {
+                                    while (balanceHistory.getBillingDate().before(currentDate)) {
                                         balanceHistory.addToStartBillingDate();
                                     }
                                     balanceHistoryRepository.save(balanceHistory);
