@@ -71,8 +71,8 @@ public class JsonApiController {
 
 
         bankAccountList.forEach(bankAccount -> bankAccount.getBalanceHistories().stream()
-                .filter(balanceHistory -> balanceHistory.getEndBillingDate().after(startDate))
                 .filter(balanceHistory -> balanceHistory.getRepeatInterval() != 0)
+                .filter(balanceHistory -> balanceHistory.getEndBillingDate().after(startDate))
                 .filter(balanceHistory -> balanceHistory.getBillingDate().before(startDate))
                 .forEach(balanceHistory -> {
                             while (balanceHistory.getBillingDate().before(startDate)) {
@@ -97,8 +97,8 @@ public class JsonApiController {
 
         userRepository.findTopByOrderByIdAsc().getBankAccountList()
                 .forEach(bankAccount -> bankAccount.getBalanceHistories().stream()
-                        .filter(balanceHistory -> balanceHistory.getEndBillingDate().after(currentDate))
                         .filter(balanceHistory -> balanceHistory.getRepeatInterval() != 0)
+                        .filter(balanceHistory -> balanceHistory.getEndBillingDate().after(currentDate))
                         .filter(balanceHistory -> balanceHistory.getBillingDate().before(currentDate))
                         .forEach(balanceHistory -> {
                                     while (balanceHistory.getBillingDate().before(currentDate)) {
