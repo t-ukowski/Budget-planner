@@ -32,7 +32,7 @@ public class JsonApiController {
 
     @GetMapping("/AccountsList")
     public String getBankAccounts() {
-        Gson gsonBuilder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        Gson gsonBuilder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().serializeNulls().create();
         return gsonBuilder.toJson(userRepository.findTopByOrderByIdAsc().getBankAccountList());
     }
 
@@ -54,7 +54,7 @@ public class JsonApiController {
 
         List<BalanceHistory> balanceHistoryList = getBalanceHistoryForNextDays(futureDate);
 
-        Gson gsonBuilder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        Gson gsonBuilder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().serializeNulls().create();
         return gsonBuilder.toJson(balanceHistoryList);
     }
 

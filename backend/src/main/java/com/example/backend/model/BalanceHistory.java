@@ -25,8 +25,10 @@ public class BalanceHistory {
     private java.sql.Date billingDate;
 
     @Basic
+    @Expose
     private java.sql.Date endBillingDate;
 
+    @Expose
     private int repeatInterval;
 
     @Expose
