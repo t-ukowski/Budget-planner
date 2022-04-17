@@ -1,7 +1,12 @@
 package com.example.backend.model;
 
+import com.google.gson.annotations.Expose;
+
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 
 @Entity
 @Table(name = "balance_history")
@@ -9,13 +14,16 @@ public class BalanceHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Expose
     private long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "bankAccount_id", nullable = false)
+    @Expose
     private BankAccount bankAccount;
 
     @Basic
+    @Expose
     private java.sql.Date startBillingDate;
 
     @Basic
@@ -23,10 +31,13 @@ public class BalanceHistory {
 
     private int repeatInterval;
 
+    @Expose
     private double amount;
 
+    @Expose
     private String description;
 
+    @Expose
     @Enumerated(EnumType.STRING)
     private ActionType type;
 
@@ -34,6 +45,9 @@ public class BalanceHistory {
 
     @Transient
     private String accountName; // do not include it in the database
+
+    @Transient
+    private static final int daysPerSite = 7;
 
     public BalanceHistory(BankAccount bankAccount, Date startBillingDate, Date endBillingDate, int repeatInterval, double amount, String description, ActionType actionType, String recipient) {
         this.bankAccount = bankAccount;
@@ -119,6 +133,31 @@ public class BalanceHistory {
 
     public void setAccountName(String accountName) {
         this.accountName = accountName;
+    }
+
+    public boolean getFutureDate(int multiplier){
+        java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+
+//        LocalDate currentdDate1 =  LocalDate.now();
+//
+//        if(this.startBillingDate.after(()){
+//
+//        }
+
+        return true;
+    }
+
+    public void addToStartBillingDate(){
+        java.sql.Date logicalDate = this.startBillingDate;
+        Calendar c = Calendar.getInstance();
+        c.setTime(logicalDate);
+        c.add(Calendar.DATE, 1);
+        java.sql.Date startDate= new java.sql.Date(c.getTimeInMillis());
+        System.out.println(startDate);
+//        LocalDateTime date = (LocalDateTime) this.startBillingDate;
+//        LocalDateTime tomorrow = today.plusDays(1);
+
+
     }
 
     @Override
