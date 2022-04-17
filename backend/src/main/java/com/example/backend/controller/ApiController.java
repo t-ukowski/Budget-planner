@@ -67,7 +67,7 @@ public class ApiController {
         model.addAttribute("types", types);
 
         User user = userRepository.findTopByOrderByIdAsc();
-        ArrayList<BankAccount> accounts = bankAccountRepository.findBankAccountsByUser(user);
+        ArrayList<BankAccount> accounts = new ArrayList<>(userRepository.findTopByOrderByIdAsc().getBankAccountList());
         model.addAttribute("accounts", accounts);
 
         model.addAttribute("balanceHistory", new BalanceHistory());
