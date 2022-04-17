@@ -41,6 +41,7 @@ public class BalanceHistory {
     @Enumerated(EnumType.STRING)
     private ActionType type;
 
+    @Expose
     private String recipient;
 
     @Transient
@@ -132,25 +133,14 @@ public class BalanceHistory {
         this.accountName = accountName;
     }
 
-    public boolean getFutureDate(int multiplier){
-        java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-
-//        LocalDate currentdDate1 =  LocalDate.now();
-//
-//        if(this.startBillingDate.after(()){
-//
-//        }
-
-        return true;
-    }
-
     public void addToStartBillingDate(){
+        System.out.println("najpierw "+this.startBillingDate);
         java.sql.Date logicalDate = this.startBillingDate;
         Calendar c = Calendar.getInstance();
         c.setTime(logicalDate);
         c.add(Calendar.DATE, this.repeatInterval);
         this.startBillingDate = new java.sql.Date(c.getTimeInMillis());
-        System.out.println(startBillingDate);
+        System.out.println("po "+this.startBillingDate);
     }
 
     @Override
