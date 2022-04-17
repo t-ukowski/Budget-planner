@@ -5,6 +5,7 @@ import com.example.backend.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface BankAccountRepository extends JpaRepository<BankAccount, Long> {
@@ -13,5 +14,5 @@ public interface BankAccountRepository extends JpaRepository<BankAccount, Long> 
 
 
     @Query("select b from BankAccount b where b.user = ?1")
-    List<BankAccount> findBankAccountsByUser(User user);
+    ArrayList<BankAccount> findBankAccountsByUser(User user);
 }

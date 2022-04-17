@@ -2,11 +2,7 @@ package com.example.backend.controller;
 
 import com.example.backend.Repositories.*;
 import com.example.backend.model.*;
-import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -67,6 +63,9 @@ public class ApiController {
 
     @GetMapping("/addIncome")
     public String sendIncomeExpensesForm(Model model){
+        User user = userRepository.findTopByOrderByIdAsc();
+        ArrayList<BankAccount> accounts = bankAccountRepository.findBankAccountsByUser(user);
+        model.addAttribute("accounts", accounts);
         model.addAttribute("balanceHistory", new BalanceHistory());
         return "new_income_expense";
     }
@@ -75,7 +74,7 @@ public class ApiController {
     public ResponseEntity processIncomeExpenseForm(@ModelAttribute BalanceHistory balanceHistory){
         User user = userRepository.findTopByOrderByIdAsc();
 
-        List<BankAccount> userAccounts = bankAccountRepository.findBankAccountsByUserAndAccountName(user, balanceHistory.getAccountName());
+        List<BankAccount> userAccounts = bankAccountRepository.findBankAccountsByUserAndAccountName(user, "PKO");
         BankAccount bankAccount = userAccounts.get(0);
         balanceHistory.setBankAccount(bankAccount);
 

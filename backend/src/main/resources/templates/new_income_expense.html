@@ -13,7 +13,12 @@
     <p>Data końcowa: <input type="text" th:field="*{endBillingDate}" /></p>
     <p>Co ile dni powtarzać: <input type="text" th:field="*{repeatInterval}" /></p>
     <p>Odbiorca:<input type="text" th:field="*{recipient}" /></p>
-    <p>Konto:<input type="text" th:field="*{accountName}" /></p>
+    <p>Konto:
+        <select th:field="*{accountName}" class="form-control" id="dropDownList">
+            <option value="0">Wybierz...</option>
+            <option th:each="option : ${accounts}" th:value="${option.accountName}" th:text="${option.getAccountName()}"></option>
+        </select>
+    </p>
     <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
 </form>
 </form>
