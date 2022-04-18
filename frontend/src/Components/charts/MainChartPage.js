@@ -45,7 +45,7 @@ function MainChartPage() {
     <div className="flexCard">
       <div className="mainCard">
         <div className="titleCard">
-          <Title text="Nadchodzący stan konta" />
+          <Title text="Przewidywany stan konta" />
         </div>
         <div className="chartCard">
           <div className="chartCardInside">
