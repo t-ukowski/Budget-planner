@@ -61,6 +61,7 @@ public class ApiController {
         goalElementRepository.save(goalElement1);
         goalElementRepository.save(goalElement2);
 
+
         return "dodano_wydatek";
     }
 
@@ -105,18 +106,19 @@ public class ApiController {
                 bankAccount.getAccountBalance(),
                 "account creation/update",
                 ActionType.Przychód,
-                bankAccount.getUser().toString());
+                bankAccount.getUser().getName());
         balanceHistoryRepository.save(account_change_log);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping("/deleteAccount")
     public String sendBankAccountDeletingForm(Model model){
+        model.addAttribute("bankAccount", new BankAccount() );
         return "delete_account";
     }
 
 
-    @PostMapping
+    @PostMapping("/deleteAccount")
     public ResponseEntity processBankAccountDeletingForm(long id){
         BankAccount bankAccount = bankAccountRepository.findBankAccountsById(id).get(0);
         bankAccountRepository.deleteById(id);
@@ -128,7 +130,7 @@ public class ApiController {
                 bankAccount.getAccountBalance(),
                 "account deleting",
                 ActionType.Wydatek,
-                bankAccount.getUser().toString());
+                bankAccount.getUser().getName());
         balanceHistoryRepository.save(account_change_log);
         return new ResponseEntity(HttpStatus.CREATED);
     }
