@@ -62,6 +62,10 @@ public class BankAccount {
         this.accountName = accountName;
     }
 
+    public List<BalanceHistory> getBalanceHistories() {
+        return balanceHistories;
+    }
+
     @Override
     public String toString() {
         return "BankAccount{" +
