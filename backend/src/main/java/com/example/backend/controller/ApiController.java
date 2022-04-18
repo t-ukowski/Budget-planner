@@ -69,7 +69,9 @@ public class ApiController {
         ArrayList<BankAccount> accounts = new ArrayList<>(userRepository.findTopByOrderByIdAsc().getBankAccountList());
         model.addAttribute("accounts", accounts);
 
-        model.addAttribute("balanceHistory", new BalanceHistory());
+        BalanceHistory history = new BalanceHistory();
+        history.setRecipient("brak");
+        model.addAttribute("balanceHistory", history);
         return "new_income_expense";
     }
 
