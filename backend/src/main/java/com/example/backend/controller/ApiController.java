@@ -2,11 +2,7 @@ package com.example.backend.controller;
 
 import com.example.backend.Repositories.*;
 import com.example.backend.model.*;
-import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -49,7 +45,8 @@ public class ApiController {
         bankAccountRepository.save(bankAccount2);
 
         balanceHistoryRepository.save(new BalanceHistory(bankAccount1, java.sql.Date.valueOf("2020-11-15"), java.sql.Date.valueOf("2022-11-15"),30,200.00,"fajna platnosc", ActionType.Przychód, "Netflix"));
-        balanceHistoryRepository.save(new BalanceHistory(bankAccount1, java.sql.Date.valueOf("2021-11-15"), java.sql.Date.valueOf("2023-11-15"),30,230.00,"xdxdxxxdxdx", ActionType.Wydatek, "brak"));
+        balanceHistoryRepository.save(new BalanceHistory(bankAccount1, java.sql.Date.valueOf("2021-03-03"), java.sql.Date.valueOf("2023-11-15"),30,10.00,"xdxdxxxdxdx", ActionType.Wydatek, "brak"));
+        balanceHistoryRepository.save(new BalanceHistory(bankAccount2, java.sql.Date.valueOf("2021-02-22"), java.sql.Date.valueOf("2023-11-15"),31,120.00,"platnosc 3", ActionType.Wydatek, "brak"));
 
         Goal goal = new Goal("remont",user);
 
@@ -66,6 +63,12 @@ public class ApiController {
 
     @GetMapping("/addIncome")
     public String sendIncomeExpensesForm(Model model){
+        ActionType[] types = ActionType.values();
+        model.addAttribute("types", types);
+
+        ArrayList<BankAccount> accounts = new ArrayList<>(userRepository.findTopByOrderByIdAsc().getBankAccountList());
+        model.addAttribute("accounts", accounts);
+
         model.addAttribute("balanceHistory", new BalanceHistory());
         return "new_income_expense";
     }

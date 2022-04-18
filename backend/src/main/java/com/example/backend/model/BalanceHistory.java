@@ -1,7 +1,10 @@
 package com.example.backend.model;
 
+import com.google.gson.annotations.Expose;
+
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.Calendar;
 
 @Entity
 @Table(name = "balance_history")
@@ -9,35 +12,44 @@ public class BalanceHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Expose
     private long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "bankAccount_id", nullable = false)
+    @Expose
     private BankAccount bankAccount;
 
     @Basic
-    private java.sql.Date startBillingDate;
+    @Expose
+    private java.sql.Date billingDate;
 
     @Basic
+    @Expose
     private java.sql.Date endBillingDate;
 
+    @Expose
     private int repeatInterval;
 
+    @Expose
     private double amount;
 
+    @Expose
     private String description;
 
+    @Expose
     @Enumerated(EnumType.STRING)
     private ActionType type;
 
+    @Expose
     private String recipient;
 
     @Transient
     private String accountName; // do not include it in the database
 
-    public BalanceHistory(BankAccount bankAccount, Date startBillingDate, Date endBillingDate, int repeatInterval, double amount, String description, ActionType actionType, String recipient) {
+    public BalanceHistory(BankAccount bankAccount, Date billingDate, Date endBillingDate, int repeatInterval, double amount, String description, ActionType actionType, String recipient) {
         this.bankAccount = bankAccount;
-        this.startBillingDate = startBillingDate;
+        this.billingDate = billingDate;
         this.endBillingDate = endBillingDate;
         this.repeatInterval = repeatInterval;
         this.amount = amount;
@@ -57,12 +69,12 @@ public class BalanceHistory {
         this.bankAccount = bankAccount;
     }
 
-    public Date getStartBillingDate() {
-        return startBillingDate;
+    public Date getBillingDate() {
+        return billingDate;
     }
 
-    public void setStartBillingDate(Date startBillingDate) {
-        this.startBillingDate = startBillingDate;
+    public void setBillingDate(Date startBillingDate) {
+        this.billingDate = startBillingDate;
     }
 
     public Date getEndBillingDate() {
@@ -121,12 +133,20 @@ public class BalanceHistory {
         this.accountName = accountName;
     }
 
+    public void addToStartBillingDate(){
+        java.sql.Date logicalDate = this.billingDate;
+        Calendar c = Calendar.getInstance();
+        c.setTime(logicalDate);
+        c.add(Calendar.DATE, this.repeatInterval);
+        this.billingDate = new java.sql.Date(c.getTimeInMillis());
+    }
+
     @Override
     public String toString() {
         return "BalanceHistory{" +
                 "id=" + id +
                 ", bankAccount=" + bankAccount.toString() +
-                ", startBillingDate=" + startBillingDate +
+                ", startBillingDate=" + billingDate +
                 ", endBillingDate=" + endBillingDate +
                 ", repeatInterval=" + repeatInterval +
                 ", amount=" + amount +
