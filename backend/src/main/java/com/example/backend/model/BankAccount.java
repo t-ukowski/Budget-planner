@@ -1,5 +1,8 @@
 package com.example.backend.model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -9,22 +12,18 @@ public class BankAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Expose
     private long id;
 
-    public double getAccountBalance() {
-        return accountBalance;
-    }
-
-    public void setAccountBalance(double accountBalance) {
-        this.accountBalance = accountBalance;
-    }
-
+    @Expose
     private String accountName;
+
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Expose
     private double accountBalance;
 
     @OneToMany(mappedBy = "bankAccount", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -36,6 +35,14 @@ public class BankAccount {
     public BankAccount(String accountName, double accountBalance, User user) {
         this.accountName = accountName;
         this.user = user;
+        this.accountBalance = accountBalance;
+    }
+
+    public double getAccountBalance() {
+        return accountBalance;
+    }
+
+    public void setAccountBalance(double accountBalance) {
         this.accountBalance = accountBalance;
     }
 
@@ -53,6 +60,10 @@ public class BankAccount {
 
     public void setAccountName(String accountName) {
         this.accountName = accountName;
+    }
+
+    public List<BalanceHistory> getBalanceHistories() {
+        return balanceHistories;
     }
 
     @Override
