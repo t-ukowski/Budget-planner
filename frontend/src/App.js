@@ -4,6 +4,7 @@ import Balance from './components/scoreboards/Balance';
 import Title from './components/page/Title';
 import Page from './components/page/Page';
 import { Element, Link } from 'react-scroll';
+import MainChartPage from './components/charts/MainChartPage';
 
 function App() {
   return (
@@ -23,7 +24,7 @@ function App() {
         </Page>
         <Element id="cashflow"></Element>
         <Page>
-          <Title text="Przewidywania stanu konta" />
+          <MainChartPage></MainChartPage>
         </Page>
         <Element id="objectives"></Element>
         <Page>

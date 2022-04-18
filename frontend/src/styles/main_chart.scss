@@ -1,0 +1,60 @@
+.flexCard {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+.mainCard {
+    flex: 1 1 auto;
+
+    display: flex;
+    flex-direction: column;
+    // necessary to override default: auto
+    min-width: 0;
+    min-height: 0;
+}
+
+.titleCard {
+
+}
+.chartCard {
+    flex: 1 0 auto;
+    display: flex;
+    align-items: center;
+}
+.chartCardInside {
+    flex: 1 0 auto;
+    height: 95%;
+    background-color: $bp-white;
+    border-radius: $border-radius-large-objects;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sideCard {
+    flex: 1 0 auto;
+    width: 20%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-evenly;
+}
+
+.calendarCard {
+    background-color: $bp-white;
+    border-radius: $border-radius-small-obejcts;
+    width: 94%;
+    height: 52.5%;
+    text-align: center;
+    //flex: 1 0 auto;
+}
+.expensesCard {
+    background-color: $bp-white;
+    border-radius: $border-radius-small-obejcts;
+    width: 94%;
+    height: 42.5%;
+    text-align: center;
+    //flex: 1 0 auto;
+}
