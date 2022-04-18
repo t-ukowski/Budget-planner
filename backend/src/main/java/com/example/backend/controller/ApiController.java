@@ -30,7 +30,7 @@ public class ApiController {
     @Autowired
     GoalElementRepository goalElementRepository;
 
-
+    @CrossOrigin
     @GetMapping("/")
     public String save(@RequestParam(value = "name") String name){
 
@@ -61,6 +61,7 @@ public class ApiController {
         return "dodano_wydatek";
     }
 
+    @CrossOrigin
     @GetMapping("/addIncome")
     public String sendIncomeExpensesForm(Model model){
         ActionType[] types = ActionType.values();
@@ -73,6 +74,7 @@ public class ApiController {
         return "new_income_expense";
     }
 
+    @CrossOrigin
     @PostMapping("/addIncome")
     public ResponseEntity processIncomeExpenseForm(@ModelAttribute BalanceHistory balanceHistory){
         User user = userRepository.findTopByOrderByIdAsc();
