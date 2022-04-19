@@ -31,6 +31,7 @@ public class JsonApiController {
     @Autowired
     BalanceHistoryRepository balanceHistoryRepository;
 
+    @CrossOrigin
     @GetMapping("/AccountsList")
     public String getBankAccounts() {
         Gson gsonBuilder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().serializeNulls().create();

@@ -30,7 +30,7 @@ public class ApiController {
     @Autowired
     GoalElementRepository goalElementRepository;
 
-
+    @CrossOrigin
     @GetMapping("/")
     public String save(@RequestParam(value = "name") String name){
 
@@ -61,6 +61,7 @@ public class ApiController {
         return "dodano_wydatek";
     }
 
+    @CrossOrigin
     @GetMapping("/addIncome")
     public String sendIncomeExpensesForm(Model model){
         ActionType[] types = ActionType.values();
@@ -69,10 +70,13 @@ public class ApiController {
         ArrayList<BankAccount> accounts = new ArrayList<>(userRepository.findTopByOrderByIdAsc().getBankAccountList());
         model.addAttribute("accounts", accounts);
 
-        model.addAttribute("balanceHistory", new BalanceHistory());
+        BalanceHistory history = new BalanceHistory();
+        history.setRecipient("brak");
+        model.addAttribute("balanceHistory", history);
         return "new_income_expense";
     }
 
+    @CrossOrigin
     @PostMapping("/addIncome")
     public ResponseEntity processIncomeExpenseForm(@ModelAttribute BalanceHistory balanceHistory){
         User user = userRepository.findTopByOrderByIdAsc();
