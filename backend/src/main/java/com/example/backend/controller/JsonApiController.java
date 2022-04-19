@@ -8,6 +8,7 @@ import com.example.backend.model.BankAccount;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,12 +37,13 @@ public class JsonApiController {
         return gsonBuilder.toJson(userRepository.findTopByOrderByIdAsc().getBankAccountList());
     }
 
+    @CrossOrigin
     @GetMapping("/TotalBalance")
     public double getTotalBalance() {
         return userRepository.findTopByOrderByIdAsc().getBankAccountList().stream().mapToDouble(BankAccount::getAccountBalance).sum();
     }
 
-
+    @CrossOrigin
     @GetMapping("/BalanceOperations")
     public String getBalanceOperations(@RequestParam(value = "page") int page) {
         java.sql.Date currentDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
