@@ -7,7 +7,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 
 export const SidebarData = [
   {
-    title: 'Strona główna',
+    title: 'Strona' + '\xa0' + 'główna',
     icon: <HomeIcon />,
     link: 'home'
   },

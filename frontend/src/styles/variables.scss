@@ -13,10 +13,6 @@ $background-base: rgba(252, 191, 73, 0.5);
 // Color highlights
 $bp-blue-highlighted: rgb(16, 85, 97);
 
-// Sidebar
-$sidebar-closed-width: 132px;
-$sidebar-open-width: 431px;
-
 // Fonts
 $basic-font: 'Roboto', sans-serif;
 $title-font: 'Vidaloka';
@@ -43,3 +39,6 @@ $small-box-height: 158px;
 
 $large-box-width: 765px !important;
 $large-box-height: 195px;
+
+// Panel padding:
+$panel-padding: 50px;

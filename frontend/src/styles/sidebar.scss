@@ -6,7 +6,9 @@
 
   &:hover {
     .row #title {
-      display: grid;
+      position: static;
+      opacity: 1;
+      transition: opacity 0.4s linear;
     }
   }
 }
@@ -45,7 +47,9 @@
 
     #title {
       flex: 70%;
-      display: none;
+      display: grid;
+      position: absolute;
+      opacity: 0;
     }
   }
 }
