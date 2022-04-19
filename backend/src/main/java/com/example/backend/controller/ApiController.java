@@ -113,15 +113,14 @@ public class ApiController {
 
     @GetMapping("/deleteAccount")
     public String sendBankAccountDeletingForm(Model model){
-        model.addAttribute("bankAccount", new BankAccount() );
         return "delete_account";
     }
 
 
     @PostMapping("/deleteAccount")
-    public ResponseEntity processBankAccountDeletingForm(long id){
-        BankAccount bankAccount = bankAccountRepository.findBankAccountsById(id).get(0);
-        bankAccountRepository.deleteById(id);
+    public ResponseEntity processBankAccountDeletingForm(String  id){
+        BankAccount bankAccount = bankAccountRepository.findSpecificBankAccount(id).get(0);
+        bankAccountRepository.delete(bankAccount);
         Date action_date = new Date(Instant.now().toEpochMilli());
         BalanceHistory account_change_log = new BalanceHistory(bankAccount,
                 action_date,

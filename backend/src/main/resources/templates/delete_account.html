@@ -6,7 +6,7 @@
 </head>
 <body>
 <form action="#" th:action="@{/deleteAccount}" th:object="${bankAccount}" method="post">
-    <p>ID konta: <input type="text" th:field="*{id}" /></p>
+    <p>Nazwa konta: <input type="text" th:field="*{account_name}" /></p>
     <p><input type="submit" value="Delete" /> <input type="reset" value="Reset" /></p>
 </form>
 </body>
