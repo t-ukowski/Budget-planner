@@ -2,6 +2,7 @@ import { Button } from '@mui/material';
 import React from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/AddBox';
 
 /*
 const colors = {
@@ -13,7 +14,7 @@ const colors = {
 
 export default function Table({ balanceData }) {
   return (
-    <div>
+    <>
       <table>
         <tbody>
           <tr>
@@ -39,6 +40,9 @@ export default function Table({ balanceData }) {
           ))}
         </tbody>
       </table>
-    </div>
+      <Button className="addButton">
+        <AddIcon className="icon" />
+      </Button>
+    </>
   );
 }

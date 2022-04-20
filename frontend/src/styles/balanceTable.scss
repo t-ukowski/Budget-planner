@@ -6,16 +6,31 @@ table {
     border-radius: $border-radius-small;
 
     th {
-        border: '1px solid black';
+        font-family: $basic-font;
     }
 
     td {
-        border: '1px solid black';
+        font-family: $basic-font;
 
         Button {
             background-color: $bp-blue !important;
             color: $bp-white !important;
             border-radius: 15px;
         }
+    }
+}
+
+.addButton {
+    position: relative;
+    top: 120px;
+    left: 240px;
+    background-color: $bp-blue !important;
+    color: $bp-white !important;
+    border-radius: 15px;
+    width: 90px;
+    height: 90px;
+
+    .icon {
+        transform: scale(4);
     }
 }
