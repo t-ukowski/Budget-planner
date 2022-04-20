@@ -55,14 +55,14 @@ export default function BalancePieChart() {
 
   return (
     <>
-      <div className="balance">{sum}</div>
+      <div className="balance">{sum} PLN</div>
       <PieChart
         className="piechart"
         data={chartData}
         //rounded
-        lineWidth={90} // szerokość tego kółka w środku
+        lineWidth={60} // szerokość tego kółka w środku
         // Line width of each segment. Percentage of chart's radius
-        radius={25} // promień całości
+        radius={49} // promień całości
         segmentsStyle={{ transition: 'stroke .3s', cursor: 'pointer' }}
         animate
         viewBoxSize={[150, 150]}

@@ -1,17 +1,23 @@
 .piechart {
     position: relative;
-    left: 20px !important;
+    left: 50px !important;
     top: -320px !important;
-    // width: 150px !important;
-    // height: 150px !important;
+    flex: 1 0 auto;
+    width: 120%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    //justify-content: space-evenly;
 }
 
 .balance {
     position: relative;
-    top: 20px !important;
-    left: 740px;
-    background-color: $bp-white;
-    opacity: 0.5;
+    top: 50px;
+    left: 640px;
+    background-color: rgba($bp-white, 0.5);
+    color: $bp-black;
+    border-radius: $border-radius-large;
     width: fit-content;
     font-family: $basic-font;
     font-size: $font-size-huge;
