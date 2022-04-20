@@ -42,9 +42,7 @@ function App() {
         <Page>
           <Title text="Ustawienia" />
         </Page>
-        <Link to="objectives" containerId="main" smooth={true} duration={500}>
-          objectives
-        </Link>
+        <Link to="objectives" containerId="main" smooth={true} duration={500} />
       </main>
     </div>
   );
