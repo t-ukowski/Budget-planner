@@ -25,13 +25,13 @@ export const BalanceData = [
     amount: '124,56',
     currency: 'PLN',
     description: 'Skarpeta',
-    color: '#6A2135'
+    color: '#CD5334'
   },
   {
     id: 5,
     amount: '17,23',
     currency: 'PLN',
     description: 'Prawa kieszeń',
-    color: '#6A2135'
+    color: '#FCBF49'
   }
 ];

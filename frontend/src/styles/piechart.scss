@@ -1,6 +1,19 @@
-PieChart {
+.piechart {
     position: relative;
-    left: 20px;
+    left: 20px !important;
+    top: -320px !important;
     // width: 150px !important;
     // height: 150px !important;
+}
+
+.balance {
+    position: relative;
+    top: 20px !important;
+    left: 740px;
+    background-color: $bp-white;
+    opacity: 0.5;
+    width: fit-content;
+    font-family: $basic-font;
+    font-size: $font-size-huge;
+    z-index: 1;
 }
