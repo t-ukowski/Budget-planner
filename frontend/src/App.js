@@ -5,6 +5,8 @@ import Title from './components/page/Title';
 import Page from './components/page/Page';
 import { Element, Link } from 'react-scroll';
 import MainChartPage from './components/charts/MainChartPage';
+import Table from './components/table/Table';
+import { BalanceData } from './components/table/BalanceData';
 
 function App() {
   return (
@@ -21,6 +23,7 @@ function App() {
         <Element id="account"></Element>
         <Page>
           <Title text="Saldo" />
+          <Table balanceData={BalanceData} />
         </Page>
         <Element id="cashflow"></Element>
         <Page>
