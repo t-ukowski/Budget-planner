@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,6 +88,34 @@ public class ApiController {
         balanceHistory.setBankAccount(bankAccount);
 
         balanceHistoryRepository.save(balanceHistory);
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    @CrossOrigin
+    @GetMapping("/addAccount")
+    public String sendBankAccountCreationForm(Model model){
+        model.addAttribute("bankAccount", new BankAccount());
+        return "new_bank_account";
+    }
+
+    @CrossOrigin
+    @PostMapping("/addAccount")
+    public ResponseEntity processBankAccountCreationForm(@ModelAttribute BankAccount bankAccount){
+        User user = userRepository.findTopByOrderByIdAsc();
+
+        bankAccount.setUser(user);
+        bankAccountRepository.save(bankAccount); //it also updates
+
+        Date action_date = new Date(Instant.now().toEpochMilli());
+        BalanceHistory account_change_log = new BalanceHistory(bankAccount,
+                action_date,
+                action_date,
+                0,
+                bankAccount.getAccountBalance(),
+                "account creation/update",
+                ActionType.Przychód,
+                bankAccount.getUser().getName());
+        balanceHistoryRepository.save(account_change_log);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
