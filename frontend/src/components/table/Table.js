@@ -1,30 +1,40 @@
+import { Button } from '@mui/material';
 import React from 'react';
-// import { BalanceData } from './BalanceData';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
-const tableStyle = {
-  border: '1px solid black',
-  borderCollapse: 'collapse'
-};
-
-const tdStyle = {
-  border: '1px solid black'
-};
+/*
+const colors = {
+  1: 'CD5334',
+  2: 'FCBF49',
+  3: '003049', // 80%, 50%, 10%
+}
+*/
 
 export default function Table({ balanceData }) {
   return (
     <div>
-      <table style={tableStyle}>
+      <table>
         <tbody>
           <tr>
-            <th style={tdStyle}>Kwota</th>
-            <th style={tdStyle}>Waluta</th>
-            <th style={tdStyle}>Opis</th>
+            <th>Kwota</th>
+            <th>Waluta</th>
+            <th>Opis</th>
+            <th>Akcje</th>
           </tr>
           {balanceData.map(({ id, amount, currency, description }) => (
             <tr key={id}>
-              <td style={tdStyle}>{amount}</td>
-              <td style={tdStyle}>{currency}</td>
-              <td style={tdStyle}>{description}</td>
+              <td>{amount}</td>
+              <td>{currency}</td>
+              <td>{description}</td>
+              <td>
+                <Button>
+                  <DeleteIcon />
+                </Button>
+                <Button>
+                  <EditIcon />
+                </Button>
+              </td>
             </tr>
           ))}
         </tbody>
