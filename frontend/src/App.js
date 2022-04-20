@@ -7,6 +7,8 @@ import { Element, Link } from 'react-scroll';
 import MainChartPage from './components/charts/MainChartPage';
 import Table from './components/table/Table';
 import { BalanceData } from './components/table/BalanceData';
+// import PieChart from '@mui/icons-material/PieChart';
+import BalancePieChart from './components/charts/BalancePieChart';
 
 function App() {
   return (
@@ -24,6 +26,7 @@ function App() {
         <Page>
           <Title text="Saldo" />
           <Table balanceData={BalanceData} />
+          <BalancePieChart balanceData={BalanceData} />
         </Page>
         <Element id="cashflow"></Element>
         <Page>
