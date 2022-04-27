@@ -80,8 +80,6 @@ public class JsonApiController {
                             while (balanceHistory.getBillingDate().before(endDate)) {
                                 if(balanceHistory.getBillingDate().after(startDate) && balanceHistory.getBillingDate().before(endDate)) {
                                     resultList.add(balanceHistory);
-                                    System.out.println(balanceHistory.getDescription());
-                                    System.out.println(balanceHistory.getBillingDate());
                                 }
                                 balanceHistory.addToStartBillingDate();
                             }
