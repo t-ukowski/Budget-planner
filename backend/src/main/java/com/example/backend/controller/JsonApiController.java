@@ -57,7 +57,7 @@ public class JsonApiController {
 
         List<BalanceHistory> balanceHistoryList = getBalanceHistoryForFuture(futureDate);
 
-        Gson gsonBuilder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().serializeNulls().create();
+        Gson gsonBuilder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setDateFormat("yyyy-MM-dd").serializeNulls().create();
         return gsonBuilder.toJson(balanceHistoryList);
     }
 
@@ -68,6 +68,7 @@ public class JsonApiController {
         c.setTime(startDate);
         c.add(Calendar.DATE, CHART_INTERVAL);
         java.sql.Date endDate = new java.sql.Date(c.getTimeInMillis());
+
 
         List<BalanceHistory> resultList = new ArrayList<>();
         List<BankAccount> bankAccountList = userRepository.findTopByOrderByIdAsc().getBankAccountList();
