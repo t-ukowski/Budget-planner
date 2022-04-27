@@ -78,7 +78,8 @@ public class ApiController {
 
     @CrossOrigin
     @PostMapping("/addIncome")
-    public ResponseEntity processIncomeExpenseForm(@ModelAttribute BalanceHistory balanceHistory){
+    public @ResponseBody
+    ResponseEntity<String> processIncomeExpenseForm(@ModelAttribute BalanceHistory balanceHistory){
         User user = userRepository.findTopByOrderByIdAsc();
 
         List<BankAccount> userAccounts = bankAccountRepository.findBankAccountsByUserAndAccountName(user, balanceHistory.getAccountName());
@@ -86,7 +87,7 @@ public class ApiController {
         balanceHistory.setBankAccount(bankAccount);
 
         balanceHistoryRepository.save(balanceHistory);
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity<>("Wydatek dodany", HttpStatus.CREATED);
     }
 
 }
