@@ -111,27 +111,29 @@ public class ApiController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-//    @GetMapping("/deleteAccount")
-//    public String sendBankAccountDeletingForm(Model model){
-//        return "delete_account";
-//    }
-//
-//
-//    @PostMapping("/deleteAccount")
-//    public ResponseEntity processBankAccountDeletingForm(String  id){
-//        BankAccount bankAccount = bankAccountRepository.findSpecificBankAccount(id).get(0);
-//        bankAccountRepository.delete(bankAccount);
-//        Date action_date = new Date(Instant.now().toEpochMilli());
-//        BalanceHistory account_change_log = new BalanceHistory(bankAccount,
-//                action_date,
-//                action_date,
-//                0,
-//                bankAccount.getAccountBalance(),
-//                "account deleting",
-//                ActionType.Wydatek,
-//                bankAccount.getUser().getName());
-//        balanceHistoryRepository.save(account_change_log);
-//        return new ResponseEntity(HttpStatus.CREATED);
-//    }
+    
+    @GetMapping("/deleteAccount")
+    public String sendBankAccountDeletingForm(Model model){
+        model.addAttribute("bankAccount");
+        return "delete_account";
+    }
+
+
+    @DeleteMapping("/deleteAccount/{id}")
+    public ResponseEntity processBankAccountDeletingForm(@PathVariable("id") long id, Model model){
+        BankAccount bankAccount = bankAccountRepository.getById(id);
+        bankAccountRepository.deleteById(id);
+        Date action_date = new Date(Instant.now().toEpochMilli());
+        BalanceHistory account_change_log = new BalanceHistory(bankAccount,
+                action_date,
+                action_date,
+                0,
+                bankAccount.getAccountBalance(),
+                "account deleting",
+                ActionType.Wydatek,
+                bankAccount.getUser().getName());
+        balanceHistoryRepository.save(account_change_log);
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
 
 }

@@ -5,8 +5,8 @@
     <title>Usuń konto</title>
 </head>
 <body>
-<form action="#" th:action="@{/deleteAccount}" th:object="${bankAccount}" method="post">
-    <p>Nazwa konta: <input type="text" th:field="*{account_name}" /></p>
+<form action="#" th:action="@{/deleteAccount/{id}(id=*{id})}" method="delete">
+    <p>ID Konta: <input type="text" th:value="${id}" /></p>
     <p><input type="submit" value="Delete" /> <input type="reset" value="Reset" /></p>
 </form>
 </body>
