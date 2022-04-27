@@ -5,11 +5,10 @@ import Title from './components/page/Title';
 import Page from './components/page/Page';
 import { Element, Link } from 'react-scroll';
 import MainChartPage from './components/charts/MainChartPage';
-import Table from './components/table/BalanceTable';
-import { BalanceData } from './components/table/BalanceData';
 import { GoalsData } from './components/table/GoalsData';
 import BalancePieChart from './components/charts/BalancePieChart';
 import GoalsTable from './components/table/GoalsTable';
+import AccountsList from './components/table/AccountsList';
 
 function App() {
   return (
@@ -26,8 +25,8 @@ function App() {
         <Element id="account"></Element>
         <Page>
           <Title text="Saldo" />
-          <Table balanceData={BalanceData} />
-          <BalancePieChart balanceData={BalanceData} />
+          <AccountsList />
+          <BalancePieChart />
         </Page>
         <Element id="cashflow"></Element>
         <Page>

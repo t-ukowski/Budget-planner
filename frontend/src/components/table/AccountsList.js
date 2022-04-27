@@ -1,33 +1,31 @@
+import React, { useState, useEffect } from 'react';
 import { Button } from '@mui/material';
-import React from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/AddBox';
 
-/*
-const colors = {
-  1: 'CD5334',
-  2: 'FCBF49',
-  3: '003049', // 80%, 50%, 10%
-}
-*/
+export default function AccountsList() {
+  const [accountsList, setAccountsList] = useState([]);
 
-export default function Table({ balanceData }) {
+  useEffect(() => {
+    fetch('http://localhost:8080/AccountsList')
+      .then((res) => res.json())
+      .then((json) => setAccountsList(json));
+  });
+
   return (
     <>
       <table>
         <tbody>
           <tr>
-            <th>Kwota</th>
-            <th>Waluta</th>
-            <th>Opis</th>
+            <th>Konto</th>
+            <th>Stan</th>
             <th>Akcje</th>
           </tr>
-          {balanceData.map(({ id, amount, currency, description }) => (
+          {accountsList.map(({ id, accountBalance, accountName }) => (
             <tr key={id}>
-              <td>{amount}</td>
-              <td>{currency}</td>
-              <td>{description}</td>
+              <td>{accountName}</td>
+              <td>{accountBalance}</td>
               <td>
                 <Button>
                   <DeleteIcon />

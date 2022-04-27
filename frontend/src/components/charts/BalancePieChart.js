@@ -1,57 +1,30 @@
+import React, { useState, useEffect } from 'react';
 import { PieChart } from 'react-minimal-pie-chart';
 
-const BalanceData = [
-  {
-    id: 1,
-    amount: 156,
-    currency: 'PLN',
-    description: 'Portfel',
-    color: '#E38627'
-  },
-  {
-    id: 2,
-    amount: 2500,
-    currency: 'PLN',
-    description: 'Konto główne',
-    color: '#C13C37'
-  },
-  {
-    id: 3,
-    amount: 500,
-    currency: 'PLN',
-    description: 'Lokata',
-    color: '#6A2135'
-  },
-  {
-    id: 4,
-    amount: 124,
-    currency: 'PLN',
-    description: 'Skarpeta',
-    color: '#CD5334'
-  },
-  {
-    id: 5,
-    amount: 17,
-    currency: 'PLN',
-    description: 'Prawa kieszeń',
-    color: '#FCBF49'
-  }
-];
+const colors = ['#E38627', '#C13C37', '#6A2135', '#CD5334', '#FCBF49'];
 
 export default function BalancePieChart() {
-  let sum = 0;
+  let sum = 0.0;
   let chartData = [];
-  BalanceData.map((item) => {
+
+  const [accountsList, setAccountsList] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:8080/AccountsList')
+      .then((res) => res.json())
+      .then((json) => setAccountsList(json));
+  });
+
+  accountsList.map((item, index) => {
     let insert = {
-      color: item.color,
-      title: item.description,
-      value: item.amount
+      color: colors[index],
+      title: item.acoountName,
+      value: parseInt(`${item.accountBalance}`)
     };
 
     chartData.push(insert);
   });
-
-  BalanceData.forEach((item) => (sum = sum + item.amount));
+  accountsList.forEach((item) => (sum = sum + item.accountBalance));
 
   return (
     <>
