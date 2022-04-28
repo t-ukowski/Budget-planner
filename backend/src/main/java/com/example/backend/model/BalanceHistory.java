@@ -1,5 +1,7 @@
 package com.example.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.google.gson.annotations.Expose;
 
 import javax.persistence.*;
@@ -61,6 +63,11 @@ public class BalanceHistory {
     public BalanceHistory() {
     }
 
+    public long getId() {
+        return id;
+    }
+
+    @JsonBackReference
     public BankAccount getBankAccount() {
         return bankAccount;
     }
@@ -139,20 +146,5 @@ public class BalanceHistory {
         c.setTime(logicalDate);
         c.add(Calendar.DATE, this.repeatInterval);
         this.billingDate = new java.sql.Date(c.getTimeInMillis());
-    }
-
-    @Override
-    public String toString() {
-        return "BalanceHistory{" +
-                "id=" + id +
-                ", bankAccount=" + bankAccount.toString() +
-                ", startBillingDate=" + billingDate +
-                ", endBillingDate=" + endBillingDate +
-                ", repeatInterval=" + repeatInterval +
-                ", amount=" + amount +
-                ", description='" + description + '\'' +
-                ", type=" + type +
-                ", recipient='" + recipient + '\'' +
-                '}';
     }
 }
