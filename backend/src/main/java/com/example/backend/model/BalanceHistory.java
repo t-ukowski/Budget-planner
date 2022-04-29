@@ -49,6 +49,17 @@ public class BalanceHistory {
     @Transient
     private String accountName; // do not include it in the database
 
+    public BalanceHistory(String bankAccountName, String billingDate, String endBillingDate, int repeatInterval, double amount, String description, ActionType actionType, String recipient) {
+        this.accountName = bankAccountName;
+        this.billingDate = Date.valueOf(billingDate);
+        this.endBillingDate = Date.valueOf(endBillingDate);
+        this.repeatInterval = repeatInterval;
+        this.amount = amount;
+        this.description = description;
+        this.type = actionType;
+        this.recipient = recipient;
+    }
+
     public BalanceHistory(BankAccount bankAccount, Date billingDate, Date endBillingDate, int repeatInterval, double amount, String description, ActionType actionType, String recipient) {
         this.bankAccount = bankAccount;
         this.billingDate = billingDate;
