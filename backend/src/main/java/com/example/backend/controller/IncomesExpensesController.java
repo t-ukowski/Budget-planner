@@ -75,4 +75,9 @@ public class IncomesExpensesController {
         return ResponseEntity.ok(currentAction);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteIncomeOrExpense(@PathVariable Long id) {
+        balanceHistoryRepository.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
 }
