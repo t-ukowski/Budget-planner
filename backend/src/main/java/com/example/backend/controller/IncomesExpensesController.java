@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.Date;
 import java.util.List;
 
 @RestController
@@ -50,4 +51,28 @@ public class IncomesExpensesController {
         BalanceHistory savedAction = balanceHistoryRepository.save(action);
         return ResponseEntity.created(new URI("/incomes-expenses/" + savedAction.getId())).body(savedAction);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity updateIncomeOrExpense(@PathVariable Long id,
+                                                @RequestParam String accountName, @RequestParam String billingDate,
+                                                @RequestParam String endBillingDate, @RequestParam int repeatInterval,
+                                                @RequestParam double amount, @RequestParam String description,
+                                                @RequestParam ActionType type, @RequestParam String recipient) {
+        BalanceHistory currentAction = balanceHistoryRepository.findById(id).orElseThrow(RuntimeException::new);
+        User user = userRepository.findTopByOrderByIdAsc();
+        List<BankAccount> userAccounts = bankAccountRepository.findBankAccountsByUserAndAccountName(user, accountName);
+        BankAccount bankAccount = userAccounts.get(0);
+        currentAction.setAccountName(accountName);
+        currentAction.setBankAccount(bankAccount);
+        currentAction.setBillingDate(Date.valueOf(billingDate));
+        currentAction.setEndBillingDate(Date.valueOf(endBillingDate));
+        currentAction.setRepeatInterval(repeatInterval);
+        currentAction.setAmount(amount);
+        currentAction.setDescription(description);
+        currentAction.setType(type);
+        currentAction.setRecipient(recipient);
+        currentAction = balanceHistoryRepository.save(currentAction);
+        return ResponseEntity.ok(currentAction);
+    }
+
 }
