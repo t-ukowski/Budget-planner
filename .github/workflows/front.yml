@@ -26,3 +26,17 @@ jobs:
       
       - name: Run linter
         run: cd frontend && npm run lint
+
+  test:
+    runs-on: ubuntu-latest  
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Install dependencies
+        run: cd frontend && npm install
+      
+      - name: Run linter
+        run: cd frontend && npm run test
