@@ -27,6 +27,14 @@ public class User {
         this.email = email;
     }
 
+    public List<Goal> getGoals() {
+        return goals;
+    }
+
+    public void setGoals(List<Goal> goals) {
+        this.goals = goals;
+    }
+
     public List<BankAccount> getBankAccountList() {
         return bankAccountList;
     }
