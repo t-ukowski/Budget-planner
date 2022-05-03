@@ -5,6 +5,7 @@ import com.example.backend.Repositories.BankAccountRepository;
 import com.example.backend.Repositories.UserRepository;
 import com.example.backend.model.BalanceHistory;
 import com.example.backend.model.BankAccount;
+import com.example.backend.model.Goal;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @RestController
 public class JsonApiController {
@@ -62,6 +64,55 @@ public class JsonApiController {
         return gsonBuilder.toJson(balanceHistoryList);
     }
 
+    @CrossOrigin
+    @GetMapping("/UncompletedGoals")
+    public String getUncompletedGoals() {
+        List<Goal> goalList = new ArrayList<>();
+
+        userRepository.findTopByOrderByIdAsc().getGoals()
+                .forEach(goal->
+                        {
+                            AtomicBoolean flag = new AtomicBoolean(true);
+                            goal.getGoalElementList()
+                                    .forEach(goalElement -> {
+                                        if(!goalElement.isAchieved()){
+                                            flag.set(false);
+                                        }
+                                    });
+                            if(!flag.get()){
+                                goalList.add(goal);
+                            }
+                        }
+                );
+
+        Gson gsonBuilder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().serializeNulls().create();
+        return gsonBuilder.toJson(goalList);
+    }
+
+    @CrossOrigin
+    @GetMapping("/CompletedGoals")
+    public String getCompletedGoals() {
+        List<Goal> goalList = new ArrayList<>();
+
+        userRepository.findTopByOrderByIdAsc().getGoals()
+                .forEach(goal->
+                        {
+                            AtomicBoolean flag = new AtomicBoolean(true);
+                            goal.getGoalElementList()
+                                    .forEach(goalElement -> {
+                                        if(!goalElement.isAchieved()){
+                                            flag.set(false);
+                                        }
+                                    });
+                            if(flag.get()){
+                                goalList.add(goal);
+                            }
+                        }
+                );
+
+        Gson gsonBuilder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().serializeNulls().create();
+        return gsonBuilder.toJson(goalList);
+    }
 
     private List<BalanceHistory> getBalanceHistoryForFuture(java.sql.Date startDate, int chartInterval) {
 
