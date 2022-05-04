@@ -1,5 +1,7 @@
 package com.example.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.google.gson.annotations.Expose;
 
 import javax.persistence.*;
@@ -41,6 +43,7 @@ public class Goal {
         this.goalName = goalName;
     }
 
+    @JsonManagedReference
     public List<GoalElement> getGoalElementList() {
         return goalElementList;
     }
@@ -49,6 +52,7 @@ public class Goal {
         this.goalElementList = goalElementList;
     }
 
+    @JsonBackReference
     public User getUser() {
         return user;
     }
