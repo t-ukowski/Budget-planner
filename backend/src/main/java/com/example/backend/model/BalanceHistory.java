@@ -1,6 +1,7 @@
 package com.example.backend.model;
 
 import com.google.gson.annotations.Expose;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -44,6 +45,10 @@ public class BalanceHistory {
     @Expose
     private String recipient;
 
+    @Type(type = "true_false")
+    @Expose
+    private boolean paid;
+
     @Transient
     private String accountName; // do not include it in the database
 
@@ -59,6 +64,14 @@ public class BalanceHistory {
     }
 
     public BalanceHistory() {
+    }
+
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
     }
 
     public BankAccount getBankAccount() {

@@ -69,7 +69,7 @@ public class ApiController {
 
         goalRepository.save(goal);
 
-        GoalElement goalElement1 = new GoalElement("ponton",300,goal);
+        GoalElement goalElement1 = new GoalElement("ponton",4000,goal);
         GoalElement goalElement2 = new GoalElement("wioslo",100,goal);
 
         goalElement2.setAchieved(true);
