@@ -15,6 +15,7 @@ export default function AddIncome() {
   const [accountName, setAccountName] = useState('mBank');
 
   const types = [{ label: 'Wydatek' }, { label: 'Przychód' }];
+  const accounts = ['ING', 'mBank'];
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -45,7 +46,7 @@ export default function AddIncome() {
       }}>
       <Autocomplete
         name="type"
-        id="select2"
+        id="select-type"
         value={type}
         onChange={(event, newType) => {
           setType(newType.label);
@@ -53,7 +54,6 @@ export default function AddIncome() {
         sx={{ width: 300 }}
         options={types}
         autoHighlight
-        // getOptionLabel={(option) => option.label}
         renderOption={(props, option) => (
           <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
             {option.label}
@@ -62,9 +62,7 @@ export default function AddIncome() {
         renderInput={(params) => (
           <TextField
             {...params}
-            //onChange={(e) => setType(e.target.value.label)}
             label="Typ"
-            //value={type}
             inputProps={{
               ...params.inputProps,
               autoComplete: 'new-password' // disable autocomplete and autofill
@@ -73,6 +71,7 @@ export default function AddIncome() {
         )}
       />
 
+      <br />
       <label>Nazwa</label>
       <br />
       <input
@@ -81,6 +80,8 @@ export default function AddIncome() {
         onChange={(e) => setDescription(e.target.value)}
         value={description}
       />
+      <br />
+
       <br />
       <label>Kwota</label>
       <br />
@@ -123,13 +124,33 @@ export default function AddIncome() {
         value={recipient}
       />
       <br />
-      <label>Konto</label>
-      <br />
-      <input
-        name="accountName"
-        type="text"
-        onChange={(e) => setAccountName(e.target.value)}
+
+      <Autocomplete
+        name="account"
+        id="select-account"
         value={accountName}
+        onChange={(event, newAccount) => {
+          setAccountName(newAccount);
+        }}
+        sx={{ width: 300 }}
+        //getOptionLabel={(option) => option.label}
+        options={accounts}
+        autoHighlight
+        renderOption={(props, option) => (
+          <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+            {option}
+          </Box>
+        )}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Konto"
+            inputProps={{
+              ...params.inputProps,
+              autoComplete: 'new-password' // disable autocomplete and autofill
+            }}
+          />
+        )}
       />
       <br />
       <input className="submitButton" type="submit" value="Submit" />
