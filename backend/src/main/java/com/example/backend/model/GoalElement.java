@@ -47,6 +47,10 @@ public class GoalElement {
     public GoalElement() {
     }
 
+    public long getId() {
+        return id;
+    }
+
     @JsonBackReference
     public Goal getGoal() {
         return goal;
