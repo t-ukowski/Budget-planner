@@ -62,6 +62,38 @@ public class ApiController {
     }
 
     @CrossOrigin
+    @GetMapping("/addGoals")
+    public String addExampleGoals(){
+
+        Goal goal = new Goal("wakacje", userRepository.findTopByOrderByIdAsc());
+
+        goalRepository.save(goal);
+
+        GoalElement goalElement1 = new GoalElement("ponton",300,goal);
+        GoalElement goalElement2 = new GoalElement("wioslo",100,goal);
+
+        goalElement2.setAchieved(true);
+
+        goalElementRepository.save(goalElement1);
+        goalElementRepository.save(goalElement2);
+
+        Goal goal2 = new Goal("nowy komputer", userRepository.findTopByOrderByIdAsc());
+
+        goalRepository.save(goal2);
+
+        GoalElement goalElement3 = new GoalElement("procesor",650,goal2);
+        GoalElement goalElement4 = new GoalElement("ram",500,goal2);
+
+        goalElement3.setAchieved(true);
+        goalElement4.setAchieved(true);
+
+        goalElementRepository.save(goalElement3);
+        goalElementRepository.save(goalElement4);
+
+        return "dodano_wydatek";
+    }
+
+    @CrossOrigin
     @GetMapping("/addIncome")
     public String sendIncomeExpensesForm(Model model){
         ActionType[] types = ActionType.values();
