@@ -1,28 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
 export default function AddIncome() {
-  /*
-  const [type, setType] = useState("Wydatek");
-  const [billingDate, setBillingDate] = useState("2022-06-01");
-  const [endBillingDate, setEndBillingDate] = useState("2022-08-13");
+  const [type, setType] = useState('Wydatek');
+  const [billingDate, setBillingDate] = useState('2022-06-01');
+  const [endBillingDate, setEndBillingDate] = useState('2022-08-13');
   const [repeatInterval, setRepeatInterval] = useState(31);
   const [amount, setAmount] = useState(0);
   const [description, setDescription] = useState('very funny description');
   const [recipient, setRecipient] = useState('Company');
   const [accountName, setAccountName] = useState('mBank');
-  */
 
-  const type = 'Wydatek';
-  const billingDate = '2022-06-01';
-  const endBillingDate = '2022-08-07';
-  const repeatInterval = 31;
-  const amount = 20;
-  const description = 'hello there description';
-  const recipient = 'Axios with same-origin mode 2';
-  const accountName = 'mBank';
-
-  function submit() {
+  function handleSubmit(event) {
+    event.preventDefault();
     axios({
       method: 'post',
       mode: 'same-origin',
@@ -44,44 +34,74 @@ export default function AddIncome() {
   }
 
   return (
-    <div>
-      Zaplanuj
-      <p>
-        Rodzaj:
-        <select className="form-control" id="dropDownList0" name="type">
-          <option value="0">Wybierz...</option>
-          <option value="Wydatek">Wydatek</option>
-          <option value="Przychód">Przychód</option>
-        </select>
-      </p>
-      <p>
-        Nazwa: <input type="text" id="description" name="description" value="" />
-      </p>
-      <p>
-        Kwota: <input type="text" id="amount" name="amount" value="0.0" />
-      </p>
-      <p>
-        Data wydatku: <input type="text" id="billingDate" name="billingDate" value="" />
-      </p>
-      <p>
-        Data końcowa: <input type="text" id="endBillingDate" name="endBillingDate" value="" />
-      </p>
-      <p>
-        Co ile dni powtarzać:{' '}
-        <input type="text" id="repeatInterval" name="repeatInterval" value="0" />
-      </p>
-      <p>
-        Odbiorca: <input type="text" id="recipient" name="recipient" value="brak" />
-      </p>
-      <p>
-        Konto:
-        <select className="form-control" id="dropDownList" name="accountName">
-          <option value="0">Wybierz...</option>
-          <option value="ING">ING</option>
-          <option value="Mbank">Mbank</option>
-        </select>
-      </p>
-      <button onClick={submit}>submit</button>
-    </div>
+    <form
+      onSubmit={(e) => {
+        handleSubmit(e);
+      }}>
+      <label>Rodzaj</label>
+      <br />
+      <input name="type" type="text" onChange={(e) => setType(e.target.value)} value={type} />
+      <br />
+      <label>Nazwa</label>
+      <br />
+      <input
+        name="description"
+        type="text"
+        onChange={(e) => setDescription(e.target.value)}
+        value={description}
+      />
+      <br />
+      <label>Amount</label>
+      <br />
+      <input name="amount" type="text" onChange={(e) => setAmount(e.target.value)} value={amount} />
+      <br />
+
+      <label>Billing Date</label>
+      <br />
+      <input
+        name="billingDate"
+        type="date"
+        onChange={(e) => setBillingDate(e.target.value)}
+        value={billingDate}
+      />
+      <br />
+      <label>endBillingDate</label>
+      <br />
+      <input
+        name="endBillingDate"
+        type="date"
+        onChange={(e) => setEndBillingDate(e.target.value)}
+        value={endBillingDate}
+      />
+      <br />
+      <label>repeatInterval</label>
+      <br />
+      <input
+        name="repeatInterval"
+        type="text"
+        onChange={(e) => setRepeatInterval(e.target.value)}
+        value={repeatInterval}
+      />
+      <br />
+      <label>recipient</label>
+      <br />
+      <input
+        name="recipient"
+        type="text"
+        onChange={(e) => setRecipient(e.target.value)}
+        value={recipient}
+      />
+      <br />
+      <label>accountName</label>
+      <br />
+      <input
+        name="accountName"
+        type="text"
+        onChange={(e) => setAccountName(e.target.value)}
+        value={accountName}
+      />
+      <br />
+      <input className="submitButton" type="submit" value="Submit" />
+    </form>
   );
 }
