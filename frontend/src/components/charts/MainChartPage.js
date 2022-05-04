@@ -9,6 +9,19 @@ import {
   YAxis
 } from 'recharts';
 import Title from '../page/Title';
+import Modal from 'react-modal';
+import AddIncome from '../modals/AddIncome';
+
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)'
+  }
+};
 
 var weekStartArray = [];
 
@@ -16,6 +29,16 @@ function MainChartPage() {
   const [pageNum, setPageNum] = useState(0);
   const [pageSize] = useState(70);
   const [chartData, setChartData] = useState([]);
+
+  const [modalIsOpen, setIsOpen] = useState(false);
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
 
   useEffect(() => {
     console.log('Cart reloading');
@@ -96,6 +119,12 @@ function MainChartPage() {
         <div className="titleCard">
           <Title text="Przewidywany stan konta" />
         </div>
+        <button onClick={openModal}>Zaplanuj</button>
+
+        <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customStyles}>
+          <AddIncome></AddIncome>
+        </Modal>
+
         <div className="chartCard">
           <div className="chartCardInside">
             <button disabled={pageNum <= 0 ? true : false} onClick={() => setPageNum(pageNum - 1)}>
