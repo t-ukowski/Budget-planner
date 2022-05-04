@@ -91,11 +91,15 @@ public class JsonApiController {
 
         Calendar c = Calendar.getInstance();
 
+        c.setTime(currentDate);
+        c.add(Calendar.DATE, 0);
+        java.sql.Date futureDate = new java.sql.Date(c.getTimeInMillis());
+
         int i=0;
-        while(uncompletedGoalList.size()>0) {
+        while(uncompletedGoalList.size()>0 && i <3650) {
             c.setTime(currentDate);
             c.add(Calendar.DATE, i);
-            java.sql.Date futureDate = new java.sql.Date(c.getTimeInMillis());
+            futureDate = new java.sql.Date(c.getTimeInMillis());
 
             List<BalanceHistory> balanceHistoryList = getBalanceHistoryForFuture(futureDate, 1);
 
@@ -108,15 +112,16 @@ public class JsonApiController {
                 }
             }
 
-            System.out.println(currentMoneyAmount+" "+i);
+//            System.out.println(currentMoneyAmount+" "+i);
 
             double finalCurrentMoneyAmount = currentMoneyAmount;
             List<Goal> toRemove = new ArrayList<>();
+            java.sql.Date finalFutureDate = futureDate;
             uncompletedGoalList.forEach(goal->
                     {
                         double sum = goal.getGoalElementList().stream().filter(goalElement -> !goalElement.isAchieved()).mapToDouble(GoalElement::getCost).sum();
                         if(sum <= finalCurrentMoneyAmount){
-                            goalRealizations.add(new GoalRealization(goal,futureDate));
+                            goalRealizations.add(new GoalRealization(goal, finalFutureDate));
                             toRemove.add(goal);
                         }
                     }
