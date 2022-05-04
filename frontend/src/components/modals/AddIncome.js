@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 
 export default function AddIncome() {
   const [type, setType] = useState('Wydatek');
   const [billingDate, setBillingDate] = useState('2022-06-01');
   const [endBillingDate, setEndBillingDate] = useState('2022-08-13');
   const [repeatInterval, setRepeatInterval] = useState(31);
-  const [amount, setAmount] = useState(0);
-  const [description, setDescription] = useState('very funny description');
+  const [amount, setAmount] = useState(20);
+  const [description, setDescription] = useState('default description');
   const [recipient, setRecipient] = useState('Company');
   const [accountName, setAccountName] = useState('mBank');
+
+  const types = [{ label: 'Wydatek' }, { label: 'Przychód' }];
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -38,10 +43,36 @@ export default function AddIncome() {
       onSubmit={(e) => {
         handleSubmit(e);
       }}>
-      <label>Rodzaj</label>
-      <br />
-      <input name="type" type="text" onChange={(e) => setType(e.target.value)} value={type} />
-      <br />
+      <Autocomplete
+        name="type"
+        id="select2"
+        value={type}
+        onChange={(event, newType) => {
+          setType(newType.label);
+        }}
+        sx={{ width: 300 }}
+        options={types}
+        autoHighlight
+        // getOptionLabel={(option) => option.label}
+        renderOption={(props, option) => (
+          <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+            {option.label}
+          </Box>
+        )}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            //onChange={(e) => setType(e.target.value.label)}
+            label="Typ"
+            //value={type}
+            inputProps={{
+              ...params.inputProps,
+              autoComplete: 'new-password' // disable autocomplete and autofill
+            }}
+          />
+        )}
+      />
+
       <label>Nazwa</label>
       <br />
       <input
@@ -51,12 +82,12 @@ export default function AddIncome() {
         value={description}
       />
       <br />
-      <label>Amount</label>
+      <label>Kwota</label>
       <br />
       <input name="amount" type="text" onChange={(e) => setAmount(e.target.value)} value={amount} />
       <br />
 
-      <label>Billing Date</label>
+      <label>Data</label>
       <br />
       <input
         name="billingDate"
@@ -65,7 +96,7 @@ export default function AddIncome() {
         value={billingDate}
       />
       <br />
-      <label>endBillingDate</label>
+      <label>Data końcowa</label>
       <br />
       <input
         name="endBillingDate"
@@ -74,7 +105,7 @@ export default function AddIncome() {
         value={endBillingDate}
       />
       <br />
-      <label>repeatInterval</label>
+      <label>Co ile dni powtarzać</label>
       <br />
       <input
         name="repeatInterval"
@@ -83,7 +114,7 @@ export default function AddIncome() {
         value={repeatInterval}
       />
       <br />
-      <label>recipient</label>
+      <label>Odbiorca</label>
       <br />
       <input
         name="recipient"
@@ -92,7 +123,7 @@ export default function AddIncome() {
         value={recipient}
       />
       <br />
-      <label>accountName</label>
+      <label>Konto</label>
       <br />
       <input
         name="accountName"
