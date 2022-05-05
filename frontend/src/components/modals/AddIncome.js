@@ -21,13 +21,7 @@ export default function AddIncome() {
     fetch('http://localhost:8080/AccountsList')
       .then((res) => res.json())
       .then((json) => {
-        var data = [];
-        json.forEach((obj) => {
-          console.log(`ID: ${obj.id} NAME: ${obj.accountName}`);
-          data.push(obj.accountName);
-          console.log('-------------------');
-        });
-        setAccounts(data);
+        setAccounts(json.map((obj) => obj.accountName));
       });
   }, []);
 
@@ -63,7 +57,7 @@ export default function AddIncome() {
         onChange={(event, newType) => {
           setType(newType);
         }}
-        isOptionEqualToValue={(option, value) => option === value}
+        isOptionEqualToValue={(option, value) => option === value || value === ''}
         sx={{ width: 300 }}
         options={types}
         autoHighlight
@@ -147,7 +141,7 @@ export default function AddIncome() {
         }}
         sx={{ width: 300 }}
         options={accounts}
-        isOptionEqualToValue={(option, value) => option === value}
+        isOptionEqualToValue={(option, value) => option === value || value === ''}
         autoHighlight
         renderOption={(props, option) => (
           <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
