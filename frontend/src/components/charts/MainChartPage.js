@@ -10,11 +10,11 @@ import {
 } from 'recharts';
 import Title from '../page/Title';
 
-const months = ['sty', 'lut', 'mar', 'kwi', 'maj', 'cze', 'lip', 'sie', 'wrz', 'paź', 'lis', 'gru'];
 var weekStartArray = [];
 
 function MainChartPage() {
-  const [page, setPage] = useState(0);
+  const [pageNum, setPageNum] = useState(0);
+  const [pageSize] = useState(70);
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
@@ -22,25 +22,39 @@ function MainChartPage() {
 
     Promise.all([
       fetch(`http://localhost:8080/TotalBalance`).then((res1) => res1.json()),
-      fetch(`http://localhost:8080/BalanceOperations?page=${page}`).then((res2) => res2.json())
+      fetch(
+        `http://localhost:8080/BalanceOperations?page=${pageNum}&chartInterval=${pageSize}`
+      ).then((res2) => res2.json())
     ])
       .then(([startAccount, balanceOperations]) => {
-        // setup for all weeks
-        if (page === 0) weekStartArray[page] = startAccount;
+        // setup for all pages
+        if (pageNum === 0) weekStartArray[pageNum] = startAccount;
 
-        // setup for this week
+        // setup for this page
         var data = [];
         var day = new Date();
-        var futureDay = day.getDate() + 7 * page;
+        var futureDay = day.getDate() + pageSize * pageNum;
         day.setDate(futureDay);
 
-        // first dot on the chart (starting balance of the week)
+        console.log(balanceOperations);
+        balanceOperations.sort(function (a, b) {
+          if (a.billingDate < b.billingDate) {
+            return -1;
+          }
+          if (a.billingDate > b.billingDate) {
+            return 1;
+          }
+          return 0;
+        });
+        console.log(balanceOperations);
+
+        // first dot on the chart (starting balance of the page)
         data.push({
-          date: months[day.getMonth()] + ' ' + day.getDate() + ', ' + day.getFullYear(),
-          balance: weekStartArray[page]
+          date: day.getFullYear() + '-' + day.getMonth() + '-' + day.getDate(),
+          balance: weekStartArray[pageNum]
         });
 
-        let tempAccount = weekStartArray[page];
+        let tempAccount = weekStartArray[pageNum];
 
         // expenses and incomes
         for (let operation of balanceOperations) {
@@ -55,10 +69,10 @@ function MainChartPage() {
           }
         }
 
-        // last dot on the chart (starting balance of the next week)
-        futureDay = day.getDate() + 7 * (page + 1);
+        // last dot on the chart (starting balance of the next page)
+        futureDay = day.getDate() + pageSize;
         day.setDate(futureDay);
-        let lastDate = months[day.getMonth()] + ' ' + day.getDate() + ', ' + day.getFullYear();
+        let lastDate = day.getFullYear() + '-' + day.getMonth() + '-' + day.getDate();
         if (lastDate != data[data.length - 1].date) {
           data.push({
             date: lastDate,
@@ -67,14 +81,14 @@ function MainChartPage() {
         }
 
         // setup for the next week
-        weekStartArray[page + 1] = tempAccount;
+        weekStartArray[pageNum + 1] = tempAccount;
 
         setChartData(data);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [page]);
+  }, [pageNum]);
 
   return (
     <div className="flexCard">
@@ -84,7 +98,7 @@ function MainChartPage() {
         </div>
         <div className="chartCard">
           <div className="chartCardInside">
-            <button disabled={page <= 0 ? true : false} onClick={() => setPage(page - 1)}>
+            <button disabled={pageNum <= 0 ? true : false} onClick={() => setPageNum(pageNum - 1)}>
               ❮
             </button>
             <ResponsiveContainer width="95%" height="95%">
@@ -96,7 +110,7 @@ function MainChartPage() {
                 <Tooltip />
               </LineChart>
             </ResponsiveContainer>
-            <button onClick={() => setPage(page + 1)}>❯</button>
+            <button onClick={() => setPageNum(pageNum + 1)}>❯</button>
           </div>
         </div>
       </div>

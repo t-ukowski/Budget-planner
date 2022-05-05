@@ -1,5 +1,7 @@
 package com.example.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.google.gson.annotations.Expose;
 import org.hibernate.annotations.Type;
 
@@ -52,6 +54,17 @@ public class BalanceHistory {
     @Transient
     private String accountName; // do not include it in the database
 
+    public BalanceHistory(String bankAccountName, String billingDate, String endBillingDate, int repeatInterval, double amount, String description, ActionType actionType, String recipient) {
+        this.accountName = bankAccountName;
+        this.billingDate = Date.valueOf(billingDate);
+        this.endBillingDate = Date.valueOf(endBillingDate);
+        this.repeatInterval = repeatInterval;
+        this.amount = amount;
+        this.description = description;
+        this.type = actionType;
+        this.recipient = recipient;
+    }
+
     public BalanceHistory(BankAccount bankAccount, Date billingDate, Date endBillingDate, int repeatInterval, double amount, String description, ActionType actionType, String recipient) {
         this.bankAccount = bankAccount;
         this.billingDate = billingDate;
@@ -85,6 +98,11 @@ public class BalanceHistory {
 
     public void setPaid(boolean paid) {
         this.paid = paid;
+    }
+
+
+    public long getId() {
+        return id;
     }
 
     public BankAccount getBankAccount() {
@@ -165,20 +183,5 @@ public class BalanceHistory {
         c.setTime(logicalDate);
         c.add(Calendar.DATE, this.repeatInterval);
         this.billingDate = new java.sql.Date(c.getTimeInMillis());
-    }
-
-    @Override
-    public String toString() {
-        return "BalanceHistory{" +
-                "id=" + id +
-                ", bankAccount=" + bankAccount.toString() +
-                ", startBillingDate=" + billingDate +
-                ", endBillingDate=" + endBillingDate +
-                ", repeatInterval=" + repeatInterval +
-                ", amount=" + amount +
-                ", description='" + description + '\'' +
-                ", type=" + type +
-                ", recipient='" + recipient + '\'' +
-                '}';
     }
 }

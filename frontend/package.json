@@ -14,7 +14,7 @@
     "@testing-library/user-event": "^13.5.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-scripts": "5.0.0",
+    "react-scripts": "^5.0.1",
     "react-scroll": "^1.8.7",
     "recharts": "^2.1.9",
     "sass": "^1.50.0",
@@ -48,10 +48,16 @@
     ]
   },
   "devDependencies": {
+    "@wojtekmaj/enzyme-adapter-react-17": "^0.6.7",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
     "eslint": "^8.13.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.4",
-    "prettier": "^2.6.2"
+    "jsdom": "19.0.0",
+    "jsdom-global": "3.0.2",
+    "prettier": "^2.6.2",
+    "react-test-renderer": "^18.1.0"
   }
 }

@@ -1,5 +1,7 @@
 package com.example.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -46,6 +48,7 @@ public class BankAccount {
         this.accountBalance = accountBalance;
     }
 
+    @JsonBackReference
     public User getUser() {
         return user;
     }
@@ -62,6 +65,7 @@ public class BankAccount {
         this.accountName = accountName;
     }
 
+    @JsonManagedReference
     public List<BalanceHistory> getBalanceHistories() {
         return balanceHistories;
     }
