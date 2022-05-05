@@ -14,7 +14,7 @@ export default function AddIncome() {
   const [recipient, setRecipient] = useState('Company');
   const [accountName, setAccountName] = useState('mBank');
 
-  const types = [{ label: 'Wydatek' }, { label: 'Przychód' }];
+  const types = ['Wydatek', 'Przychód'];
   const accounts = ['ING', 'mBank'];
 
   function handleSubmit(event) {
@@ -47,14 +47,15 @@ export default function AddIncome() {
         id="select-type"
         value={type}
         onChange={(event, newType) => {
-          setType(newType.label);
+          setType(newType);
         }}
+        isOptionEqualToValue={(option, value) => option === value}
         sx={{ width: 300 }}
         options={types}
         autoHighlight
         renderOption={(props, option) => (
           <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-            {option.label}
+            {option}
           </Box>
         )}
         renderInput={(params) => (
@@ -132,6 +133,7 @@ export default function AddIncome() {
         }}
         sx={{ width: 300 }}
         options={accounts}
+        isOptionEqualToValue={(option, value) => option === value}
         autoHighlight
         renderOption={(props, option) => (
           <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
