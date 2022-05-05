@@ -46,120 +46,130 @@ export default function AddIncome() {
   }
 
   return (
-    <form
-      onSubmit={(e) => {
-        handleSubmit(e);
-      }}>
-      <Autocomplete
-        name="type"
-        id="select-type"
-        value={type}
-        onChange={(event, newType) => {
-          setType(newType);
-        }}
-        isOptionEqualToValue={(option, value) => option === value || value === ''}
-        sx={{ width: 300 }}
-        options={types}
-        autoHighlight
-        renderOption={(props, option) => (
-          <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-            {option}
-          </Box>
-        )}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Typ"
-            inputProps={{
-              ...params.inputProps,
-              autoComplete: 'new-password' // disable autocomplete and autofill
-            }}
-          />
-        )}
-      />
+    <div className="modal-inside">
+      <form
+        onSubmit={(e) => {
+          handleSubmit(e);
+        }}>
+        <Autocomplete
+          name="type"
+          id="select-type"
+          value={type}
+          onChange={(event, newType) => {
+            setType(newType);
+          }}
+          isOptionEqualToValue={(option, value) => option === value || value === ''}
+          sx={{ width: 300 }}
+          options={types}
+          autoHighlight
+          renderOption={(props, option) => (
+            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+              {option}
+            </Box>
+          )}
+          renderInput={(params) => (
+            <TextField
+              margin="normal"
+              {...params}
+              label="Typ"
+              inputProps={{
+                ...params.inputProps,
+                autoComplete: 'new-password' // disable autocomplete and autofill
+              }}
+            />
+          )}
+        />
 
-      <TextField
-        id="outlined-basic"
-        label="Nazwa"
-        variant="outlined"
-        onChange={(e) => setDescription(e.target.value)}
-        value={description}
-      />
+        <TextField
+          id="outlined-basic"
+          label="Nazwa"
+          variant="outlined"
+          onChange={(e) => setDescription(e.target.value)}
+          value={description}
+          margin="normal"
+        />
 
-      <br />
-      <TextField
-        id="outlined-number"
-        label="Kwota"
-        type="number"
-        onChange={(e) => setAmount(e.target.value)}
-        value={amount}
-      />
-      <br />
+        <br />
+        <TextField
+          id="outlined-number"
+          label="Kwota"
+          type="number"
+          onChange={(e) => setAmount(e.target.value)}
+          value={amount}
+          margin="normal"
+        />
+        <br />
 
-      <TextField
-        type="date"
-        id="outlined-date"
-        variant="outlined"
-        onChange={(e) => setBillingDate(e.target.value)}
-        value={billingDate}
-        helperText="Data"
-      />
+        <TextField
+          type="date"
+          id="outlined-date"
+          variant="outlined"
+          onChange={(e) => setBillingDate(e.target.value)}
+          value={billingDate}
+          helperText="Data"
+          margin="normal"
+        />
 
-      <TextField
-        type="date"
-        id="outlined-date"
-        variant="outlined"
-        onChange={(e) => setEndBillingDate(e.target.value)}
-        value={endBillingDate}
-        helperText="Data końcowa"
-      />
+        <TextField
+          type="date"
+          id="outlined-date"
+          variant="outlined"
+          onChange={(e) => setEndBillingDate(e.target.value)}
+          value={endBillingDate}
+          helperText="Data końcowa"
+          margin="normal"
+        />
 
-      <TextField
-        id="outlined-number"
-        label="Co ile dni powtarzać"
-        type="number"
-        onChange={(e) => setRepeatInterval(e.target.value)}
-        value={repeatInterval}
-      />
-      <br />
+        <TextField
+          id="outlined-number"
+          label="Co ile dni powtarzać"
+          type="number"
+          onChange={(e) => setRepeatInterval(e.target.value)}
+          value={repeatInterval}
+          margin="normal"
+        />
+        <br />
 
-      <TextField
-        id="outlined-basic"
-        label="Odbiorca"
-        variant="outlined"
-        onChange={(e) => setRecipient(e.target.value)}
-        value={recipient}
-      />
+        <TextField
+          id="outlined-basic"
+          label="Odbiorca"
+          variant="outlined"
+          onChange={(e) => setRecipient(e.target.value)}
+          value={recipient}
+          margin="normal"
+        />
 
-      <Autocomplete
-        name="account"
-        id="select-account"
-        value={accountName}
-        onChange={(event, newAccount) => {
-          setAccountName(newAccount);
-        }}
-        sx={{ width: 300 }}
-        options={accounts}
-        isOptionEqualToValue={(option, value) => option === value || value === ''}
-        autoHighlight
-        renderOption={(props, option) => (
-          <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-            {option}
-          </Box>
-        )}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Konto"
-            inputProps={{
-              ...params.inputProps,
-              autoComplete: 'new-password' // disable autocomplete and autofill
-            }}
-          />
-        )}
-      />
-      <br />
-      <input className="submitButton" type="submit" value="Submit" />
-    </form>
+        <Autocomplete
+          name="account"
+          id="select-account"
+          value={accountName}
+          onChange={(event, newAccount) => {
+            setAccountName(newAccount);
+          }}
+          sx={{ width: 300 }}
+          options={accounts}
+          isOptionEqualToValue={(option, value) => option === value || value === ''}
+          autoHighlight
+          renderOption={(props, option) => (
+            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+              {option}
+            </Box>
+          )}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              margin="normal"
+              label="Konto"
+              inputProps={{
+                ...params.inputProps,
+                autoComplete: 'new-password' // disable autocomplete and autofill
+              }}
+            />
+          )}
+        />
+        <br />
+        <input className="submitButton" type="submit" value="Dodaj" />
+      </form>
+    </div>
   );
 }
