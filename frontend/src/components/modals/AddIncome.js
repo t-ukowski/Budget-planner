@@ -95,30 +95,28 @@ export default function AddIncome() {
         value={amount}
       />
 
-      <br />
-      <label>Data</label>
-      <br />
-      <input
-        name="billingDate"
+      <TextField
         type="date"
+        id="outlined-basic"
+        label="Data"
+        variant="outlined"
         onChange={(e) => setBillingDate(e.target.value)}
         value={billingDate}
       />
-      <br />
-      <label>Data końcowa</label>
-      <br />
-      <input
-        name="endBillingDate"
+
+      <TextField
         type="date"
+        id="outlined-basic"
+        label="Data końcowa"
+        variant="outlined"
         onChange={(e) => setEndBillingDate(e.target.value)}
         value={endBillingDate}
       />
-      <br />
-      <label>Co ile dni powtarzać</label>
-      <br />
-      <input
-        name="repeatInterval"
-        type="text"
+
+      <TextField
+        id="outlined-number"
+        label="Co ile dni powtarzać"
+        type="number"
         onChange={(e) => setRepeatInterval(e.target.value)}
         value={repeatInterval}
       />
