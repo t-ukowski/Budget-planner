@@ -3,6 +3,7 @@ import axios from 'axios';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import Switch from '@mui/material/Switch';
 
 export default function AddIncome() {
   const [type, setType] = useState('');
@@ -16,6 +17,17 @@ export default function AddIncome() {
 
   const types = ['Wydatek', 'Przychód'];
   const [accounts, setAccounts] = useState([]);
+
+  const [checkedRepeat, setCheckedRepeat] = useState(false);
+  const [checkedNotifications, setCheckedNotifications] = useState(false);
+
+  const handleRepeatChange = (event) => {
+    setCheckedRepeat(event.target.checked);
+  };
+
+  const handleNotificationsChange = (event) => {
+    setCheckedNotifications(event.target.checked);
+  };
 
   useEffect(() => {
     fetch('http://localhost:8080/AccountsList')
@@ -80,7 +92,6 @@ export default function AddIncome() {
             />
           )}
         />
-
         <TextField
           id="outlined-basic"
           label="Nazwa"
@@ -89,7 +100,6 @@ export default function AddIncome() {
           value={description}
           margin="normal"
         />
-
         <br />
         <TextField
           id="outlined-number"
@@ -100,7 +110,6 @@ export default function AddIncome() {
           margin="normal"
         />
         <br />
-
         <TextField
           type="date"
           id="outlined-date"
@@ -110,7 +119,6 @@ export default function AddIncome() {
           helperText="Data"
           margin="normal"
         />
-
         <TextField
           type="date"
           id="outlined-date"
@@ -120,17 +128,27 @@ export default function AddIncome() {
           helperText="Data końcowa"
           margin="normal"
         />
-
-        <TextField
-          id="outlined-number"
-          label="Co ile dni powtarzać"
-          type="number"
-          onChange={(e) => setRepeatInterval(e.target.value)}
-          value={repeatInterval}
-          margin="normal"
-        />
         <br />
-
+        <Switch
+          checked={checkedRepeat}
+          onChange={handleRepeatChange}
+          inputProps={{ 'aria-label': 'controlled' }}
+        />
+        <p>Powtarzaj cyklicznie</p>
+        <br />
+        {checkedRepeat && (
+          <>
+            <TextField
+              id="outlined-number"
+              label="Co ile dni powtarzać"
+              type="number"
+              onChange={(e) => setRepeatInterval(e.target.value)}
+              value={repeatInterval}
+              margin="normal"
+            />
+            <br />
+          </>
+        )}
         <TextField
           id="outlined-basic"
           label="Odbiorca"
@@ -139,7 +157,6 @@ export default function AddIncome() {
           value={recipient}
           margin="normal"
         />
-
         <Autocomplete
           name="account"
           id="select-account"
@@ -168,6 +185,13 @@ export default function AddIncome() {
             />
           )}
         />
+        <Switch
+          checked={checkedNotifications}
+          onChange={handleNotificationsChange}
+          inputProps={{ 'aria-label': 'controlled' }}
+        />
+        <p>Wysyłaj powiadomienia</p>
+        <br />
         <br />
         <input className="submitButton" type="submit" value="Dodaj" />
       </form>
