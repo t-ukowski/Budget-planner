@@ -6,15 +6,26 @@ import {
   Line,
   Tooltip,
   XAxis,
-  YAxis
+  YAxis,
+  ReferenceLine
 } from 'recharts';
 import Title from '../page/Title';
 
 var weekStartArray = [];
 
+function stringifyDate(day) {
+  return (
+    day.getFullYear() +
+    '-' +
+    ('0' + (day.getMonth() + 1)).slice(-2) +
+    '-' +
+    ('0' + day.getDate()).slice(-2)
+  );
+}
+
 function MainChartPage() {
   const [pageNum, setPageNum] = useState(0);
-  const [pageSize] = useState(70);
+  const [pageSize] = useState(30);
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
@@ -36,7 +47,6 @@ function MainChartPage() {
         var futureDay = day.getDate() + pageSize * pageNum;
         day.setDate(futureDay);
 
-        console.log(balanceOperations);
         balanceOperations.sort(function (a, b) {
           if (a.billingDate < b.billingDate) {
             return -1;
@@ -46,11 +56,10 @@ function MainChartPage() {
           }
           return 0;
         });
-        console.log(balanceOperations);
 
         // first dot on the chart (starting balance of the page)
         data.push({
-          date: day.getFullYear() + '-' + day.getMonth() + '-' + day.getDate(),
+          date: stringifyDate(day),
           balance: weekStartArray[pageNum]
         });
 
@@ -72,7 +81,7 @@ function MainChartPage() {
         // last dot on the chart (starting balance of the next page)
         futureDay = day.getDate() + pageSize;
         day.setDate(futureDay);
-        let lastDate = day.getFullYear() + '-' + day.getMonth() + '-' + day.getDate();
+        let lastDate = stringifyDate(day);
         if (lastDate != data[data.length - 1].date) {
           data.push({
             date: lastDate,
@@ -108,6 +117,14 @@ function MainChartPage() {
                 <XAxis dataKey="date" />
                 <YAxis />
                 <Tooltip />
+                <ReferenceLine
+                  x={'2022-07-26'}
+                  label={{
+                    position: 'top',
+                    value: 'Gugu gaga'
+                  }}
+                  stroke="red"
+                />
               </LineChart>
             </ResponsiveContainer>
             <button onClick={() => setPageNum(pageNum + 1)}>❯</button>
