@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import {
   ResponsiveContainer,
   CartesianGrid,
@@ -27,6 +27,22 @@ function MainChartPage() {
   const [pageNum, setPageNum] = useState(0);
   const [pageSize] = useState(30);
   const [chartData, setChartData] = useState([]);
+  const [chartParams, setChartParams] = useReducer(
+    (chartParams, newChartParams) => ({ ...chartParams, ...newChartParams }),
+    { minRange: Infinity, maxRange: -Infinity }
+  );
+
+  var tempMinRange = Infinity,
+    tempMaxRange = -Infinity;
+
+  function minmaxAccount(account) {
+    let delta = 0.02;
+    let valMax = account * (1 + delta);
+    let valMin = account * (1 - delta);
+    if (valMax > tempMaxRange) tempMaxRange = Math.round((valMax + Number.EPSILON) / 100) * 100;
+    if (valMin < tempMinRange) tempMinRange = Math.round((valMin + Number.EPSILON) / 100) * 100;
+    console.log(valMax, valMin, tempMinRange, tempMaxRange);
+  }
 
   useEffect(() => {
     console.log('Cart reloading');
@@ -46,6 +62,8 @@ function MainChartPage() {
         var day = new Date();
         var futureDay = day.getDate() + pageSize * pageNum;
         day.setDate(futureDay);
+        tempMinRange = Infinity;
+        tempMaxRange = -Infinity;
 
         balanceOperations.sort(function (a, b) {
           if (a.billingDate < b.billingDate) {
@@ -64,10 +82,12 @@ function MainChartPage() {
         });
 
         let tempAccount = weekStartArray[pageNum];
+        minmaxAccount(tempAccount);
 
         // expenses and incomes
         for (let operation of balanceOperations) {
           tempAccount += operation.type === 'Wydatek' ? -operation.amount : operation.amount;
+          minmaxAccount(tempAccount);
           if (operation.billingDate == data[data.length - 1].date)
             data[data.length - 1].balance = tempAccount;
           else {
@@ -89,6 +109,10 @@ function MainChartPage() {
           });
         }
 
+        setChartParams({
+          minRange: tempMinRange,
+          maxRange: tempMaxRange
+        });
         // setup for the next week
         weekStartArray[pageNum + 1] = tempAccount;
 
@@ -115,7 +139,7 @@ function MainChartPage() {
                 <Line type="monotone" dataKey="balance" stroke="#003049" strokeWidth={3} />
                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
                 <XAxis dataKey="date" />
-                <YAxis />
+                <YAxis domain={[chartParams.minRange, chartParams.maxRange]} />
                 <Tooltip />
                 <ReferenceLine
                   x={'2022-07-26'}
