@@ -21,9 +21,7 @@ export default function AddIncome() {
     event.preventDefault();
     axios({
       method: 'post',
-      mode: 'same-origin',
       url: 'http://localhost:8080/incomes-expenses',
-      withCredentials: false,
       params: {
         billingDate: billingDate,
         endBillingDate: endBillingDate,
@@ -133,7 +131,6 @@ export default function AddIncome() {
           setAccountName(newAccount);
         }}
         sx={{ width: 300 }}
-        //getOptionLabel={(option) => option.label}
         options={accounts}
         autoHighlight
         renderOption={(props, option) => (
