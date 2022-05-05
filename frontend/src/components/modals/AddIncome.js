@@ -72,7 +72,7 @@ export default function AddIncome() {
             setType(newType);
           }}
           isOptionEqualToValue={(option, value) => option === value || value === ''}
-          sx={{ width: 150 }}
+          sx={{ width: 210 }}
           options={types}
           autoHighlight
           renderOption={(props, option) => (
@@ -117,8 +117,8 @@ export default function AddIncome() {
           value={billingDate}
           helperText="Data"
           margin="normal"
+          sx={{ width: 210 }}
         />
-        <br />
         <Switch
           checked={checkedRepeat}
           onChange={handleRepeatChange}
@@ -144,6 +144,7 @@ export default function AddIncome() {
               value={endBillingDate}
               helperText="Data końcowa"
               margin="normal"
+              sx={{ width: 210 }}
             />
             <br />
           </>
@@ -163,7 +164,7 @@ export default function AddIncome() {
           onChange={(event, newAccount) => {
             setAccountName(newAccount);
           }}
-          sx={{ width: 300 }}
+          sx={{ width: 210 }}
           options={accounts}
           isOptionEqualToValue={(option, value) => option === value || value === ''}
           autoHighlight
