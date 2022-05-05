@@ -13,3 +13,14 @@
     position: relative;
     left: 95%;
 }
+
+.openModalButton {
+    position: relative;
+    left: 4%;
+    margin-top: 30px;
+    background-color: $bp-blue;
+    color: $bp-white;
+    border-radius: $border-radius-small-obejcts;
+    height: $button-big-height;
+    width: $button-big-width;
+}

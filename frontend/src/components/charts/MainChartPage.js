@@ -121,8 +121,10 @@ function MainChartPage() {
       <div className="mainCard">
         <div className="titleCard">
           <Title text="Przewidywany stan konta" />
+          <button className="openModalButton" onClick={openModal}>
+            Zaplanuj
+          </button>
         </div>
-        <button onClick={openModal}>Zaplanuj</button>
 
         <Modal
           ariaHideApp={false}
