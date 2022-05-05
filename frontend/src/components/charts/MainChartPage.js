@@ -129,7 +129,10 @@ function MainChartPage() {
           isOpen={modalIsOpen}
           onRequestClose={closeModal}
           style={customStyles}>
-          <AddIncome></AddIncome>
+          <button className="closeModalButton" onClick={closeModal}>
+            X
+          </button>
+          <AddIncome />
         </Modal>
 
         <div className="chartCard">
