@@ -1,21 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
 export default function AddIncome() {
-  const [type, setType] = useState('Wydatek');
+  const [type, setType] = useState('');
   const [billingDate, setBillingDate] = useState('2022-06-01');
   const [endBillingDate, setEndBillingDate] = useState('2022-08-13');
   const [repeatInterval, setRepeatInterval] = useState(31);
   const [amount, setAmount] = useState(20);
   const [description, setDescription] = useState('default description');
   const [recipient, setRecipient] = useState('Company');
-  const [accountName, setAccountName] = useState('mBank');
+  const [accountName, setAccountName] = useState('');
 
   const types = ['Wydatek', 'Przychód'];
-  const accounts = ['ING', 'mBank'];
+  const [accounts, setAccounts] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:8080/AccountsList')
+      .then((res) => res.json())
+      .then((json) => {
+        var data = [];
+        json.forEach((obj) => {
+          console.log(`ID: ${obj.id} NAME: ${obj.accountName}`);
+          data.push(obj.accountName);
+          console.log('-------------------');
+        });
+        setAccounts(data);
+      });
+  }, []);
 
   function handleSubmit(event) {
     event.preventDefault();
