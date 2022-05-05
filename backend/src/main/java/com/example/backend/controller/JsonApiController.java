@@ -175,7 +175,6 @@ public class JsonApiController {
         c.add(Calendar.DATE, chartInterval);
         java.sql.Date endDate = new java.sql.Date(c.getTimeInMillis());
 
-
         List<BalanceHistory> resultList = new ArrayList<>();
         List<BankAccount> bankAccountList = userRepository.findTopByOrderByIdAsc().getBankAccountList();
 
@@ -186,7 +185,8 @@ public class JsonApiController {
                 .forEach(balanceHistory -> {
                             while (balanceHistory.getBillingDate().before(endDate)) {
                                 if(balanceHistory.getBillingDate().after(startDate) && balanceHistory.getBillingDate().before(endDate)) {
-                                    resultList.add(balanceHistory);
+                                    BalanceHistory balanceHistoryCopy = new BalanceHistory(balanceHistory);
+                                    resultList.add(balanceHistoryCopy);
                                 }
                                 balanceHistory.addToStartBillingDate();
                             }
@@ -200,7 +200,6 @@ public class JsonApiController {
                             }
                         }
                 ));
-
 
         return resultList;
     }

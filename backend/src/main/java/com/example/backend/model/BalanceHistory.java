@@ -63,6 +63,19 @@ public class BalanceHistory {
         this.recipient = recipient;
     }
 
+    public BalanceHistory(BalanceHistory balanceHistoryCopy){
+        this.id = balanceHistoryCopy.id;
+        this.bankAccount = balanceHistoryCopy.bankAccount;
+        this.billingDate = balanceHistoryCopy.billingDate;
+        this.endBillingDate = balanceHistoryCopy.endBillingDate;
+        this.repeatInterval = balanceHistoryCopy.repeatInterval;
+        this.amount = balanceHistoryCopy.amount;
+        this.description = balanceHistoryCopy.description;
+        this.type = balanceHistoryCopy.getType();
+        this.recipient = balanceHistoryCopy.recipient;
+        this.paid = balanceHistoryCopy.paid;
+    }
+
     public BalanceHistory() {
     }
 
