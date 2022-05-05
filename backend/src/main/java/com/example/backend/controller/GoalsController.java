@@ -12,6 +12,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/goals")
 public class GoalsController {
     private final GoalRepository goalRepository;
