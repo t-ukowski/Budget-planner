@@ -70,6 +70,14 @@ public class BankAccount {
         return balanceHistories;
     }
 
+    public void subtractBalance(double money){
+        this.accountBalance-= money;
+    }
+
+    public void addBalance(double money){
+        this.accountBalance+=money;
+    }
+
     @Override
     public String toString() {
         return "BankAccount{" +
