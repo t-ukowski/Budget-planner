@@ -21,6 +21,9 @@
     flex: 1 0 auto;
     display: flex;
     align-items: center;
+    font-family: $basic-font;
+    font-style: normal;
+    font-weight: $font-weight-base;
 }
 .chartCardInside {
     flex: 1 1 auto;
@@ -65,4 +68,11 @@ button {
     background-color: transparent;
     border: none;
     font-size: 28px;
+}
+
+
+.label {
+    font-family: $basic-font;
+    font-style: normal;
+    font-weight: $font-weight-base;
 }

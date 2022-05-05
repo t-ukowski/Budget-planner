@@ -7,7 +7,8 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-  ReferenceLine
+  ReferenceLine,
+  Label
 } from 'recharts';
 import Title from '../page/Title';
 
@@ -121,16 +122,20 @@ function MainChartPage() {
         console.log(goalRealization);
         setChartData(data);
         var tempReferenceLines = [];
-        tempReferenceLines.push(
-          <ReferenceLine
-            x={'2022-07-26'}
-            label={{
-              position: 'top',
-              value: 'Gugu gaga'
-            }}
-            stroke="red"
-          />
-        );
+        for (let i = 0; i < goalRealization.length; i++) {
+          const element = goalRealization[i];
+          tempReferenceLines.push(
+            <ReferenceLine
+              x={element.date}
+              stroke="#CD5334"
+              strokeWidth={2}
+              strokeDasharray="8 3"
+              key={i}
+              className="label">
+              <Label color="#CD5334" value={element.goal.goalName} position="insideTopLeft" />
+            </ReferenceLine>
+          );
+        }
         setReferenceLines(tempReferenceLines);
       })
       .catch((err) => {
