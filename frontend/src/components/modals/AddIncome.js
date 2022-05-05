@@ -45,7 +45,7 @@ export default function AddIncome() {
       params: {
         billingDate: billingDate,
         endBillingDate: endBillingDate,
-        repeatInterval: repeatInterval,
+        repeatInterval: repeatInterval ? repeatInterval : 0,
         amount: amount,
         description: description,
         recipient: recipient,
