@@ -8,10 +8,10 @@ export default function AddIncome() {
   const [type, setType] = useState('');
   const [billingDate, setBillingDate] = useState('2022-06-01');
   const [endBillingDate, setEndBillingDate] = useState('2022-08-13');
-  const [repeatInterval, setRepeatInterval] = useState(31);
+  const [repeatInterval, setRepeatInterval] = useState(undefined);
   const [amount, setAmount] = useState(20);
-  const [description, setDescription] = useState('default description');
-  const [recipient, setRecipient] = useState('Company');
+  const [description, setDescription] = useState('');
+  const [recipient, setRecipient] = useState('');
   const [accountName, setAccountName] = useState('');
 
   const types = ['Wydatek', 'Przychód'];
@@ -78,23 +78,24 @@ export default function AddIncome() {
         )}
       />
 
-      <br />
-      <label>Nazwa</label>
-      <br />
-      <input
-        name="description"
-        type="text"
+      <TextField
+        id="outlined-basic"
+        label="Nazwa"
+        variant="outlined"
         onChange={(e) => setDescription(e.target.value)}
         value={description}
       />
-      <br />
 
       <br />
-      <label>Kwota</label>
-      <br />
-      <input name="amount" type="text" onChange={(e) => setAmount(e.target.value)} value={amount} />
-      <br />
+      <TextField
+        id="outlined-basic"
+        label="Kwota"
+        variant="outlined"
+        onChange={(e) => setAmount(e.target.value)}
+        value={amount}
+      />
 
+      <br />
       <label>Data</label>
       <br />
       <input
@@ -122,15 +123,14 @@ export default function AddIncome() {
         value={repeatInterval}
       />
       <br />
-      <label>Odbiorca</label>
-      <br />
-      <input
-        name="recipient"
-        type="text"
+
+      <TextField
+        id="outlined-basic"
+        label="Odbiorca"
+        variant="outlined"
         onChange={(e) => setRecipient(e.target.value)}
         value={recipient}
       />
-      <br />
 
       <Autocomplete
         name="account"
