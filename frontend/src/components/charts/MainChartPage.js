@@ -121,7 +121,11 @@ function MainChartPage() {
         </div>
         <button onClick={openModal}>Zaplanuj</button>
 
-        <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customStyles}>
+        <Modal
+          ariaHideApp={false}
+          isOpen={modalIsOpen}
+          onRequestClose={closeModal}
+          style={customStyles}>
           <AddIncome></AddIncome>
         </Modal>
 

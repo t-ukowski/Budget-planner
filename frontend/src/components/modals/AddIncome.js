@@ -6,10 +6,10 @@ import Autocomplete from '@mui/material/Autocomplete';
 
 export default function AddIncome() {
   const [type, setType] = useState('');
-  const [billingDate, setBillingDate] = useState('2022-06-01');
-  const [endBillingDate, setEndBillingDate] = useState('2022-08-13');
-  const [repeatInterval, setRepeatInterval] = useState(undefined);
-  const [amount, setAmount] = useState(20);
+  const [billingDate, setBillingDate] = useState('');
+  const [endBillingDate, setEndBillingDate] = useState('');
+  const [repeatInterval, setRepeatInterval] = useState('');
+  const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
   const [recipient, setRecipient] = useState('');
   const [accountName, setAccountName] = useState('');
@@ -88,29 +88,30 @@ export default function AddIncome() {
 
       <br />
       <TextField
-        id="outlined-basic"
+        id="outlined-number"
         label="Kwota"
-        variant="outlined"
+        type="number"
         onChange={(e) => setAmount(e.target.value)}
         value={amount}
       />
+      <br />
 
       <TextField
         type="date"
-        id="outlined-basic"
-        label="Data"
+        id="outlined-date"
         variant="outlined"
         onChange={(e) => setBillingDate(e.target.value)}
         value={billingDate}
+        helperText="Data"
       />
 
       <TextField
         type="date"
-        id="outlined-basic"
-        label="Data końcowa"
+        id="outlined-date"
         variant="outlined"
         onChange={(e) => setEndBillingDate(e.target.value)}
         value={endBillingDate}
+        helperText="Data końcowa"
       />
 
       <TextField
