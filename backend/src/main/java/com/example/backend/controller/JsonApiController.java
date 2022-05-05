@@ -3,9 +3,7 @@ package com.example.backend.controller;
 import com.example.backend.Repositories.BalanceHistoryRepository;
 import com.example.backend.Repositories.BankAccountRepository;
 import com.example.backend.Repositories.UserRepository;
-import com.example.backend.model.BalanceHistory;
-import com.example.backend.model.BankAccount;
-import com.example.backend.model.Goal;
+import com.example.backend.model.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +16,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 @RestController
 public class JsonApiController {
-
-//    private static final int CHART_INTERVAL = 30;
 
     @Autowired
     private UserRepository userRepository;
@@ -43,7 +40,7 @@ public class JsonApiController {
     @CrossOrigin
     @GetMapping("/TotalBalance")
     public double getTotalBalance() {
-        return userRepository.findTopByOrderByIdAsc().getBankAccountList().stream().mapToDouble(BankAccount::getAccountBalance).sum();
+        return countTotalBalance();
     }
 
     @CrossOrigin
@@ -67,23 +64,7 @@ public class JsonApiController {
     @CrossOrigin
     @GetMapping("/UncompletedGoals")
     public String getUncompletedGoals() {
-        List<Goal> goalList = new ArrayList<>();
-
-        userRepository.findTopByOrderByIdAsc().getGoals()
-                .forEach(goal->
-                        {
-                            AtomicBoolean flag = new AtomicBoolean(true);
-                            goal.getGoalElementList()
-                                    .forEach(goalElement -> {
-                                        if(!goalElement.isAchieved()){
-                                            flag.set(false);
-                                        }
-                                    });
-                            if(!flag.get()){
-                                goalList.add(goal);
-                            }
-                        }
-                );
+        List<Goal> goalList = getGoals(false);
 
         Gson gsonBuilder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().serializeNulls().create();
         return gsonBuilder.toJson(goalList);
@@ -92,6 +73,72 @@ public class JsonApiController {
     @CrossOrigin
     @GetMapping("/CompletedGoals")
     public String getCompletedGoals() {
+        List<Goal> goalList = getGoals(true);
+
+        Gson gsonBuilder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().serializeNulls().create();
+        return gsonBuilder.toJson(goalList);
+    }
+
+    @CrossOrigin
+    @GetMapping("/GoalRealization")
+    public String getGoalRealizationDate() {
+        List<Goal> uncompletedGoalList = getGoals(false);
+        List<GoalRealization> goalRealizations = new ArrayList<>();
+        double currentMoneyAmount = countTotalBalance();
+
+        java.sql.Date currentDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+        updateRepetitiveTransaction(currentDate);
+
+        Calendar c = Calendar.getInstance();
+
+        c.setTime(currentDate);
+        c.add(Calendar.DATE, 0);
+        java.sql.Date futureDate = new java.sql.Date(c.getTimeInMillis());
+
+        int i=0;
+        while(uncompletedGoalList.size()>0 && i <3650) {
+            c.setTime(currentDate);
+            c.add(Calendar.DATE, i);
+            futureDate = new java.sql.Date(c.getTimeInMillis());
+
+            List<BalanceHistory> balanceHistoryList = getBalanceHistoryForFuture(futureDate, 1);
+
+            for(BalanceHistory balanceHistory: balanceHistoryList){
+                if(balanceHistory.getType() == ActionType.Przychód){
+                    currentMoneyAmount += balanceHistory.getAmount();
+                }
+                else if(balanceHistory.getType() == ActionType.Wydatek){
+                    currentMoneyAmount -= balanceHistory.getAmount();
+                }
+            }
+
+//            System.out.println(currentMoneyAmount+" "+i);
+
+            double finalCurrentMoneyAmount = currentMoneyAmount;
+            List<Goal> toRemove = new ArrayList<>();
+            java.sql.Date finalFutureDate = futureDate;
+            uncompletedGoalList.forEach(goal->
+                    {
+                        double sum = goal.getGoalElementList().stream().filter(goalElement -> !goalElement.isAchieved()).mapToDouble(GoalElement::getCost).sum();
+                        if(sum <= finalCurrentMoneyAmount){
+                            goalRealizations.add(new GoalRealization(goal, finalFutureDate));
+                            toRemove.add(goal);
+                        }
+                    }
+            );
+
+            for(Goal goal:toRemove){
+                uncompletedGoalList.remove(goal);
+            }
+
+            i++;
+        }
+
+        Gson gsonBuilder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().setDateFormat("yyyy-MM-dd").serializeNulls().create();
+        return gsonBuilder.toJson(goalRealizations);
+    }
+
+    private List<Goal> getGoals(boolean completed){
         List<Goal> goalList = new ArrayList<>();
 
         userRepository.findTopByOrderByIdAsc().getGoals()
@@ -104,14 +151,21 @@ public class JsonApiController {
                                             flag.set(false);
                                         }
                                     });
-                            if(flag.get()){
+                            if(completed && flag.get()){
                                 goalList.add(goal);
+                            }
+                            if(!completed && !flag.get()){
+                                goalList.add(goal);
+
                             }
                         }
                 );
 
-        Gson gsonBuilder = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().serializeNulls().create();
-        return gsonBuilder.toJson(goalList);
+        return goalList;
+    }
+
+    private double countTotalBalance(){
+        return userRepository.findTopByOrderByIdAsc().getBankAccountList().stream().mapToDouble(BankAccount::getAccountBalance).sum();
     }
 
     private List<BalanceHistory> getBalanceHistoryForFuture(java.sql.Date startDate, int chartInterval) {
@@ -120,7 +174,6 @@ public class JsonApiController {
         c.setTime(startDate);
         c.add(Calendar.DATE, chartInterval);
         java.sql.Date endDate = new java.sql.Date(c.getTimeInMillis());
-
 
         List<BalanceHistory> resultList = new ArrayList<>();
         List<BankAccount> bankAccountList = userRepository.findTopByOrderByIdAsc().getBankAccountList();
@@ -132,7 +185,8 @@ public class JsonApiController {
                 .forEach(balanceHistory -> {
                             while (balanceHistory.getBillingDate().before(endDate)) {
                                 if(balanceHistory.getBillingDate().after(startDate) && balanceHistory.getBillingDate().before(endDate)) {
-                                    resultList.add(balanceHistory);
+                                    BalanceHistory balanceHistoryCopy = new BalanceHistory(balanceHistory);
+                                    resultList.add(balanceHistoryCopy);
                                 }
                                 balanceHistory.addToStartBillingDate();
                             }
@@ -147,7 +201,6 @@ public class JsonApiController {
                         }
                 ));
 
-
         return resultList;
     }
 
@@ -161,7 +214,33 @@ public class JsonApiController {
                         .forEach(balanceHistory -> {
                                     while (balanceHistory.getBillingDate().before(currentDate)) {
                                         balanceHistory.addToStartBillingDate();
+                                        if(balanceHistory.getType() == ActionType.Wydatek) {
+                                            balanceHistory.getBankAccount().subtractBalance(balanceHistory.getAmount());
+                                        }
+                                        if(balanceHistory.getType() == ActionType.Przychód) {
+                                            balanceHistory.getBankAccount().addBalance(balanceHistory.getAmount());
+                                        }
+                                        bankAccountRepository.save(balanceHistory.getBankAccount());
                                     }
+                                    balanceHistoryRepository.save(balanceHistory);
+                                }
+                        ));
+
+
+        userRepository.findTopByOrderByIdAsc().getBankAccountList()
+                .forEach(bankAccount -> bankAccount.getBalanceHistories().stream()
+                        .filter(balanceHistory -> balanceHistory.getRepeatInterval() == 0)
+                        .filter(balanceHistory -> balanceHistory.getBillingDate().before(currentDate))
+                        .filter(balanceHistory -> !balanceHistory.isPaid())
+                        .forEach(balanceHistory -> {
+                                    if(balanceHistory.getType() == ActionType.Wydatek) {
+                                        balanceHistory.getBankAccount().subtractBalance(balanceHistory.getAmount());
+                                    }
+                                    if(balanceHistory.getType() == ActionType.Przychód) {
+                                        balanceHistory.getBankAccount().addBalance(balanceHistory.getAmount());
+                                    }
+                                    bankAccountRepository.save(balanceHistory.getBankAccount());
+                                    balanceHistory.setPaid(true);
                                     balanceHistoryRepository.save(balanceHistory);
                                 }
                         ));
