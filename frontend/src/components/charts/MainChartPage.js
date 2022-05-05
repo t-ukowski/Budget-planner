@@ -31,6 +31,7 @@ function MainChartPage() {
     (chartParams, newChartParams) => ({ ...chartParams, ...newChartParams }),
     { minRange: Infinity, maxRange: -Infinity }
   );
+  const [referenceLines, setReferenceLines] = useState([]);
 
   var tempMinRange = Infinity,
     tempMaxRange = -Infinity;
@@ -41,7 +42,6 @@ function MainChartPage() {
     let valMin = account * (1 - delta);
     if (valMax > tempMaxRange) tempMaxRange = Math.round((valMax + Number.EPSILON) / 100) * 100;
     if (valMin < tempMinRange) tempMinRange = Math.round((valMin + Number.EPSILON) / 100) * 100;
-    console.log(valMax, valMin, tempMinRange, tempMaxRange);
   }
 
   useEffect(() => {
@@ -51,9 +51,10 @@ function MainChartPage() {
       fetch(`http://localhost:8080/TotalBalance`).then((res1) => res1.json()),
       fetch(
         `http://localhost:8080/BalanceOperations?page=${pageNum}&chartInterval=${pageSize}`
-      ).then((res2) => res2.json())
+      ).then((res2) => res2.json()),
+      fetch(`http://localhost:8080/GoalRealization`).then((res3) => res3.json())
     ])
-      .then(([startAccount, balanceOperations]) => {
+      .then(([startAccount, balanceOperations, goalRealization]) => {
         // setup for all pages
         if (pageNum === 0) weekStartArray[pageNum] = startAccount;
 
@@ -116,7 +117,21 @@ function MainChartPage() {
         // setup for the next week
         weekStartArray[pageNum + 1] = tempAccount;
 
+        // set reference lines
+        console.log(goalRealization);
         setChartData(data);
+        var tempReferenceLines = [];
+        tempReferenceLines.push(
+          <ReferenceLine
+            x={'2022-07-26'}
+            label={{
+              position: 'top',
+              value: 'Gugu gaga'
+            }}
+            stroke="red"
+          />
+        );
+        setReferenceLines(tempReferenceLines);
       })
       .catch((err) => {
         console.log(err);
@@ -141,14 +156,7 @@ function MainChartPage() {
                 <XAxis dataKey="date" />
                 <YAxis domain={[chartParams.minRange, chartParams.maxRange]} />
                 <Tooltip />
-                <ReferenceLine
-                  x={'2022-07-26'}
-                  label={{
-                    position: 'top',
-                    value: 'Gugu gaga'
-                  }}
-                  stroke="red"
-                />
+                {referenceLines}
               </LineChart>
             </ResponsiveContainer>
             <button onClick={() => setPageNum(pageNum + 1)}>❯</button>
