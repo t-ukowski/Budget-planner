@@ -44,7 +44,7 @@ export default function AddIncome() {
       url: 'http://localhost:8080/incomes-expenses',
       params: {
         billingDate: billingDate,
-        endBillingDate: endBillingDate,
+        endBillingDate: endBillingDate ? endBillingDate : billingDate,
         repeatInterval: repeatInterval ? repeatInterval : 0,
         amount: amount,
         description: description,
@@ -72,7 +72,7 @@ export default function AddIncome() {
             setType(newType);
           }}
           isOptionEqualToValue={(option, value) => option === value || value === ''}
-          sx={{ width: 300 }}
+          sx={{ width: 150 }}
           options={types}
           autoHighlight
           renderOption={(props, option) => (
@@ -100,7 +100,6 @@ export default function AddIncome() {
           value={description}
           margin="normal"
         />
-        <br />
         <TextField
           id="outlined-number"
           label="Kwota"
@@ -119,15 +118,6 @@ export default function AddIncome() {
           helperText="Data"
           margin="normal"
         />
-        <TextField
-          type="date"
-          id="outlined-date"
-          variant="outlined"
-          onChange={(e) => setEndBillingDate(e.target.value)}
-          value={endBillingDate}
-          helperText="Data końcowa"
-          margin="normal"
-        />
         <br />
         <Switch
           checked={checkedRepeat}
@@ -144,6 +134,15 @@ export default function AddIncome() {
               type="number"
               onChange={(e) => setRepeatInterval(e.target.value)}
               value={repeatInterval}
+              margin="normal"
+            />
+            <TextField
+              type="date"
+              id="outlined-date"
+              variant="outlined"
+              onChange={(e) => setEndBillingDate(e.target.value)}
+              value={endBillingDate}
+              helperText="Data końcowa"
               margin="normal"
             />
             <br />
