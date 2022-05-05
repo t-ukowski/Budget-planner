@@ -47,6 +47,7 @@ export default function AddIncome() {
 
   return (
     <div className="modal-inside">
+      <div className="title small">Planowanie</div>
       <form
         onSubmit={(e) => {
           handleSubmit(e);
