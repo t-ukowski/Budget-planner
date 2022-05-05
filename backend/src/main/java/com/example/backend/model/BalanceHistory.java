@@ -71,7 +71,7 @@ public class BalanceHistory {
         this.repeatInterval = balanceHistoryCopy.repeatInterval;
         this.amount = balanceHistoryCopy.amount;
         this.description = balanceHistoryCopy.description;
-        this.type = balanceHistoryCopy.getType();
+        this.type = balanceHistoryCopy.type;
         this.recipient = balanceHistoryCopy.recipient;
         this.paid = balanceHistoryCopy.paid;
     }
