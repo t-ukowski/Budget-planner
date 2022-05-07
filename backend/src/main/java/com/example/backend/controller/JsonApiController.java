@@ -206,29 +206,31 @@ public class JsonApiController {
 
     private void updateRepetitiveTransaction(java.sql.Date currentDate) {
 
-        userRepository.findTopByOrderByIdAsc().getBankAccountList()
-                .forEach(bankAccount -> bankAccount.getBalanceHistories().stream()
+        List<BankAccount> bankAccountList = userRepository.findTopByOrderByIdAsc().getBankAccountList();
+
+            bankAccountList.forEach(bankAccount -> {
+                bankAccount.getBalanceHistories().stream()
                         .filter(balanceHistory -> balanceHistory.getRepeatInterval() != 0)
                         .filter(balanceHistory -> balanceHistory.getEndBillingDate().after(currentDate))
                         .filter(balanceHistory -> balanceHistory.getBillingDate().before(currentDate))
                         .forEach(balanceHistory -> {
                                     while (balanceHistory.getBillingDate().before(currentDate)) {
-                                        balanceHistory.addToStartBillingDate();
                                         if(balanceHistory.getType() == ActionType.Wydatek) {
                                             balanceHistory.getBankAccount().subtractBalance(balanceHistory.getAmount());
                                         }
                                         if(balanceHistory.getType() == ActionType.Przychód) {
                                             balanceHistory.getBankAccount().addBalance(balanceHistory.getAmount());
                                         }
-                                        bankAccountRepository.save(balanceHistory.getBankAccount());
+                                        balanceHistory.addToStartBillingDate();
                                     }
                                     balanceHistoryRepository.save(balanceHistory);
                                 }
-                        ));
+                        );
+                bankAccountRepository.save(bankAccount);
+            });
 
 
-        userRepository.findTopByOrderByIdAsc().getBankAccountList()
-                .forEach(bankAccount -> bankAccount.getBalanceHistories().stream()
+            bankAccountList.forEach(bankAccount -> bankAccount.getBalanceHistories().stream()
                         .filter(balanceHistory -> balanceHistory.getRepeatInterval() == 0)
                         .filter(balanceHistory -> balanceHistory.getBillingDate().before(currentDate))
                         .filter(balanceHistory -> !balanceHistory.isPaid())
