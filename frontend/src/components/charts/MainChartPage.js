@@ -122,19 +122,41 @@ function MainChartPage() {
         console.log(goalRealization);
         setChartData(data);
         var tempReferenceLines = [];
+        var multipleGoals = [];
         for (let i = 0; i < goalRealization.length; i++) {
+          console.log(multipleGoals);
           const element = goalRealization[i];
-          tempReferenceLines.push(
-            <ReferenceLine
-              x={element.date}
-              stroke="#CD5334"
-              strokeWidth={2}
-              strokeDasharray="8 3"
-              key={i}
-              className="label">
-              <Label color="#CD5334" value={element.goal.goalName} position="insideTopLeft" />
-            </ReferenceLine>
-          );
+          if (i < goalRealization.length - 1) {
+            const next_element = goalRealization[i + 1];
+            multipleGoals.push(element.goal.goalName);
+            if (next_element.date !== element.date) {
+              tempReferenceLines.push(
+                <ReferenceLine
+                  x={element.date}
+                  stroke="#CD5334"
+                  strokeWidth={2}
+                  strokeDasharray="8 3"
+                  key={i}
+                  className="label">
+                  <Label color="#CD5334" value={multipleGoals} position="insideTopLeft" />
+                </ReferenceLine>
+              );
+              multipleGoals = [];
+            }
+          } else {
+            multipleGoals.push(element.goal.goalName);
+            tempReferenceLines.push(
+              <ReferenceLine
+                x={element.date}
+                stroke="#CD5334"
+                strokeWidth={2}
+                strokeDasharray="8 3"
+                key={i}
+                className="label">
+                <Label color="#CD5334" value={multipleGoals} position="insideTopLeft" />
+              </ReferenceLine>
+            );
+          }
         }
         setReferenceLines(tempReferenceLines);
       })
