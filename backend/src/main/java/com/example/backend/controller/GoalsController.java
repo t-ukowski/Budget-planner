@@ -46,7 +46,7 @@ public class GoalsController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteGoal(@PathVariable Long id){
+    public ResponseEntity<?> deleteGoal(@PathVariable Long id){
         User user = userRepository.findTopByOrderByIdAsc();
         Goal goal = goalRepository.getById(id);
         goalRepository.deleteById(id);
@@ -58,8 +58,8 @@ public class GoalsController {
     }
 
 
-    @PutMapping("/{id}/{goalName}")
-    public ResponseEntity updateGoal(@PathVariable Long id, @PathVariable String goalName){
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateGoal(@PathVariable Long id, @RequestParam String goalName){
         User user = userRepository.findTopByOrderByIdAsc();
         Goal goal = goalRepository.getById(id);
         goal.setGoalName(goalName);
