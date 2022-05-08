@@ -89,17 +89,13 @@ public class JsonApiController {
         java.sql.Date currentDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
         updateRepetitiveTransaction(currentDate);
 
-        Calendar c = Calendar.getInstance();
-
-        c.setTime(currentDate);
-        c.add(Calendar.DATE, 0);
-        java.sql.Date futureDate = new java.sql.Date(c.getTimeInMillis());
 
         int i=0;
         while(uncompletedGoalList.size()>0 && i <3650) {
+            Calendar c = Calendar.getInstance();
             c.setTime(currentDate);
             c.add(Calendar.DATE, i);
-            futureDate = new java.sql.Date(c.getTimeInMillis());
+            java.sql.Date futureDate = new java.sql.Date(c.getTimeInMillis());
 
             List<BalanceHistory> balanceHistoryList = getBalanceHistoryForFuture(futureDate, 1);
 
@@ -116,12 +112,22 @@ public class JsonApiController {
 
             double finalCurrentMoneyAmount = currentMoneyAmount;
             List<Goal> toRemove = new ArrayList<>();
-            java.sql.Date finalFutureDate = futureDate;
+            java.sql.Date temp;
+            if(!futureDate.equals(currentDate)) {
+                Calendar c1 = Calendar.getInstance();
+                c1.setTime(futureDate);
+                c1.add(Calendar.DATE, 1);
+                temp = new java.sql.Date(c1.getTimeInMillis());
+            }
+            else{
+                temp = futureDate;
+            }
+            final java.sql.Date finalDate = temp;
             uncompletedGoalList.forEach(goal->
                     {
                         double sum = goal.getGoalElementList().stream().filter(goalElement -> !goalElement.isAchieved()).mapToDouble(GoalElement::getCost).sum();
                         if(sum <= finalCurrentMoneyAmount){
-                            goalRealizations.add(new GoalRealization(goal, finalFutureDate));
+                            goalRealizations.add(new GoalRealization(goal, finalDate));
                             toRemove.add(goal);
                         }
                     }
