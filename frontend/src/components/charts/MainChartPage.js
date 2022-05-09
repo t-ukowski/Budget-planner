@@ -119,12 +119,10 @@ function MainChartPage() {
         weekStartArray[pageNum + 1] = tempAccount;
 
         // set reference lines
-        console.log(goalRealization);
         setChartData(data);
         var tempReferenceLines = [];
         var multipleGoals = [];
         for (let i = 0; i < goalRealization.length; i++) {
-          console.log(multipleGoals);
           const element = goalRealization[i];
           if (i < goalRealization.length - 1) {
             const next_element = goalRealization[i + 1];
