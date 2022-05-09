@@ -110,7 +110,8 @@ function MainChartPage() {
         data.push({
           date: stringifyDate(day),
           balance: weekStartArray[pageNum],
-          expenses: []
+          expenses: [],
+          incomes: []
         });
 
         let tempAccount = weekStartArray[pageNum];
@@ -118,25 +119,35 @@ function MainChartPage() {
 
         // expenses and incomes
         var tempExpenses = [];
+        var tempIncomes = [];
         for (let operation of balanceOperations) {
           tempAccount += operation.type === 'Wydatek' ? -operation.amount : operation.amount;
           minmaxAccount(tempAccount);
-          tempExpenses.push({
-            name: operation.description,
-            amount: operation.amount,
-            account: operation.bankAccount.accountName,
-            type: operation.type
-          });
-          if (operation.billingDate == data[data.length - 1].date)
+          operation.type === 'Wydatek'
+            ? tempExpenses.push({
+                name: operation.description,
+                amount: operation.amount,
+                account: operation.bankAccount.accountName
+              })
+            : tempIncomes.push({
+                name: operation.description,
+                amount: operation.amount,
+                account: operation.bankAccount.accountName
+              });
+          if (operation.billingDate == data[data.length - 1].date) {
             data[data.length - 1].balance = tempAccount;
-          else {
+            data[data.length - 1].expenses = data[data.length - 1].expenses.concat(tempExpenses);
+            data[data.length - 1].incomes = data[data.length - 1].incomes.concat(tempIncomes);
+          } else {
             data.push({
               date: operation.billingDate,
               balance: Math.round((tempAccount + Number.EPSILON) * 100) / 100,
-              expenses: tempExpenses
+              expenses: tempExpenses,
+              incomes: tempIncomes
             });
-            tempExpenses = [];
           }
+          tempExpenses = [];
+          tempIncomes = [];
         }
 
         // last dot on the chart (starting balance of the next page)
@@ -147,7 +158,8 @@ function MainChartPage() {
           data.push({
             date: lastDate,
             balance: Math.round((tempAccount + Number.EPSILON) * 100) / 100,
-            expenses: []
+            expenses: [],
+            incomes: []
           });
         }
 
@@ -207,12 +219,61 @@ function MainChartPage() {
     var tempSidePanel = [];
 
     if (tooltipDate != '') {
+      var expenses = [];
+      var incomes = [];
+      data.forEach((element) => {
+        if (element.date === tooltipDate) {
+          expenses = element.expenses;
+          incomes = element.incomes;
+        }
+      });
+      console.log(expenses, incomes);
       tempSidePanel.push(
         <p key="1">
           <b>Data: </b>
           {tooltipDate}
         </p>
       );
+      if (expenses.length !== 0) {
+        tempSidePanel.push(
+          <p key="wydatki">
+            <b>Wydatki</b>
+          </p>
+        );
+        let i = 5;
+        expenses.forEach((element) => {
+          tempSidePanel.push(
+            <div className="expense" key={i}>
+              Nazwa: {element.name}
+              <br />
+              Kwota: {element.amount}zł
+              <br />
+              Konto: {element.account}
+            </div>
+          );
+          i++;
+        });
+      }
+      if (incomes.length !== 0) {
+        tempSidePanel.push(
+          <p key="przychody">
+            <b>Przychody</b>
+          </p>
+        );
+        let i = -5;
+        incomes.forEach((element) => {
+          tempSidePanel.push(
+            <div className="expense" key={i}>
+              Nazwa: {element.name}
+              <br />
+              Kwota: {element.amount}zł
+              <br />
+              Konto: {element.account}
+            </div>
+          );
+          i--;
+        });
+      }
     } else {
       tempSidePanel.push(
         <p key="1">
@@ -221,12 +282,6 @@ function MainChartPage() {
         </p>
       );
     }
-    // var expenses;
-    // data.forEach((element) => {
-    //   if (element.date === tooltipDate) {
-    //     expenses = element.expenses;
-    //   }
-    // });
     setSidePanel(tempSidePanel);
   }, [tooltipDate]);
 
