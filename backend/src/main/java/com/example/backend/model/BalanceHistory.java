@@ -105,6 +105,7 @@ public class BalanceHistory {
         return id;
     }
 
+    @JsonBackReference
     public BankAccount getBankAccount() {
         return bankAccount;
     }
