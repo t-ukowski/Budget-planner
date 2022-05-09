@@ -176,7 +176,7 @@ function MainChartPage() {
                   strokeDasharray="8 3"
                   key={i}
                   className="label">
-                  <Label color="#CD5334" value={multipleGoals} position="insideTopLeft" />
+                  <Label color="#CD5334" value={'Cel: ' + multipleGoals} position="insideTopLeft" />
                 </ReferenceLine>
               );
               multipleGoals = [];
@@ -191,7 +191,7 @@ function MainChartPage() {
                 strokeDasharray="8 3"
                 key={i}
                 className="label">
-                <Label color="#CD5334" value={multipleGoals} position="insideTopLeft" />
+                <Label color="#CD5334" value={'Cel: ' + multipleGoals} position="insideTopLeft" />
               </ReferenceLine>
             );
           }
