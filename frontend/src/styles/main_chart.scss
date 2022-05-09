@@ -76,3 +76,10 @@ button {
     font-style: normal;
     font-weight: $font-weight-base;
 }
+
+.tooltip {
+    background-color:rgba(255, 255, 255, 0.88);
+    padding: 0.05rem 0.9rem;
+    border-radius: 1rem;
+    box-shadow: 1px 1px 8px #888888;
+}

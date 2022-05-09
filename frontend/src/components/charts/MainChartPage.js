@@ -12,6 +12,36 @@ import {
 } from 'recharts';
 import Title from '../page/Title';
 
+var data = [];
+
+const CustomTooltip = ({ active, label, payload }) => {
+  if (active) {
+    var expenses;
+    data.forEach((element) => {
+      if (element.date === label) {
+        expenses = element.expenses;
+      }
+    });
+    console.log(expenses);
+    var tooltip = (
+      <div className="tooltip">
+        <p>
+          <b>Data: </b>
+          {label}
+        </p>
+        <p>
+          <b>Stan konta: </b>
+          {payload[0].value}zł
+        </p>
+      </div>
+    );
+
+    return tooltip;
+  }
+
+  return null;
+};
+
 var weekStartArray = [];
 
 function stringifyDate(day) {
@@ -60,7 +90,6 @@ function MainChartPage() {
         if (pageNum === 0) weekStartArray[pageNum] = startAccount;
 
         // setup for this page
-        var data = [];
         var day = new Date();
         var futureDay = day.getDate() + pageSize * pageNum;
         day.setDate(futureDay);
@@ -80,23 +109,33 @@ function MainChartPage() {
         // first dot on the chart (starting balance of the page)
         data.push({
           date: stringifyDate(day),
-          balance: weekStartArray[pageNum]
+          balance: weekStartArray[pageNum],
+          expenses: []
         });
 
         let tempAccount = weekStartArray[pageNum];
         minmaxAccount(tempAccount);
 
         // expenses and incomes
+        var tempExpenses = [];
         for (let operation of balanceOperations) {
           tempAccount += operation.type === 'Wydatek' ? -operation.amount : operation.amount;
           minmaxAccount(tempAccount);
+          tempExpenses.push({
+            name: operation.description,
+            amount: operation.amount,
+            account: operation.bankAccount.accountName,
+            type: operation.type
+          });
           if (operation.billingDate == data[data.length - 1].date)
             data[data.length - 1].balance = tempAccount;
           else {
             data.push({
               date: operation.billingDate,
-              balance: Math.round((tempAccount + Number.EPSILON) * 100) / 100
+              balance: Math.round((tempAccount + Number.EPSILON) * 100) / 100,
+              expenses: tempExpenses
             });
+            tempExpenses = [];
           }
         }
 
@@ -107,7 +146,8 @@ function MainChartPage() {
         if (lastDate != data[data.length - 1].date) {
           data.push({
             date: lastDate,
-            balance: Math.round((tempAccount + Number.EPSILON) * 100) / 100
+            balance: Math.round((tempAccount + Number.EPSILON) * 100) / 100,
+            expenses: []
           });
         }
 
@@ -180,7 +220,7 @@ function MainChartPage() {
                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
                 <XAxis dataKey="date" />
                 <YAxis domain={[chartParams.minRange, chartParams.maxRange]} />
-                <Tooltip />
+                <Tooltip content={<CustomTooltip />} />
                 {referenceLines}
               </LineChart>
             </ResponsiveContainer>
