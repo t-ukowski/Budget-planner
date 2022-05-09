@@ -12,7 +12,7 @@ export default function Goals() {
     fetch('http://localhost:8080/UncompletedGoals')
       .then((res) => res.json())
       .then((json) => setUncompletedGoals(json));
-  });
+  }, []);
 
   return (
     <>
