@@ -43,4 +43,29 @@ public class GoalsController {
         GoalElement savedElement = goalElementRepository.save(element);
         return ResponseEntity.created(new URI("/goals/elements/" + savedElement.getId())).body(savedElement);
     }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteGoal(@PathVariable Long id){
+        User user = userRepository.findTopByOrderByIdAsc();
+        Goal goal = goalRepository.getById(id);
+        goalRepository.deleteById(id);
+        List<GoalElement> to_delete = goalElementRepository.findGoalElementsByGoal(goal);
+        for(GoalElement subgoal: to_delete){
+            goalElementRepository.deleteById(subgoal.getId());
+        }
+        return ResponseEntity.ok().build();
+    }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateGoal(@PathVariable Long id, @RequestParam String goalName){
+        User user = userRepository.findTopByOrderByIdAsc();
+        Goal goal = goalRepository.getById(id);
+        goal.setGoalName(goalName);
+        goal.setUser(user);
+        goalRepository.save(goal);
+        return ResponseEntity.ok(goal.getGoalName());
+    }
+
 }

@@ -39,7 +39,7 @@ public class IncomesExpensesController {
     }
 
     @PostMapping
-    public ResponseEntity createIncomeOrExpense(@RequestParam String accountName, @RequestParam String billingDate,
+    public ResponseEntity<?> createIncomeOrExpense(@RequestParam String accountName, @RequestParam String billingDate,
                                                 @RequestParam String endBillingDate, @RequestParam int repeatInterval,
                                                 @RequestParam double amount, @RequestParam String description,
                                                 @RequestParam ActionType type, @RequestParam String recipient) throws URISyntaxException {
@@ -53,7 +53,7 @@ public class IncomesExpensesController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity updateIncomeOrExpense(@PathVariable Long id,
+    public ResponseEntity<?> updateIncomeOrExpense(@PathVariable Long id,
                                                 @RequestParam String accountName, @RequestParam String billingDate,
                                                 @RequestParam String endBillingDate, @RequestParam int repeatInterval,
                                                 @RequestParam double amount, @RequestParam String description,
@@ -76,7 +76,7 @@ public class IncomesExpensesController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteIncomeOrExpense(@PathVariable Long id) {
+    public ResponseEntity<?> deleteIncomeOrExpense(@PathVariable Long id) {
         balanceHistoryRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
