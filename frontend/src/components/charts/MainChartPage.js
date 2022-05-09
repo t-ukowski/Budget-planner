@@ -12,6 +12,8 @@ import {
 } from 'recharts';
 import Title from '../page/Title';
 
+var data = [];
+
 var weekStartArray = [];
 
 function stringifyDate(day) {
@@ -33,6 +35,8 @@ function MainChartPage() {
     { minRange: Infinity, maxRange: -Infinity }
   );
   const [referenceLines, setReferenceLines] = useState([]);
+  const [tooltipDate, setTooltipDate] = useState('');
+  const [sidePanel, setSidePanel] = useState([]);
 
   var tempMinRange = Infinity,
     tempMaxRange = -Infinity;
@@ -44,6 +48,32 @@ function MainChartPage() {
     if (valMax > tempMaxRange) tempMaxRange = Math.round((valMax + Number.EPSILON) / 100) * 100;
     if (valMin < tempMinRange) tempMinRange = Math.round((valMin + Number.EPSILON) / 100) * 100;
   }
+
+  const CustomTooltip = ({ active, label, payload }) => {
+    var tooltip = null;
+
+    useEffect(() => {
+      if (active) setTooltipDate(label);
+      else setTooltipDate('');
+    });
+
+    if (active) {
+      tooltip = (
+        <div className="tooltip">
+          <p>
+            <b>Data: </b>
+            {label}
+          </p>
+          <p>
+            <b>Stan konta: </b>
+            {payload[0].value}zł
+          </p>
+        </div>
+      );
+      return tooltip;
+    }
+    return null;
+  };
 
   useEffect(() => {
     console.log('Cart reloading');
@@ -60,7 +90,6 @@ function MainChartPage() {
         if (pageNum === 0) weekStartArray[pageNum] = startAccount;
 
         // setup for this page
-        var data = [];
         var day = new Date();
         var futureDay = day.getDate() + pageSize * pageNum;
         day.setDate(futureDay);
@@ -80,24 +109,45 @@ function MainChartPage() {
         // first dot on the chart (starting balance of the page)
         data.push({
           date: stringifyDate(day),
-          balance: weekStartArray[pageNum]
+          balance: weekStartArray[pageNum],
+          expenses: [],
+          incomes: []
         });
 
         let tempAccount = weekStartArray[pageNum];
         minmaxAccount(tempAccount);
 
         // expenses and incomes
+        var tempExpenses = [];
+        var tempIncomes = [];
         for (let operation of balanceOperations) {
           tempAccount += operation.type === 'Wydatek' ? -operation.amount : operation.amount;
           minmaxAccount(tempAccount);
-          if (operation.billingDate == data[data.length - 1].date)
+          operation.type === 'Wydatek'
+            ? tempExpenses.push({
+                name: operation.description,
+                amount: operation.amount,
+                account: operation.bankAccount.accountName
+              })
+            : tempIncomes.push({
+                name: operation.description,
+                amount: operation.amount,
+                account: operation.bankAccount.accountName
+              });
+          if (operation.billingDate == data[data.length - 1].date) {
             data[data.length - 1].balance = tempAccount;
-          else {
+            data[data.length - 1].expenses = data[data.length - 1].expenses.concat(tempExpenses);
+            data[data.length - 1].incomes = data[data.length - 1].incomes.concat(tempIncomes);
+          } else {
             data.push({
               date: operation.billingDate,
-              balance: Math.round((tempAccount + Number.EPSILON) * 100) / 100
+              balance: Math.round((tempAccount + Number.EPSILON) * 100) / 100,
+              expenses: tempExpenses,
+              incomes: tempIncomes
             });
           }
+          tempExpenses = [];
+          tempIncomes = [];
         }
 
         // last dot on the chart (starting balance of the next page)
@@ -107,7 +157,9 @@ function MainChartPage() {
         if (lastDate != data[data.length - 1].date) {
           data.push({
             date: lastDate,
-            balance: Math.round((tempAccount + Number.EPSILON) * 100) / 100
+            balance: Math.round((tempAccount + Number.EPSILON) * 100) / 100,
+            expenses: [],
+            incomes: []
           });
         }
 
@@ -119,12 +171,10 @@ function MainChartPage() {
         weekStartArray[pageNum + 1] = tempAccount;
 
         // set reference lines
-        console.log(goalRealization);
         setChartData(data);
         var tempReferenceLines = [];
         var multipleGoals = [];
         for (let i = 0; i < goalRealization.length; i++) {
-          console.log(multipleGoals);
           const element = goalRealization[i];
           if (i < goalRealization.length - 1) {
             const next_element = goalRealization[i + 1];
@@ -138,7 +188,7 @@ function MainChartPage() {
                   strokeDasharray="8 3"
                   key={i}
                   className="label">
-                  <Label color="#CD5334" value={multipleGoals} position="insideTopLeft" />
+                  <Label color="#CD5334" value={'Cel: ' + multipleGoals} position="insideTopLeft" />
                 </ReferenceLine>
               );
               multipleGoals = [];
@@ -153,7 +203,7 @@ function MainChartPage() {
                 strokeDasharray="8 3"
                 key={i}
                 className="label">
-                <Label color="#CD5334" value={multipleGoals} position="insideTopLeft" />
+                <Label color="#CD5334" value={'Cel: ' + multipleGoals} position="insideTopLeft" />
               </ReferenceLine>
             );
           }
@@ -164,6 +214,75 @@ function MainChartPage() {
         console.log(err);
       });
   }, [pageNum]);
+
+  useEffect(() => {
+    var tempSidePanel = [];
+
+    if (tooltipDate != '') {
+      var expenses = [];
+      var incomes = [];
+      data.forEach((element) => {
+        if (element.date === tooltipDate) {
+          expenses = element.expenses;
+          incomes = element.incomes;
+        }
+      });
+      tempSidePanel.push(
+        <p key="1">
+          <b>Data: </b>
+          {tooltipDate}
+        </p>
+      );
+      if (expenses.length !== 0) {
+        tempSidePanel.push(
+          <p key="wydatki">
+            <b>Wydatki</b>
+          </p>
+        );
+        let i = 5;
+        expenses.forEach((element) => {
+          tempSidePanel.push(
+            <div className="expense" key={i}>
+              Nazwa: {element.name}
+              <br />
+              Kwota: {element.amount}zł
+              <br />
+              Konto: {element.account}
+            </div>
+          );
+          i++;
+        });
+      }
+      if (incomes.length !== 0) {
+        tempSidePanel.push(
+          <p key="przychody">
+            <b>Przychody</b>
+          </p>
+        );
+        let i = -5;
+        incomes.forEach((element) => {
+          tempSidePanel.push(
+            <div className="expense" key={i}>
+              Nazwa: {element.name}
+              <br />
+              Kwota: {element.amount}zł
+              <br />
+              Konto: {element.account}
+            </div>
+          );
+          i--;
+        });
+      }
+    } else {
+      tempSidePanel.push(
+        <p key="1">
+          Najedź na wykres, by zobaczyć
+          <b> szczegóły wydatków</b>
+        </p>
+      );
+    }
+    setSidePanel(tempSidePanel);
+  }, [tooltipDate]);
 
   return (
     <div className="flexCard">
@@ -182,7 +301,7 @@ function MainChartPage() {
                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
                 <XAxis dataKey="date" />
                 <YAxis domain={[chartParams.minRange, chartParams.maxRange]} />
-                <Tooltip />
+                <Tooltip content={<CustomTooltip />} />
                 {referenceLines}
               </LineChart>
             </ResponsiveContainer>
@@ -192,7 +311,7 @@ function MainChartPage() {
       </div>
       <div className="sideCard">
         <div className="calendarCard">Calendar</div>
-        <div className="expensesCard">Expenses</div>
+        <div className="expensesCard">{sidePanel}</div>
       </div>
     </div>
   );
