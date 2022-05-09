@@ -14,34 +14,6 @@ import Title from '../page/Title';
 
 var data = [];
 
-const CustomTooltip = ({ active, label, payload }) => {
-  if (active) {
-    var expenses;
-    data.forEach((element) => {
-      if (element.date === label) {
-        expenses = element.expenses;
-      }
-    });
-    console.log(expenses);
-    var tooltip = (
-      <div className="tooltip">
-        <p>
-          <b>Data: </b>
-          {label}
-        </p>
-        <p>
-          <b>Stan konta: </b>
-          {payload[0].value}zł
-        </p>
-      </div>
-    );
-
-    return tooltip;
-  }
-
-  return null;
-};
-
 var weekStartArray = [];
 
 function stringifyDate(day) {
@@ -63,6 +35,8 @@ function MainChartPage() {
     { minRange: Infinity, maxRange: -Infinity }
   );
   const [referenceLines, setReferenceLines] = useState([]);
+  const [tooltipDate, setTooltipDate] = useState('');
+  const [sidePanel, setSidePanel] = useState([]);
 
   var tempMinRange = Infinity,
     tempMaxRange = -Infinity;
@@ -74,6 +48,32 @@ function MainChartPage() {
     if (valMax > tempMaxRange) tempMaxRange = Math.round((valMax + Number.EPSILON) / 100) * 100;
     if (valMin < tempMinRange) tempMinRange = Math.round((valMin + Number.EPSILON) / 100) * 100;
   }
+
+  const CustomTooltip = ({ active, label, payload }) => {
+    var tooltip = null;
+
+    useEffect(() => {
+      if (active) setTooltipDate(label);
+      else setTooltipDate('');
+    });
+
+    if (active) {
+      tooltip = (
+        <div className="tooltip">
+          <p>
+            <b>Data: </b>
+            {label}
+          </p>
+          <p>
+            <b>Stan konta: </b>
+            {payload[0].value}zł
+          </p>
+        </div>
+      );
+      return tooltip;
+    }
+    return null;
+  };
 
   useEffect(() => {
     console.log('Cart reloading');
@@ -203,6 +203,33 @@ function MainChartPage() {
       });
   }, [pageNum]);
 
+  useEffect(() => {
+    var tempSidePanel = [];
+
+    if (tooltipDate != '') {
+      tempSidePanel.push(
+        <p key="1">
+          <b>Data: </b>
+          {tooltipDate}
+        </p>
+      );
+    } else {
+      tempSidePanel.push(
+        <p key="1">
+          Najedź na wykres, by zobaczyć
+          <b> szczegóły wydatków</b>
+        </p>
+      );
+    }
+    // var expenses;
+    // data.forEach((element) => {
+    //   if (element.date === tooltipDate) {
+    //     expenses = element.expenses;
+    //   }
+    // });
+    setSidePanel(tempSidePanel);
+  }, [tooltipDate]);
+
   return (
     <div className="flexCard">
       <div className="mainCard">
@@ -230,7 +257,7 @@ function MainChartPage() {
       </div>
       <div className="sideCard">
         <div className="calendarCard">Calendar</div>
-        <div className="expensesCard">Expenses</div>
+        <div className="expensesCard">{sidePanel}</div>
       </div>
     </div>
   );
