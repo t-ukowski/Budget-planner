@@ -90,6 +90,7 @@ function MainChartPage() {
         if (pageNum === 0) weekStartArray[pageNum] = startAccount;
 
         // setup for this page
+        data = [];
         var day = new Date();
         var futureDay = day.getDate() + pageSize * pageNum;
         day.setDate(futureDay);
@@ -171,7 +172,6 @@ function MainChartPage() {
         weekStartArray[pageNum + 1] = tempAccount;
 
         // set reference lines
-        setChartData(data);
         var tempReferenceLines = [];
         var multipleGoals = [];
         for (let i = 0; i < goalRealization.length; i++) {
@@ -209,6 +209,9 @@ function MainChartPage() {
           }
         }
         setReferenceLines(tempReferenceLines);
+
+        console.log(data);
+        setChartData(data);
       })
       .catch((err) => {
         console.log(err);
