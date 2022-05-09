@@ -227,7 +227,6 @@ function MainChartPage() {
           incomes = element.incomes;
         }
       });
-      console.log(expenses, incomes);
       tempSidePanel.push(
         <p key="1">
           <b>Data: </b>
