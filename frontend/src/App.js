@@ -5,6 +5,7 @@ import Title from './components/page/Title';
 import Page from './components/page/Page';
 import { Element, Link } from 'react-scroll';
 import MainChartPage from './components/charts/MainChartPage';
+import Goals from './components/goals/Goals';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Element id="objectives"></Element>
         <Page>
           <Title text="Cele" />
+          <Goals />
         </Page>
         <Element id="settings"></Element>
         <Page>
