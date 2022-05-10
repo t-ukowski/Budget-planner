@@ -23,12 +23,21 @@ export default function CheckBoxes({ parentGoal }) {
   }
 
   useEffect(() => {
-    fetch('http://localhost:8080/goals')
-      .then((res) => res.json())
-      .then((json) => {
-        setSubgoals(json[parentGoal.id - 1].goalElementList);
-        setParent(json[parentGoal.id - 1].goalName);
-      });
+    if (!deleted) {
+      fetch('http://localhost:8080/goals')
+        .then((res) => res.json())
+        .then((json) => {
+          const mainGoal = json.find((e) => e.goalName === parentGoal.name);
+          if (
+            mainGoal &&
+            Object.prototype.hasOwnProperty.call(mainGoal, 'goalElementList') &&
+            Object.prototype.hasOwnProperty.call(mainGoal, 'goalName')
+          ) {
+            setSubgoals(mainGoal.goalElementList);
+            setParent(mainGoal.goalName);
+          }
+        });
+    }
   }, [modalIsOpen]);
 
   function handleDelete() {
@@ -65,11 +74,11 @@ export default function CheckBoxes({ parentGoal }) {
               <Checkbox checked={!parentGoal.subgoals.map((s) => s.achieved).includes(false)} />
             }
           />
-          <Button className="addButton" onClick={handleDelete}>
+          <Button className="iconButton" onClick={handleDelete}>
             <DeleteIcon className="icon" />
           </Button>
           {children}
-          <Button className="addButton" onClick={openModal}>
+          <Button className="iconButton" onClick={openModal}>
             <AddIcon className="icon" />
           </Button>
           <AddSubgoalModal modalIsOpen={modalIsOpen} closeModal={closeModal} parent={parent} />
