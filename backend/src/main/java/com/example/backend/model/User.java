@@ -29,6 +29,7 @@ public class User {
         this.email = email;
     }
 
+    @JsonManagedReference
     public List<Goal> getGoals() {
         return goals;
     }

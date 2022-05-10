@@ -1,5 +1,6 @@
 package com.example.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.google.gson.annotations.Expose;
 import org.hibernate.annotations.Type;
 
@@ -46,6 +47,11 @@ public class GoalElement {
     public GoalElement() {
     }
 
+    public long getId() {
+        return id;
+    }
+
+    @JsonBackReference
     public Goal getGoal() {
         return goal;
     }

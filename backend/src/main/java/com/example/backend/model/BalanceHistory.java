@@ -3,6 +3,7 @@ package com.example.backend.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.google.gson.annotations.Expose;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -46,6 +47,10 @@ public class BalanceHistory {
     @Expose
     private String recipient;
 
+    @Type(type = "true_false")
+    @Expose
+    private boolean paid;
+
     @Transient
     private String accountName; // do not include it in the database
 
@@ -71,8 +76,30 @@ public class BalanceHistory {
         this.recipient = recipient;
     }
 
+    public BalanceHistory(BalanceHistory balanceHistoryCopy){
+        this.id = balanceHistoryCopy.id;
+        this.bankAccount = balanceHistoryCopy.bankAccount;
+        this.billingDate = balanceHistoryCopy.billingDate;
+        this.endBillingDate = balanceHistoryCopy.endBillingDate;
+        this.repeatInterval = balanceHistoryCopy.repeatInterval;
+        this.amount = balanceHistoryCopy.amount;
+        this.description = balanceHistoryCopy.description;
+        this.type = balanceHistoryCopy.type;
+        this.recipient = balanceHistoryCopy.recipient;
+        this.paid = balanceHistoryCopy.paid;
+    }
+
     public BalanceHistory() {
     }
+
+    public boolean isPaid() {
+        return paid;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
+
 
     public long getId() {
         return id;
