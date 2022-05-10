@@ -11,22 +11,7 @@ import {
   Label
 } from 'recharts';
 import Title from '../page/Title';
-import Modal from 'react-modal';
 import AddIncomeModal from '../modals/AddIncomeModal';
-
-const customStyles = {
-  overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.75)'
-  },
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)'
-  }
-};
 
 var data = [];
 
@@ -323,16 +308,7 @@ function MainChartPage() {
           </button>
         </div>
 
-        <Modal
-          ariaHideApp={false}
-          isOpen={modalIsOpen}
-          onRequestClose={closeModal}
-          style={customStyles}>
-          <button className="closeModalButton" onClick={closeModal}>
-            X
-          </button>
-          <AddIncomeModal />
-        </Modal>
+        <AddIncomeModal closeModal={closeModal} modalIsOpen={modalIsOpen} />
 
         <div className="chartCard">
           <div className="chartCardInside">
