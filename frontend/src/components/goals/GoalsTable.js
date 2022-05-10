@@ -13,26 +13,12 @@ export default function GoalsTable({ goalsData }) {
             <th>Nazwa</th>
           </tr>
           {goalsData.map(({ id, goalName, goalElementList }) => {
-            const parentGoall = {
-              name: `${id} ${goalName}`,
+            const parentGoal = {
+              id: id,
+              name: goalName,
               subgoals: goalElementList
             };
-            return (
-              <>
-                <CheckBoxes parentGoal={parentGoall}></CheckBoxes>
-                {goalElementList.map(({ id, cost, goalElementName, achieved }) => (
-                  <tr key={id} className="subgoaltr">
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>{id}</td>
-                    <td>{cost}</td>
-                    <td>{goalElementName}</td>
-                    <td>{achieved ? 'achieved' : 'not achieved'}</td>
-                  </tr>
-                ))}
-              </>
-            );
+            return <CheckBoxes key={id} parentGoal={parentGoal} />;
           })}
         </tbody>
       </table>
