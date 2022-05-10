@@ -6,7 +6,7 @@ import Page from './components/page/Page';
 import { Element, Link } from 'react-scroll';
 import MainChartPage from './components/charts/MainChartPage';
 import Goals from './components/goals/Goals';
-import AccountsList from './components/table/AccountsList';
+import AccountsList from './components/accounts/AccountsList';
 import BalancePieChart from './components/charts/BalancePieChart';
 
 function App() {
