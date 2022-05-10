@@ -5,11 +5,14 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import AddSubgoalModal from '../modals/AddSubgoalModal';
 import AddIcon from '@mui/icons-material/AddBox';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
 import { Button } from '@mui/material';
+import EditGoalModal from '../modals/EditGoalModal';
 
 export default function CheckBoxes({ parentGoal }) {
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [subgoals, setSubgoals] = useState(parentGoal.subgoals);
   const [parent, setParent] = useState(parentGoal.name);
   const [deleted, setDeleted] = useState(false);
@@ -20,6 +23,14 @@ export default function CheckBoxes({ parentGoal }) {
 
   function closeModal() {
     setIsOpen(false);
+  }
+
+  function openEditModal() {
+    setEditModalIsOpen(true);
+  }
+
+  function closeEditModal() {
+    setEditModalIsOpen(false);
   }
 
   useEffect(() => {
@@ -38,7 +49,7 @@ export default function CheckBoxes({ parentGoal }) {
           }
         });
     }
-  }, [modalIsOpen]);
+  }, [modalIsOpen, editModalIsOpen]);
 
   function handleDelete() {
     axios({
@@ -74,6 +85,9 @@ export default function CheckBoxes({ parentGoal }) {
               <Checkbox checked={!parentGoal.subgoals.map((s) => s.achieved).includes(false)} />
             }
           />
+          <Button className="iconButton" onClick={openEditModal}>
+            <EditIcon className="icon" />
+          </Button>
           <Button className="iconButton" onClick={handleDelete}>
             <DeleteIcon className="icon" />
           </Button>
@@ -82,6 +96,11 @@ export default function CheckBoxes({ parentGoal }) {
             <AddIcon className="icon" />
           </Button>
           <AddSubgoalModal modalIsOpen={modalIsOpen} closeModal={closeModal} parent={parent} />
+          <EditGoalModal
+            modalIsOpen={editModalIsOpen}
+            closeModal={closeEditModal}
+            goal={parentGoal}
+          />
         </div>
       )}
     </>
