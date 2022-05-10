@@ -34,9 +34,9 @@ export default function Accounts() {
       <table>
         <tbody>
           <tr>
-            <th>Kwota</th>
-            <th>Waluta</th>
-            <th>Opis</th>
+            <th>Konto</th>
+            <th>Saldo</th>
+            <th>Akcje</th>
           </tr>
           {accountsList.map(({ id, accountBalance, accountName }) => (
             <Account key={id} id={id} accountBalance={accountBalance} accountName={accountName} />
