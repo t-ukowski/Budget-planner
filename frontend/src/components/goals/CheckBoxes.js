@@ -16,6 +16,8 @@ export default function CheckBoxes({ parentGoal }) {
   const [subgoals, setSubgoals] = useState(parentGoal.subgoals);
   const [parent, setParent] = useState(parentGoal.name);
   const [deleted, setDeleted] = useState(false);
+  const [edited, setEdited] = useState(false);
+  const [realizationDate, setRealizationDate] = useState('');
 
   function openModal() {
     setIsOpen(true);
@@ -27,6 +29,7 @@ export default function CheckBoxes({ parentGoal }) {
 
   function openEditModal() {
     setEditModalIsOpen(true);
+    setEdited(true);
   }
 
   function closeEditModal() {
@@ -35,21 +38,23 @@ export default function CheckBoxes({ parentGoal }) {
 
   useEffect(() => {
     if (!deleted) {
-      fetch('http://localhost:8080/goals')
+      fetch('http://localhost:8080/GoalRealization')
         .then((res) => res.json())
         .then((json) => {
-          const mainGoal = json.find((e) => e.goalName === parentGoal.name);
+          const mainGoal = json.find((e) => e.goal.id === parentGoal.id);
           if (
             mainGoal &&
-            Object.prototype.hasOwnProperty.call(mainGoal, 'goalElementList') &&
-            Object.prototype.hasOwnProperty.call(mainGoal, 'goalName')
+            Object.prototype.hasOwnProperty.call(mainGoal, 'goal') &&
+            Object.prototype.hasOwnProperty.call(mainGoal.goal, 'goalElementList') &&
+            Object.prototype.hasOwnProperty.call(mainGoal.goal, 'goalName')
           ) {
-            setSubgoals(mainGoal.goalElementList);
-            setParent(mainGoal.goalName);
+            setRealizationDate(mainGoal.date);
+            setSubgoals(mainGoal.goal.goalElementList);
+            setParent(mainGoal.goal.goalName);
           }
         });
     }
-  }, [modalIsOpen, editModalIsOpen]);
+  }, [modalIsOpen, editModalIsOpen, edited]);
 
   function handleDelete() {
     axios({
@@ -85,6 +90,7 @@ export default function CheckBoxes({ parentGoal }) {
               <Checkbox checked={!parentGoal.subgoals.map((s) => s.achieved).includes(false)} />
             }
           />
+          {realizationDate !== '' && <>Przewidywana data realizacji: {realizationDate}</>}
           <Button className="iconButton" onClick={openEditModal}>
             <EditIcon className="icon" />
           </Button>
