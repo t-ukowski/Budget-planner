@@ -1,6 +1,6 @@
 .scoreboard {
     background-color: $bp-white;
-    border-radius: $border-radius-small-obejcts;
+    border-radius: $border-radius-small-objects;
 
     &.large {
         width: $large-box-width;
@@ -31,4 +31,5 @@
     line-height: $line-height-base;
 
     color: $bp-black;
+    padding-top: $base-padding;
 }
