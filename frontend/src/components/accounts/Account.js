@@ -4,10 +4,19 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { buttonStyleSmall } from '../../styles/buttonStyle';
 import axios from 'axios';
+import EditAccountModal from '../modals/EditAccountModal';
 
 export default function Account({ id, accountName, accountBalance }) {
+  const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [deleted, setDeleted] = useState(false);
-  // const [edited, setEdited] = useState(false);
+
+  function openEditModal() {
+    setEditModalIsOpen(true);
+  }
+
+  function closeEditModal() {
+    setEditModalIsOpen(false);
+  }
 
   function handleDelete() {
     axios({
@@ -18,12 +27,16 @@ export default function Account({ id, accountName, accountBalance }) {
       .catch((err) => console.log(err.data));
     setDeleted(true);
   }
-  function handleEdit() {
-    console.log(`edited ${id}`);
-  }
 
   return (
     <>
+      <EditAccountModal
+        modalIsOpen={editModalIsOpen}
+        closeModal={closeEditModal}
+        accountBalance={accountBalance}
+        accountName={accountName}
+        id={id}
+      />
       {!deleted && (
         <tr>
           <th>{accountName}</th>
@@ -32,7 +45,7 @@ export default function Account({ id, accountName, accountBalance }) {
             <Button sx={buttonStyleSmall} className="iconButton small" onClick={handleDelete}>
               <DeleteIcon className="icon" />
             </Button>
-            <Button sx={buttonStyleSmall} className="iconButton small" onClick={handleEdit}>
+            <Button sx={buttonStyleSmall} className="iconButton small" onClick={openEditModal}>
               <EditIcon className="icon" />
             </Button>
           </th>
