@@ -5,10 +5,7 @@ import Title from './components/page/Title';
 import Page from './components/page/Page';
 import { Element, Link } from 'react-scroll';
 import MainChartPage from './components/charts/MainChartPage';
-import { GoalsData } from './components/table/GoalsData';
-import BalancePieChart from './components/charts/BalancePieChart';
-import GoalsTable from './components/table/GoalsTable';
-import AccountsList from './components/table/AccountsList';
+import Goals from './components/goals/Goals';
 
 function App() {
   return (
@@ -33,9 +30,8 @@ function App() {
           <MainChartPage></MainChartPage>
         </Page>
         <Element id="objectives"></Element>
-        <Page>
-          <Title text="Cele" />
-          <GoalsTable goalsData={GoalsData}></GoalsTable>
+        <Page classNames="page-long">
+          <Goals />
         </Page>
         <Element id="settings"></Element>
         <Page>

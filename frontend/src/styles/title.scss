@@ -2,9 +2,15 @@
     font-family: $title-font;
     font-style: normal;
     font-weight: 400;
-    font-size: 96px;
+    font-size: $font-size-large;
     line-height: 117px;
 
     border-bottom: 2px solid $bp-black;
     width: fit-content;
+    
+    &.small {
+        font-size: $font-size-medium-2;
+        border: 0;
+        line-height: $line-height-base;
+    }
 }

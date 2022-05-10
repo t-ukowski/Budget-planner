@@ -1,5 +1,7 @@
 package com.example.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -27,6 +29,16 @@ public class User {
         this.email = email;
     }
 
+    @JsonManagedReference
+    public List<Goal> getGoals() {
+        return goals;
+    }
+
+    public void setGoals(List<Goal> goals) {
+        this.goals = goals;
+    }
+
+    @JsonManagedReference
     public List<BankAccount> getBankAccountList() {
         return bankAccountList;
     }

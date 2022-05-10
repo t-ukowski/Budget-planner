@@ -62,6 +62,38 @@ public class ApiController {
     }
 
     @CrossOrigin
+    @GetMapping("/addGoals")
+    public String addExampleGoals(){
+
+        Goal goal = new Goal("wakacje", userRepository.findTopByOrderByIdAsc());
+
+        goalRepository.save(goal);
+
+        GoalElement goalElement1 = new GoalElement("ponton",4000,goal);
+        GoalElement goalElement2 = new GoalElement("wioslo",100,goal);
+
+        goalElement2.setAchieved(true);
+
+        goalElementRepository.save(goalElement1);
+        goalElementRepository.save(goalElement2);
+
+        Goal goal2 = new Goal("nowy komputer", userRepository.findTopByOrderByIdAsc());
+
+        goalRepository.save(goal2);
+
+        GoalElement goalElement3 = new GoalElement("procesor",650,goal2);
+        GoalElement goalElement4 = new GoalElement("ram",500,goal2);
+
+        goalElement3.setAchieved(true);
+        goalElement4.setAchieved(true);
+
+        goalElementRepository.save(goalElement3);
+        goalElementRepository.save(goalElement4);
+
+        return "dodano_wydatek";
+    }
+
+    @CrossOrigin
     @GetMapping("/addIncome")
     public String sendIncomeExpensesForm(Model model){
         ActionType[] types = ActionType.values();
@@ -78,7 +110,8 @@ public class ApiController {
 
     @CrossOrigin
     @PostMapping("/addIncome")
-    public ResponseEntity processIncomeExpenseForm(@ModelAttribute BalanceHistory balanceHistory){
+    public @ResponseBody
+    ResponseEntity<String> processIncomeExpenseForm(@ModelAttribute BalanceHistory balanceHistory){
         User user = userRepository.findTopByOrderByIdAsc();
 
         List<BankAccount> userAccounts = bankAccountRepository.findBankAccountsByUserAndAccountName(user, balanceHistory.getAccountName());
@@ -86,7 +119,87 @@ public class ApiController {
         balanceHistory.setBankAccount(bankAccount);
 
         balanceHistoryRepository.save(balanceHistory);
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity<>("Wydatek dodany", HttpStatus.CREATED);
     }
 
+    @CrossOrigin
+    @GetMapping("/addAccount")
+    public String sendNewBankAccountForm(Model model){
+        model.addAttribute("bankAccount", new BankAccount());
+        return "new_bank_account";
+    }
+
+    @CrossOrigin
+    @PostMapping("/addAccount")
+    public @ResponseBody
+    ResponseEntity processNewAccountForm(@ModelAttribute BankAccount bankAccount){
+        User user = userRepository.findTopByOrderByIdAsc();
+        bankAccount.setUser(user);
+        bankAccountRepository.save(bankAccount);
+
+        java.sql.Date action_date = new java.sql.Date(System.currentTimeMillis());
+        BalanceHistory account_change_log = new BalanceHistory(bankAccount,
+                action_date,
+                action_date,
+                0,
+                bankAccount.getAccountBalance(),
+                "account creation",
+                ActionType.Przychód,
+                bankAccount.getUser().getName());
+        balanceHistoryRepository.save(account_change_log);
+        return new ResponseEntity("Account created",HttpStatus.CREATED);
+    }
+
+    @CrossOrigin
+    @DeleteMapping("/deleteAccount/{id}")
+    public ResponseEntity deleteAccount(@PathVariable Long id){
+        BankAccount bankAccount = bankAccountRepository.getById(id);
+        java.sql.Date action_date = new java.sql.Date(System.currentTimeMillis());
+        BalanceHistory account_change_log = new BalanceHistory(bankAccount,
+                action_date,
+                action_date,
+                0,
+                bankAccount.getAccountBalance(),
+                "account deleting",
+                ActionType.Wydatek,
+                bankAccount.getUser().getName());
+        balanceHistoryRepository.save(account_change_log);
+
+        bankAccountRepository.deleteById(id);
+        return new ResponseEntity("Account deleted", HttpStatus.ACCEPTED);
+    }
+
+
+    @CrossOrigin
+    @PutMapping("/changeAccount/{id}/{accountName}/{accountBalance}")
+    public ResponseEntity updateBankAccount(@PathVariable Long id, @PathVariable String accountName,
+                                            @PathVariable Double accountBalance){
+        double currBallance = bankAccountRepository.getById(id).getAccountBalance();
+        double diff = accountBalance - currBallance;
+        BankAccount bankAccount = bankAccountRepository.getById(id);
+        bankAccount.setAccountName(accountName);
+        bankAccount.setAccountBalance(accountBalance);
+        bankAccountRepository.save(bankAccount);
+
+        ActionType what;
+        if(diff>0){
+            what = ActionType.Przychód;
+        }
+        else {
+            what = ActionType.Wydatek;
+        }
+        java.sql.Date action_date = new java.sql.Date(System.currentTimeMillis());
+        BalanceHistory account_change_log = new BalanceHistory(bankAccount,
+                action_date,
+                action_date,
+                0,
+                accountBalance,
+                "account update",
+                what,
+                bankAccount.getUser().getName());
+        balanceHistoryRepository.save(account_change_log);
+        return new ResponseEntity("Account updated", HttpStatus.CREATED);
+    }
+
+    
 }

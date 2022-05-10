@@ -1,5 +1,7 @@
 package com.example.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.google.gson.annotations.Expose;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -10,15 +12,21 @@ public class GoalElement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Expose
     private long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "goal_id")
     private Goal goal;
 
+    @Expose
     private double cost;
+
+    @Expose
     private String goalElementName;
+
     @Type(type = "true_false")
+    @Expose
     private boolean achieved;
 
     public boolean isAchieved() {
@@ -39,6 +47,11 @@ public class GoalElement {
     public GoalElement() {
     }
 
+    public long getId() {
+        return id;
+    }
+
+    @JsonBackReference
     public Goal getGoal() {
         return goal;
     }
@@ -61,5 +74,15 @@ public class GoalElement {
 
     public void setGoalElementName(String goalElementName) {
         this.goalElementName = goalElementName;
+    }
+
+    @Override
+    public String toString() {
+        return "GoalElement{" +
+                "id=" + id +
+                ", cost=" + cost +
+                ", goalElementName='" + goalElementName + '\'' +
+                ", achieved=" + achieved +
+                '}';
     }
 }
