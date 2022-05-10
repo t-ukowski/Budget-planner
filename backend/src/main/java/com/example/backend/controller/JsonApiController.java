@@ -89,6 +89,22 @@ public class JsonApiController {
         java.sql.Date currentDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
         updateRepetitiveTransaction(currentDate);
 
+        final double todayBalance = currentMoneyAmount;
+        List<Goal> toRemoveCurrentDate = new ArrayList<>();
+        uncompletedGoalList.forEach(goal->
+                {
+                    double sum = goal.getGoalElementList().stream().filter(goalElement -> !goalElement.isAchieved()).mapToDouble(GoalElement::getCost).sum();
+                    if(sum <= todayBalance){
+                        goalRealizations.add(new GoalRealization(goal, currentDate));
+                        toRemoveCurrentDate.add(goal);
+                    }
+                }
+        );
+
+        for(Goal goal:toRemoveCurrentDate){
+            uncompletedGoalList.remove(goal);
+        }
+
 
         int i=0;
         while(uncompletedGoalList.size()>0 && i <3650) {
@@ -112,17 +128,11 @@ public class JsonApiController {
 
             double finalCurrentMoneyAmount = currentMoneyAmount;
             List<Goal> toRemove = new ArrayList<>();
-            java.sql.Date temp;
-            if(!futureDate.equals(currentDate)) {
-                Calendar c1 = Calendar.getInstance();
-                c1.setTime(futureDate);
-                c1.add(Calendar.DATE, 1);
-                temp = new java.sql.Date(c1.getTimeInMillis());
-            }
-            else{
-                temp = futureDate;
-            }
-            final java.sql.Date finalDate = temp;
+//            System.out.println(futureDate+" "+currentDate);
+            Calendar c1 = Calendar.getInstance();
+            c1.setTime(futureDate);
+            c1.add(Calendar.DATE, 1);
+            final java.sql.Date finalDate = new java.sql.Date(c1.getTimeInMillis());
             uncompletedGoalList.forEach(goal->
                     {
                         double sum = goal.getGoalElementList().stream().filter(goalElement -> !goalElement.isAchieved()).mapToDouble(GoalElement::getCost).sum();

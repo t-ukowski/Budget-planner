@@ -51,15 +51,21 @@
     background-color: $bp-white;
     border-radius: $border-radius-small-obejcts;
     width: 94%;
-    height: 52%;
+    height: 42%;
     text-align: center;
     //flex: 1 0 auto;
 }
 .expensesCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-family: $basic-font;
+    font-style: normal;
+    font-weight: $font-weight-base;
     background-color: $bp-white;
     border-radius: $border-radius-small-obejcts;
     width: 94%;
-    height: 42%;
+    height: 52%;
     text-align: center;
     //flex: 1 0 auto;
 }
@@ -75,4 +81,21 @@ button {
     font-family: $basic-font;
     font-style: normal;
     font-weight: $font-weight-base;
+}
+
+.tooltip {
+    background-color:rgba(255, 255, 255, 0.88);
+    padding: 0.05rem 0.9rem;
+    border-radius: 1rem;
+    box-shadow: 1px 1px 8px #888888;
+}
+
+.expense {
+    font-family: $basic-font;
+    font-style: normal;
+    font-weight: $font-weight-base;
+    font-size: 0.84rem;
+    text-align: left;
+    margin-left: 1rem;
+    margin-bottom: 0.4rem;
 }
