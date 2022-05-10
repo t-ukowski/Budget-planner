@@ -28,7 +28,7 @@ function App() {
           <MainChartPage></MainChartPage>
         </Page>
         <Element id="objectives"></Element>
-        <Page>
+        <Page classNames="page-long">
           <Goals />
         </Page>
         <Element id="settings"></Element>

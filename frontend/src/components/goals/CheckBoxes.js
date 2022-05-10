@@ -9,6 +9,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
 import { Button } from '@mui/material';
 import EditGoalModal from '../modals/EditGoalModal';
+import { buttonStyleSmall } from '../../styles/buttonStyle';
+import { buttonStyleVerySmall } from '../../styles/buttonStyle';
 
 export default function CheckBoxes({ parentGoal }) {
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -99,7 +101,17 @@ export default function CheckBoxes({ parentGoal }) {
           <FormControlLabel
             key={subgoal.id}
             label={`${subgoal.goalElementName} ${subgoal.cost} PLN`}
-            control={<Checkbox checked={subgoal.achieved} />}
+            control={
+              <Checkbox
+                sx={{
+                  color: '#003049',
+                  '&.Mui-checked': {
+                    color: '#003049'
+                  }
+                }}
+                checked={subgoal.achieved}
+              />
+            }
           />
         );
       })}
@@ -112,17 +124,29 @@ export default function CheckBoxes({ parentGoal }) {
         <div>
           <FormControlLabel
             label={parent}
-            control={<Checkbox checked={!subgoals.map((s) => s.achieved).includes(false)} />}
+            control={
+              <Checkbox
+                sx={{
+                  color: '#003049',
+                  '&.Mui-checked': {
+                    color: '#003049'
+                  }
+                }}
+                checked={!subgoals.map((s) => s.achieved).includes(false)}
+              />
+            }
           />
-          {realizationDate !== '' && <>Najbliższa możliwa data realizacji: {realizationDate}</>}
-          <Button className="iconButton" onClick={openEditModal}>
+          <Button sx={buttonStyleSmall} className="iconButton small" onClick={openEditModal}>
             <EditIcon className="icon" />
           </Button>
-          <Button className="iconButton" onClick={handleDelete}>
+          <Button sx={buttonStyleSmall} className="iconButton small" onClick={handleDelete}>
             <DeleteIcon className="icon" />
           </Button>
+          {realizationDate !== '' && (
+            <div className="text-base">Najbliższa możliwa data realizacji: {realizationDate}</div>
+          )}
           {children}
-          <Button className="iconButton" onClick={openModal}>
+          <Button sx={buttonStyleVerySmall} className="iconButton small" onClick={openModal}>
             <AddIcon className="icon" />
           </Button>
           <AddSubgoalModal modalIsOpen={modalIsOpen} closeModal={closeModal} parent={parent} />

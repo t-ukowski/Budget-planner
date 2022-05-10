@@ -3,17 +3,27 @@
     display: flex;
 
     &.big {
-        width: 50px;
-        height: 50px;
+        width: $icon-button-big-size;
+        height: $icon-button-big-size;
+        border-radius: $border-radius-small-objects;
         right: -5%;
         top: 30px;
+
+        .icon {
+            color: $bp-white !important;
+            width: $icon-button-big-icon-size;
+            height: $icon-button-big-icon-size;
+        }
     }
 
     &.small {
-        
-    }
+        width: $icon-button-small-size !important;
+        height: $icon-button-small-size;
 
-    .icon {
-        color: $bp-white !important;
+        .icon {
+            color: $bp-white !important;
+            width: $icon-button-small-icon-size;
+            height: $icon-button-small-icon-size;
+        }
     }
 }

@@ -37,9 +37,9 @@ export default function Goals() {
         </Button>
       </div>
       <AddGoalModal modalIsOpen={modalIsOpen} closeModal={closeModal} />
-      <h1>W trakcie realizacji</h1>
+      <div className="heading2">W trakcie realizacji</div>
       <GoalsTable goalsData={uncompletedGoals}></GoalsTable>
-      <h1>Zrealizowane</h1>
+      <div className="heading2">Zrealizowane</div>
       <GoalsTable goalsData={completedGoals}></GoalsTable>
     </>
   );
