@@ -30,7 +30,7 @@ main {
 }
 
 .page {
-    height: 100%;
+    min-height: 100%;
     position: relative;
     padding-left: $panel-padding;
     padding-right: $panel-padding;
