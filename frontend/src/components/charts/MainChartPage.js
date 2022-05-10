@@ -11,6 +11,7 @@ import {
   Label
 } from 'recharts';
 import Title from '../page/Title';
+import AddIncomeModal from '../modals/AddIncomeModal';
 
 var data = [];
 
@@ -75,6 +76,16 @@ function MainChartPage() {
     }
     return null;
   };
+
+  const [modalIsOpen, setIsOpen] = useState(false);
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
 
   useEffect(() => {
     console.log('Cart reloading');
@@ -293,7 +304,13 @@ function MainChartPage() {
       <div className="mainCard">
         <div className="titleCard">
           <Title text="Przewidywany stan konta" />
+          <button className="openModalButton" onClick={openModal}>
+            Zaplanuj
+          </button>
         </div>
+
+        <AddIncomeModal closeModal={closeModal} modalIsOpen={modalIsOpen} />
+
         <div className="chartCard">
           <div className="chartCardInside">
             <button disabled={pageNum <= 0 ? true : false} onClick={() => setPageNum(pageNum - 1)}>

@@ -6,8 +6,8 @@ import Page from './components/page/Page';
 import { Element, Link } from 'react-scroll';
 import MainChartPage from './components/charts/MainChartPage';
 import Goals from './components/goals/Goals';
-import AccountsList from './components/accounts/AccountsList';
-import BalancePieChart from './components/charts/BalancePieChart';
+// import BalancePieChart from './components/charts/BalancePieChart';
+import Accounts from './components/accounts/Accounts';
 
 function App() {
   return (
@@ -23,9 +23,7 @@ function App() {
         </Page>
         <Element id="account"></Element>
         <Page>
-          <Title text="Saldo" />
-          <AccountsList />
-          <BalancePieChart />
+          <Accounts />
         </Page>
         <Element id="cashflow"></Element>
         <Page>
