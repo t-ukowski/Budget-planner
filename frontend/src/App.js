@@ -6,6 +6,8 @@ import Page from './components/page/Page';
 import { Element, Link } from 'react-scroll';
 import MainChartPage from './components/charts/MainChartPage';
 import Goals from './components/goals/Goals';
+import { Button } from '@mui/material';
+import AddIcon from '@mui/icons-material/AddBox';
 
 function App() {
   return (
@@ -30,6 +32,9 @@ function App() {
         <Element id="objectives"></Element>
         <Page>
           <Title text="Cele" />
+          <Button className="addButton">
+            <AddIcon className="icon" />
+          </Button>
           <Goals />
         </Page>
         <Element id="settings"></Element>

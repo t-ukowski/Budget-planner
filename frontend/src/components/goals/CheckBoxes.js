@@ -4,8 +4,6 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
 export default function CheckBoxes({ parentGoal }) {
-  // const [checked, setChecked] = React.useState([false, true]);
-  // const n = parentGoal.subgoals.length;
   const [checked, setChecked] = React.useState([parentGoal.subgoals.map((s) => s.achieved)]);
 
   const handleMainChange = (event) => {
