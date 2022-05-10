@@ -2,20 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import TextField from '@mui/material/TextField';
 import Modal from 'react-modal';
-
-const customStyles = {
-  overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.75)'
-  },
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)'
-  }
-};
+import { modalStyle } from '../../styles/modalStyle';
 
 export default function AddSubgoalModal({ modalIsOpen, closeModal, parent }) {
   const [goalName, setGoalName] = useState('');
@@ -32,7 +19,6 @@ export default function AddSubgoalModal({ modalIsOpen, closeModal, parent }) {
   }
 
   function handleSubmit(event) {
-    console.log(parent);
     setSent(true);
     event.preventDefault();
     axios({
@@ -52,7 +38,7 @@ export default function AddSubgoalModal({ modalIsOpen, closeModal, parent }) {
   }
 
   return (
-    <Modal ariaHideApp={false} isOpen={modalIsOpen} onRequestClose={onClose} style={customStyles}>
+    <Modal ariaHideApp={false} isOpen={modalIsOpen} onRequestClose={onClose} style={modalStyle}>
       <button className="closeModalButton" onClick={onClose}>
         X
       </button>

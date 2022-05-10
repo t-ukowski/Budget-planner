@@ -48,7 +48,9 @@ export default function CheckBoxes({ parentGoal }) {
             Object.prototype.hasOwnProperty.call(mainGoal.goal, 'goalElementList') &&
             Object.prototype.hasOwnProperty.call(mainGoal.goal, 'goalName')
           ) {
-            setRealizationDate(mainGoal.date);
+            if (Object.prototype.hasOwnProperty.call(mainGoal, 'date')) {
+              setRealizationDate(mainGoal.date);
+            }
             setSubgoals(mainGoal.goal.goalElementList);
             setParent(mainGoal.goal.goalName);
           }
@@ -72,7 +74,7 @@ export default function CheckBoxes({ parentGoal }) {
         return (
           <FormControlLabel
             key={subgoal.id}
-            label={`NAME: ${subgoal.goalElementName}, ID: ${subgoal.id}, COST: ${subgoal.cost}`}
+            label={`${subgoal.goalElementName} ${subgoal.cost} PLN`}
             control={<Checkbox checked={subgoal.achieved} />}
           />
         );
