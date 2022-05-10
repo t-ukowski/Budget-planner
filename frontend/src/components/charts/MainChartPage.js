@@ -64,6 +64,7 @@ function MainChartPage() {
             <b>Data: </b>
             {label}
           </p>
+          <br />
           <p>
             <b>Stan konta: </b>
             {payload[0].value}zł
