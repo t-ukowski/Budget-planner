@@ -23,6 +23,14 @@ export default function AddGoalModal({ modalIsOpen, closeModal }) {
   const [success, setSuccess] = useState(false);
   const [sent, setSent] = useState(false);
 
+  function onClose() {
+    setSent(false);
+    setSuccess(false);
+    setGoalName('');
+    setCost(0);
+    closeModal();
+  }
+
   function handleSubmit(event) {
     setSent(true);
     event.preventDefault();
@@ -40,16 +48,11 @@ export default function AddGoalModal({ modalIsOpen, closeModal }) {
         else setSuccess(false);
       })
       .catch((err) => console.log(err.data));
-    // closeModal();
   }
 
   return (
-    <Modal
-      ariaHideApp={false}
-      isOpen={modalIsOpen}
-      onRequestClose={closeModal}
-      style={customStyles}>
-      <button className="closeModalButton" onClick={closeModal}>
+    <Modal ariaHideApp={false} isOpen={modalIsOpen} onRequestClose={onClose} style={customStyles}>
+      <button className="closeModalButton" onClick={onClose}>
         X
       </button>
       <div className="modal-inside">
