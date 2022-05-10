@@ -19,15 +19,17 @@ export default function Account({ id, accountName, accountBalance }) {
   }
 
   return (
-    <>
-      {accountName}
-      {accountBalance}
-      <Button sx={buttonStyleSmall} className="iconButton small" onClick={handleDelete}>
-        <DeleteIcon className="icon" />
-      </Button>
-      <Button sx={buttonStyleSmall} className="iconButton small" onClick={handleEdit}>
-        <EditIcon className="icon" />
-      </Button>
-    </>
+    <tr>
+      <th>{accountName}</th>
+      <th>{accountBalance}</th>
+      <th>
+        <Button sx={buttonStyleSmall} className="iconButton small" onClick={handleDelete}>
+          <DeleteIcon className="icon" />
+        </Button>
+        <Button sx={buttonStyleSmall} className="iconButton small" onClick={handleEdit}>
+          <EditIcon className="icon" />
+        </Button>
+      </th>
+    </tr>
   );
 }

@@ -31,12 +31,23 @@ export default function Accounts() {
     <>
       <Title text="Saldo" />
       <AddAccountModal modalIsOpen={modalIsOpen} closeModal={closeModal} />
-      {accountsList.map(({ id, accountBalance, accountName }) => (
-        <Account key={id} id={id} accountBalance={accountBalance} accountName={accountName} />
-      ))}
-      <Button className="iconButton big" onClick={openModal}>
-        <AddIcon className="icon" />
-      </Button>
+      <table>
+        <tbody>
+          <tr>
+            <th>Kwota</th>
+            <th>Waluta</th>
+            <th>Opis</th>
+          </tr>
+          {accountsList.map(({ id, accountBalance, accountName }) => (
+            <Account key={id} id={id} accountBalance={accountBalance} accountName={accountName} />
+          ))}
+          <tr>
+            <Button className="iconButton small" onClick={openModal}>
+              <AddIcon className="icon" />
+            </Button>
+          </tr>
+        </tbody>
+      </table>
     </>
   );
 }
