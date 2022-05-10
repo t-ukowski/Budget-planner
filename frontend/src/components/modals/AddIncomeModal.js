@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Switch from '@mui/material/Switch';
 
-export default function AddIncome() {
+export default function AddIncomeModal() {
   const [type, setType] = useState('');
   const [billingDate, setBillingDate] = useState('');
   const [endBillingDate, setEndBillingDate] = useState('');

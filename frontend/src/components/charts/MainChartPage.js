@@ -12,7 +12,7 @@ import {
 } from 'recharts';
 import Title from '../page/Title';
 import Modal from 'react-modal';
-import AddIncome from '../modals/AddIncome';
+import AddIncomeModal from '../modals/AddIncomeModal';
 
 const customStyles = {
   overlay: {
@@ -331,7 +331,7 @@ function MainChartPage() {
           <button className="closeModalButton" onClick={closeModal}>
             X
           </button>
-          <AddIncome />
+          <AddIncomeModal />
         </Modal>
 
         <div className="chartCard">
