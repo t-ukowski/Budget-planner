@@ -1,6 +1,6 @@
 table {
     position: relative;
-    top: 100px;
+    top: $base-padding;
     background-color: $bp-white;
     border: '2px solid black' !important;
     border-radius: $border-radius-small;

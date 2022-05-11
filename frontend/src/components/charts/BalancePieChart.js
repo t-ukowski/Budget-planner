@@ -27,10 +27,9 @@ export default function BalancePieChart() {
   accountsList.forEach((item) => (sum = sum + item.accountBalance));
 
   return (
-    <>
-      <div className="balance">{sum} PLN</div>
+    <div className="piechart-container">
       <PieChart
-        className="piechart"
+        className="piechart center"
         data={chartData}
         //rounded
         lineWidth={60} // szerokość tego kółka w środku
@@ -38,8 +37,11 @@ export default function BalancePieChart() {
         radius={49} // promień całości
         segmentsStyle={{ transition: 'stroke .3s', cursor: 'pointer' }}
         animate
-        viewBoxSize={[150, 150]}
+        viewBoxSize={[100, 100]}
       />
-    </>
+      <div className="balance center">
+        <div className="text">{sum} PLN</div>
+      </div>
+    </div>
   );
 }
