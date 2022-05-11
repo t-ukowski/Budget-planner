@@ -303,7 +303,7 @@ function MainChartPage() {
     <div className="flexCard">
       <div className="mainCard">
         <div className="titleCard">
-          <Title text="Przewidywany stan konta" />
+          <Title className="chartPageTitle" text="Przewidywany stan konta" />
           <button className="openModalButton" onClick={openModal}>
             Zaplanuj
           </button>
