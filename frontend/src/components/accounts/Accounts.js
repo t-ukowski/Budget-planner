@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@mui/material';
-// import DeleteIcon from '@mui/icons-material/Delete';
-// import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/AddBox';
 import AddAccountModal from '../modals/AddAccountModal';
 import Title from '../page/Title';
-// import { buttonStyleSmall } from '../../styles/buttonStyle';
+import { addButtonStyleSmall } from '../../styles/buttonStyle';
 import Account from './Account';
-// import axios from 'axios';
+import BalancePieChart from '../charts/BalancePieChart';
 
 export default function Accounts() {
   const [accountsList, setAccountsList] = useState([]);
@@ -41,13 +39,14 @@ export default function Accounts() {
           {accountsList.map(({ id, accountBalance, accountName }) => (
             <Account key={id} id={id} accountBalance={accountBalance} accountName={accountName} />
           ))}
-          <tr>
-            <Button className="iconButton small" onClick={openModal}>
-              <AddIcon className="icon" />
-            </Button>
-          </tr>
         </tbody>
       </table>
+      <br />
+      <br />
+      <Button className="iconButton small" sx={addButtonStyleSmall} onClick={openModal}>
+        <AddIcon className="icon" />
+      </Button>
+      <BalancePieChart />
     </>
   );
 }

@@ -16,3 +16,12 @@ export const buttonStyleSmall = {
   minWidth: b,
   minHeight: b
 };
+
+export const addButtonStyleSmall = {
+  display: 'block-inline',
+  // ml: 3,
+  maxWidth: b,
+  maxHeight: b,
+  minWidth: b,
+  minHeight: b
+};

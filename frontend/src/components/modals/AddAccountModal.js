@@ -6,7 +6,7 @@ import { modalStyle } from '../../styles/modalStyle';
 
 export default function AddAccountModal({ modalIsOpen, closeModal }) {
   const [accountName, setAccountName] = useState('');
-  const [accountBalance, setAccountBalance] = useState(0);
+  const [accountBalance, setAccountBalance] = useState('');
   const [success, setSuccess] = useState(false);
   const [sent, setSent] = useState(false);
 
