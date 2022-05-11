@@ -1,0 +1,35 @@
+.piechart-container {
+    position: relative;
+    width: 50%;
+    height: 50%;
+    top: -10%;
+    left: 30%;
+
+    .piechart {
+        width: 100%;
+    }
+    
+    .balance {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+
+        .text {
+            width: fit-content;
+            background-color: rgba($bp-white, 0.5);
+            border-radius: $border-radius-large;
+            color: $bp-black;
+            font-family: $basic-font;
+            font-size: $font-size-huge;
+        }
+    }
+    
+    .center {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+    }
+}

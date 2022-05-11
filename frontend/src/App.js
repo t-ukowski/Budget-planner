@@ -6,6 +6,8 @@ import Page from './components/page/Page';
 import { Element, Link } from 'react-scroll';
 import MainChartPage from './components/charts/MainChartPage';
 import Goals from './components/goals/Goals';
+// import BalancePieChart from './components/charts/BalancePieChart';
+import Accounts from './components/accounts/Accounts';
 
 function App() {
   return (
@@ -21,7 +23,7 @@ function App() {
         </Page>
         <Element id="account"></Element>
         <Page>
-          <Title text="Saldo" />
+          <Accounts />
         </Page>
         <Element id="cashflow"></Element>
         <Page>
@@ -35,9 +37,7 @@ function App() {
         <Page>
           <Title text="Ustawienia" />
         </Page>
-        <Link to="objectives" containerId="main" smooth={true} duration={500}>
-          objectives
-        </Link>
+        <Link to="objectives" containerId="main" smooth={true} duration={500} />
       </main>
     </div>
   );
