@@ -1,23 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PieChart } from 'react-minimal-pie-chart';
-// import { styled } from '@mui/material/styles';
-// import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
-
-/*
-const HtmlTooltip = styled(({ className, ...props }) => (
-  <Tooltip {...props} classes={{ popper: className }} />
-))(({ theme }) => ({
-  [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: '#f5f5f9',
-    color: 'rgba(0, 0, 0, 0.87)',
-    maxWidth: 220,
-    fontSize: theme.typography.pxToRem(12),
-    border: '1px solid #dadde9',
-  },
-}));
-*/
-
-const colors = ['#E38627', '#C13C37', '#6A2135', '#CD5334', '#FCBF49'];
+import { piechartColors } from '../../styles/piechart';
 
 export default function BalancePieChart() {
   const [isMouseInside, setIsMouseInside] = useState(false);
@@ -60,7 +43,7 @@ export default function BalancePieChart() {
 
   accountsList.map((item, index) => {
     let insert = {
-      color: colors[index],
+      color: piechartColors[index],
       title: `${item.accountName} ${item.accountBalance}`,
       value: parseInt(`${item.accountBalance}`)
     };
