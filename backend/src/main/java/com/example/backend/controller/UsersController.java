@@ -2,7 +2,6 @@ package com.example.backend.controller;
 
 import com.example.backend.Repositories.UserRepository;
 import com.example.backend.model.User;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
