@@ -22,8 +22,8 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Goal> goals;
 
-    public User(String name) {
-        this.name = name;
+    public User(String email) {
+        this.email = email;
     }
 
     public User(String name, String email) {

@@ -2,11 +2,10 @@ package com.example.backend.controller;
 
 import com.example.backend.Repositories.UserRepository;
 import com.example.backend.model.User;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Optional;
 
 @RestController
@@ -18,22 +17,31 @@ public class UsersController {
     }
 
     @CrossOrigin
-    @PostMapping("/addUser")
-    public ResponseEntity<?> createUser(@RequestParam String username, @RequestParam(required = false) String email) throws URISyntaxException {
-        User user;
-        if(email != null) {
-            user = new User(username, email);
+    @GetMapping("/users/top")
+    public User getTopUser(){
+        return userRepository.findTopByOrderByIdAsc();
+    }
+
+    @CrossOrigin
+    @PutMapping("/users/top")
+    public ResponseEntity<User> editTopUser(@RequestParam(required = false) String username,
+                                      @RequestParam(required = false) String email){
+        User topUser = userRepository.findTopByOrderByIdAsc();
+        if(username != null) {
+            topUser.setName(username);
         }
-        else{
-            user = new User(username);
+
+        if(email != null){
+            topUser.setEmail(email);
         }
-        User savedUser = userRepository.save(user);
-        return ResponseEntity.created(new URI("/users/" + savedUser.getId())).body(savedUser);
+
+        topUser = userRepository.save(topUser);
+        return ResponseEntity.ok(topUser);
     }
 
     @CrossOrigin
     @PutMapping("/users/{userId}")
-    public ResponseEntity<?> editUser(@PathVariable Long userId, @RequestParam(required = false) String username,
+    public ResponseEntity<User> editUser(@PathVariable Long userId, @RequestParam(required = false) String username,
                                       @RequestParam(required = false) String email){
         Optional<User> currentUserOpt = userRepository.findById(userId);
         if(currentUserOpt.isPresent()){
@@ -52,5 +60,11 @@ public class UsersController {
         }
 
         return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("users/{id}")
+    public ResponseEntity<?> deleteIncomeOrExpense(@PathVariable Long id) {
+        userRepository.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 }
