@@ -64,7 +64,6 @@ public class IncomesExpensesController {
         List<BankAccount> userAccounts = bankAccountRepository.findBankAccountsByUserAndAccountName(user, accountName);
         BankAccount bankAccount = userAccounts.get(0);
         currentAction.setAccountName(accountName);
-        currentAction.setPaid(false);
         currentAction.setBankAccount(bankAccount);
         currentAction.setBillingDate(Date.valueOf(billingDate));
         currentAction.setEndBillingDate(Date.valueOf(endBillingDate));
