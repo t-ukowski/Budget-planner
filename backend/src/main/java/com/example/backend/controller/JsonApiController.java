@@ -246,7 +246,7 @@ public class JsonApiController {
             });
 
 
-            bankAccountList.forEach(bankAccount -> bankAccount.getBalanceHistories().stream()
+            bankAccountList.forEach(bankAccount -> { bankAccount.getBalanceHistories().stream()
                         .filter(balanceHistory -> balanceHistory.getRepeatInterval() == 0)
                         .filter(balanceHistory -> balanceHistory.getBillingDate().before(currentDate))
                         .filter(balanceHistory -> !balanceHistory.isPaid())
@@ -257,11 +257,12 @@ public class JsonApiController {
                                     if(balanceHistory.getType() == ActionType.Przychód) {
                                         balanceHistory.getBankAccount().addBalance(balanceHistory.getAmount());
                                     }
-                                    bankAccountRepository.save(balanceHistory.getBankAccount());
                                     balanceHistory.setPaid(true);
                                     balanceHistoryRepository.save(balanceHistory);
                                 }
-                        ));
+                        );
+                bankAccountRepository.save(bankAccount);
+            });
     }
 
 }
