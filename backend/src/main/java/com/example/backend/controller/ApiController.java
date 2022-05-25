@@ -197,6 +197,7 @@ public class ApiController {
                 "account update",
                 what,
                 bankAccount.getUser().getName());
+        account_change_log.setPaid(true);
         balanceHistoryRepository.save(account_change_log);
         return new ResponseEntity("Account updated", HttpStatus.CREATED);
     }
