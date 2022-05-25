@@ -34,6 +34,15 @@ export default function AddIncomeModal({ closeModal, modalIsOpen, updateNeeded, 
     setCheckedNotifications(event.target.checked);
   };
 
+  const readyToBeSent = !(
+    type === '' ||
+    billingDate === '' ||
+    amount === '' ||
+    description === '' ||
+    recipient === '' ||
+    accountName === ''
+  );
+
   useEffect(() => {
     fetch('http://localhost:8080/AccountsList')
       .then((res) => res.json())
@@ -222,11 +231,14 @@ export default function AddIncomeModal({ closeModal, modalIsOpen, updateNeeded, 
             <p>Wysyłaj powiadomienia</p>
             <br />
             <br />
-            <input className="submitButton" type="submit" value="Dodaj" />
+            <input disabled={!readyToBeSent} className="submitButton" type="submit" value="Dodaj" />
           </form>
         )}
         {success && <>Planowanie przebiegło pomyślnie</>}
-        {sent && !success && <>Wystąpił błąd...</>}
+        {sent && !success && (
+          <>Wystąpił błąd... Upewnij się, że poprawnie uzupełniłeś wszystkie pola</>
+        )}
+        {!readyToBeSent && <>Przed wysłaniem musisz uzupełnić wszystkie pola!</>}
       </div>
     </Modal>
   );

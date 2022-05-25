@@ -24,6 +24,7 @@ export default function Account({
 
   function closeEditModal() {
     setEditModalIsOpen(false);
+    setUpdateNeeded(!updateNeeded);
   }
 
   function handleDelete() {
@@ -34,6 +35,7 @@ export default function Account({
       .then((res) => console.log(res))
       .catch((err) => console.log(err.data));
     setDeleted(true);
+    setUpdateNeeded(!updateNeeded);
   }
 
   return (
