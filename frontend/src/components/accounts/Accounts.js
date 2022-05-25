@@ -8,10 +8,9 @@ import Account from './Account';
 import BalancePieChart from '../charts/BalancePieChart';
 import { piechartColors } from '../../styles/piechart';
 
-export default function Accounts() {
+export default function Accounts({ updateNeeded, setUpdateNeeded }) {
   const [accountsList, setAccountsList] = useState([]);
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [updateNeeded, setUpdateNeeded] = useState(false);
 
   function openModal() {
     setIsOpen(true);

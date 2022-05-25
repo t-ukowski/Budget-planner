@@ -7,7 +7,7 @@ import Switch from '@mui/material/Switch';
 import Modal from 'react-modal';
 import { modalStyle } from '../../styles/modalStyle';
 
-export default function AddIncomeModal({ closeModal, modalIsOpen }) {
+export default function AddIncomeModal({ closeModal, modalIsOpen, updateNeeded, setUpdateNeeded }) {
   const [type, setType] = useState('');
   const [billingDate, setBillingDate] = useState('');
   const [endBillingDate, setEndBillingDate] = useState('');
@@ -40,7 +40,7 @@ export default function AddIncomeModal({ closeModal, modalIsOpen }) {
       .then((json) => {
         setAccounts(json.map((obj) => obj.accountName));
       });
-  }, []);
+  }, [updateNeeded]);
 
   function onClose() {
     setType('');
@@ -78,6 +78,7 @@ export default function AddIncomeModal({ closeModal, modalIsOpen }) {
         if (res.status === 201) setSuccess(true);
       })
       .catch((err) => console.log(err.data));
+    setUpdateNeeded(!updateNeeded);
   }
 
   return (

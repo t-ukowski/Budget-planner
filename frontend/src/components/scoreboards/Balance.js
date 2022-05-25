@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
-function Balance() {
+function Balance({ updateNeeded }) {
   const [balanceData, setBalanceData] = useState(0);
 
   useEffect(() => {
     fetch('http://localhost:8080/TotalBalance')
       .then((res) => res.json())
       .then((json) => setBalanceData(json));
-  });
+  }, [updateNeeded]);
 
   return (
     <div className="scoreboard large">

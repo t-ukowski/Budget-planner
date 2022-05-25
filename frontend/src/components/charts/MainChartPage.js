@@ -27,7 +27,7 @@ function stringifyDate(day) {
   );
 }
 
-function MainChartPage() {
+function MainChartPage(updateNeeded, setUpdateNeeded) {
   const [pageNum, setPageNum] = useState(0);
   const [pageSize] = useState(30);
   const [chartData, setChartData] = useState([]);
@@ -228,7 +228,7 @@ function MainChartPage() {
       .catch((err) => {
         console.log(err);
       });
-  }, [pageNum]);
+  }, [pageNum, updateNeeded]);
 
   useEffect(() => {
     var tempSidePanel = [];
@@ -297,7 +297,7 @@ function MainChartPage() {
       );
     }
     setSidePanel(tempSidePanel);
-  }, [tooltipDate]);
+  }, [tooltipDate, updateNeeded]);
 
   return (
     <div className="flexCard">
@@ -309,7 +309,12 @@ function MainChartPage() {
           </button>
         </div>
 
-        <AddIncomeModal closeModal={closeModal} modalIsOpen={modalIsOpen} />
+        <AddIncomeModal
+          closeModal={closeModal}
+          modalIsOpen={modalIsOpen}
+          setUpdateNeeded={setUpdateNeeded}
+          updateNeeded={updateNeeded}
+        />
 
         <div className="chartCard">
           <div className="chartCardInside">
