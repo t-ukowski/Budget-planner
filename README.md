@@ -1,6 +1,12 @@
 # Budget-planner
 Frontend + backend of web application for income + expenses planner
 
+How to run the app with docker-compose:
+docker-compose build
+docker-compose up
+
+To quit app:
+docker-compose down
 
 w application.properties nalezy ustawic:
 
