@@ -53,6 +53,7 @@ export default function EditGoalModal({ modalIsOpen, closeModal, goal }) {
               value={goalName}
               margin="normal"
             />
+            <br></br>
             <input className="submitButton" type="submit" value="Edytuj" />
           </form>
         )}

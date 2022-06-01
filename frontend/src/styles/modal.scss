@@ -7,6 +7,10 @@
     width: $button-small-width;
     height: $button-small-height;
     border-radius: $border-radius-small-objects;
+    &:disabled {
+        background-color: grey;
+        cursor: auto;
+    }
 }
 
 .closeModalButton {
