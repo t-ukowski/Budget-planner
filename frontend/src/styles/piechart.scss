@@ -10,9 +10,13 @@
     }
     
     .balance {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
         display: flex;
         justify-content: center;
-        align-items: center;
         width: 100%;
 
         .text {
@@ -23,13 +27,5 @@
             font-family: $basic-font;
             font-size: $font-size-huge;
         }
-    }
-    
-    .center {
-        margin: 0;
-        position: absolute;
-        top: 50%;
-        -ms-transform: translateY(-50%);
-        transform: translateY(-50%);
     }
 }

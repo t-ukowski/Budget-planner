@@ -6,9 +6,17 @@ import { buttonStyleSmall } from '../../styles/buttonStyle';
 import axios from 'axios';
 import EditAccountModal from '../modals/EditAccountModal';
 
-export default function Account({ id, accountName, accountBalance }) {
+export default function Account({
+  id,
+  accountName,
+  accountBalance,
+  updateNeeded,
+  setUpdateNeeded,
+  color
+}) {
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [deleted, setDeleted] = useState(false);
+  const color2 = color;
 
   function openEditModal() {
     setEditModalIsOpen(true);
@@ -16,6 +24,7 @@ export default function Account({ id, accountName, accountBalance }) {
 
   function closeEditModal() {
     setEditModalIsOpen(false);
+    setUpdateNeeded(!updateNeeded);
   }
 
   function handleDelete() {
@@ -26,6 +35,7 @@ export default function Account({ id, accountName, accountBalance }) {
       .then((res) => console.log(res))
       .catch((err) => console.log(err.data));
     setDeleted(true);
+    setUpdateNeeded(!updateNeeded);
   }
 
   return (
@@ -36,9 +46,12 @@ export default function Account({ id, accountName, accountBalance }) {
         accountBalance={accountBalance}
         accountName={accountName}
         id={id}
+        updateNeeded={updateNeeded}
+        setUpdateNeeded={setUpdateNeeded}
       />
       {!deleted && (
         <tr>
+          <th>{color2}</th>
           <th>{accountName}</th>
           <th>{accountBalance}</th>
           <th>
