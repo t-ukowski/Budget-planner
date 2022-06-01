@@ -51,7 +51,7 @@ export default function Account({
       />
       {!deleted && (
         <tr>
-          <th>{color2}</th>
+          <th className="color-circle" style={{ backgroundColor: color2 }}></th>
           <th>{accountName}</th>
           <th>{accountBalance}</th>
           <th>
