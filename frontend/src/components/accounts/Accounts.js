@@ -57,8 +57,8 @@ export default function Accounts({ updateNeeded, setUpdateNeeded }) {
         <tbody>
           <tr>
             <th>Konto</th>
+            <th>Konto</th>
             <th>Saldo</th>
-            <th>Akcje</th>
           </tr>
           {accountsList.map(({ id, accountBalance, accountName, color }) => (
             <Account
