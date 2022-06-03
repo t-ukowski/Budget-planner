@@ -1,15 +1,16 @@
 package com.example.backend.configuration;
 
-import com.example.backend.model.ActionType;
+import com.example.backend.model.TimePeriod;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 @Component
-public class StringToEnumConverter implements Converter<String, ActionType> {
+public class StringToTimePeriodConverter implements Converter<String, TimePeriod>  {
+
     @Override
-    public ActionType convert(String source) {
+    public TimePeriod convert(String source) {
         try {
-            return ActionType.valueOf(source);
+            return TimePeriod.valueOf(source);
         } catch(IllegalArgumentException exception){
             return null;
         }

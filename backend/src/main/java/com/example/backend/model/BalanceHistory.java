@@ -35,6 +35,10 @@ public class BalanceHistory {
     private int repeatInterval;
 
     @Expose
+    @Enumerated(EnumType.STRING)
+    private TimePeriod timePeriod;
+
+    @Expose
     private double amount;
 
     @Expose
@@ -54,22 +58,24 @@ public class BalanceHistory {
     @Transient
     private String accountName; // do not include it in the database
 
-    public BalanceHistory(String bankAccountName, String billingDate, String endBillingDate, int repeatInterval, double amount, String description, ActionType actionType, String recipient) {
+    public BalanceHistory(String bankAccountName, String billingDate, String endBillingDate, int repeatInterval, TimePeriod timePeriod, double amount, String description, ActionType actionType, String recipient) {
         this.accountName = bankAccountName;
         this.billingDate = Date.valueOf(billingDate);
         this.endBillingDate = Date.valueOf(endBillingDate);
         this.repeatInterval = repeatInterval;
+        this.timePeriod = timePeriod;
         this.amount = amount;
         this.description = description;
         this.type = actionType;
         this.recipient = recipient;
     }
 
-    public BalanceHistory(BankAccount bankAccount, Date billingDate, Date endBillingDate, int repeatInterval, double amount, String description, ActionType actionType, String recipient) {
+    public BalanceHistory(BankAccount bankAccount, Date billingDate, Date endBillingDate, int repeatInterval, TimePeriod timePeriod, double amount, String description, ActionType actionType, String recipient) {
         this.bankAccount = bankAccount;
         this.billingDate = billingDate;
         this.endBillingDate = endBillingDate;
         this.repeatInterval = repeatInterval;
+        this.timePeriod = timePeriod;
         this.amount = amount;
         this.description = description;
         this.type = actionType;
@@ -82,6 +88,7 @@ public class BalanceHistory {
         this.billingDate = balanceHistoryCopy.billingDate;
         this.endBillingDate = balanceHistoryCopy.endBillingDate;
         this.repeatInterval = balanceHistoryCopy.repeatInterval;
+        this.timePeriod = balanceHistoryCopy.timePeriod;
         this.amount = balanceHistoryCopy.amount;
         this.description = balanceHistoryCopy.description;
         this.type = balanceHistoryCopy.type;
@@ -136,6 +143,10 @@ public class BalanceHistory {
 
     public void setRepeatInterval(int repeatInterval) {
         this.repeatInterval = repeatInterval;
+    }
+
+    public void setTimePeriod(TimePeriod timePeriod){
+        this.timePeriod = timePeriod;
     }
 
     public double getAmount() {

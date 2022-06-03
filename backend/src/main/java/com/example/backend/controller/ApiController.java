@@ -44,9 +44,9 @@ public class ApiController {
         bankAccountRepository.save(bankAccount1);
         bankAccountRepository.save(bankAccount2);
 
-        balanceHistoryRepository.save(new BalanceHistory(bankAccount1, java.sql.Date.valueOf("2020-11-15"), java.sql.Date.valueOf("2022-11-15"),30,200.00,"fajna platnosc", ActionType.Przychód, "Netflix"));
-        balanceHistoryRepository.save(new BalanceHistory(bankAccount1, java.sql.Date.valueOf("2021-03-03"), java.sql.Date.valueOf("2023-11-15"),30,10.00,"xdxdxxxdxdx", ActionType.Wydatek, "brak"));
-        balanceHistoryRepository.save(new BalanceHistory(bankAccount2, java.sql.Date.valueOf("2021-02-22"), java.sql.Date.valueOf("2023-11-15"),31,120.00,"platnosc 3", ActionType.Wydatek, "brak"));
+        balanceHistoryRepository.save(new BalanceHistory(bankAccount1, java.sql.Date.valueOf("2020-11-15"), java.sql.Date.valueOf("2022-11-15"),30, TimePeriod.dzień, 200.00,"fajna platnosc", ActionType.Przychód, "Netflix"));
+        balanceHistoryRepository.save(new BalanceHistory(bankAccount1, java.sql.Date.valueOf("2021-03-03"), java.sql.Date.valueOf("2023-11-15"),30, TimePeriod.dzień,10.00,"xdxdxxxdxdx", ActionType.Wydatek, "brak"));
+        balanceHistoryRepository.save(new BalanceHistory(bankAccount2, java.sql.Date.valueOf("2021-02-22"), java.sql.Date.valueOf("2023-11-15"),1, TimePeriod.miesiąc, 120.00,"platnosc 3", ActionType.Wydatek, "brak"));
 
         Goal goal = new Goal("remont",user);
 
@@ -159,15 +159,16 @@ public class ApiController {
     public ResponseEntity deleteAccount(@PathVariable Long id){
         BankAccount bankAccount = bankAccountRepository.getById(id);
         java.sql.Date action_date = new java.sql.Date(System.currentTimeMillis());
-        BalanceHistory account_change_log = new BalanceHistory(bankAccount,
-                action_date,
-                action_date,
-                0,
-                bankAccount.getAccountBalance(),
-                "account deleting",
-                ActionType.Wydatek,
-                bankAccount.getUser().getName());
-        balanceHistoryRepository.save(account_change_log);
+        //TODO
+//        BalanceHistory account_change_log = new BalanceHistory(bankAccount,
+//                action_date,
+//                action_date,
+//                0,
+//                bankAccount.getAccountBalance(),
+//                "account deleting",
+//                ActionType.Wydatek,
+//                bankAccount.getUser().getName());
+//        balanceHistoryRepository.save(account_change_log);
 
         bankAccountRepository.deleteById(id);
         return new ResponseEntity("Account deleted", HttpStatus.ACCEPTED);
@@ -193,16 +194,17 @@ public class ApiController {
             what = ActionType.Wydatek;
         }
         java.sql.Date action_date = new java.sql.Date(System.currentTimeMillis());
-        BalanceHistory account_change_log = new BalanceHistory(bankAccount,
-                action_date,
-                action_date,
-                0,
-                accountBalance,
-                "account update",
-                what,
-                bankAccount.getUser().getName());
-        account_change_log.setPaid(true);
-        balanceHistoryRepository.save(account_change_log);
+        //TODO
+//        BalanceHistory account_change_log = new BalanceHistory(bankAccount,
+//                action_date,
+//                action_date,
+//                0,
+//                accountBalance,
+//                "account update",
+//                what,
+//                bankAccount.getUser().getName());
+//        account_change_log.setPaid(true);
+//        balanceHistoryRepository.save(account_change_log);
         return new ResponseEntity("Account updated", HttpStatus.CREATED);
     }
 

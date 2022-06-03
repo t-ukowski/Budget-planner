@@ -3,10 +3,7 @@ package com.example.backend.controller;
 import com.example.backend.Repositories.BalanceHistoryRepository;
 import com.example.backend.Repositories.BankAccountRepository;
 import com.example.backend.Repositories.UserRepository;
-import com.example.backend.model.ActionType;
-import com.example.backend.model.BalanceHistory;
-import com.example.backend.model.BankAccount;
-import com.example.backend.model.User;
+import com.example.backend.model.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,10 +38,11 @@ public class IncomesExpensesController {
 
     @PostMapping
     public ResponseEntity<?> createIncomeOrExpense(@RequestParam String accountName, @RequestParam String billingDate,
-                                                @RequestParam String endBillingDate, @RequestParam int repeatInterval,
-                                                @RequestParam double amount, @RequestParam String description,
-                                                @RequestParam ActionType type, @RequestParam String recipient) throws URISyntaxException {
-        BalanceHistory action = new BalanceHistory(accountName, billingDate, endBillingDate, repeatInterval, amount, description, type, recipient);
+                                                   @RequestParam String endBillingDate, @RequestParam int repeatInterval,
+                                                   @RequestParam TimePeriod timePeriod, @RequestParam double amount,
+                                                   @RequestParam String description, @RequestParam ActionType type,
+                                                   @RequestParam String recipient) throws URISyntaxException {
+        BalanceHistory action = new BalanceHistory(accountName, billingDate, endBillingDate, repeatInterval, timePeriod, amount, description, type, recipient);
         User user = userRepository.findTopByOrderByIdAsc();
         List<BankAccount> userAccounts = bankAccountRepository.findBankAccountsByUserAndAccountName(user, action.getAccountName());
         BankAccount bankAccount = userAccounts.get(0);
@@ -54,11 +52,11 @@ public class IncomesExpensesController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateIncomeOrExpense(@PathVariable Long id,
-                                                @RequestParam String accountName, @RequestParam String billingDate,
-                                                @RequestParam String endBillingDate, @RequestParam int repeatInterval,
-                                                @RequestParam double amount, @RequestParam String description,
-                                                @RequestParam ActionType type, @RequestParam String recipient) {
+    public ResponseEntity<?> updateIncomeOrExpense(@PathVariable Long id, @RequestParam String accountName,
+                                                   @RequestParam String billingDate, @RequestParam String endBillingDate,
+                                                   @RequestParam int repeatInterval, @RequestParam TimePeriod timePeriod,
+                                                   @RequestParam double amount, @RequestParam String description,
+                                                   @RequestParam ActionType type, @RequestParam String recipient) {
         BalanceHistory currentAction = balanceHistoryRepository.findById(id).orElseThrow(RuntimeException::new);
         User user = userRepository.findTopByOrderByIdAsc();
         List<BankAccount> userAccounts = bankAccountRepository.findBankAccountsByUserAndAccountName(user, accountName);
@@ -68,6 +66,7 @@ public class IncomesExpensesController {
         currentAction.setBillingDate(Date.valueOf(billingDate));
         currentAction.setEndBillingDate(Date.valueOf(endBillingDate));
         currentAction.setRepeatInterval(repeatInterval);
+        currentAction.setTimePeriod(timePeriod);
         currentAction.setAmount(amount);
         currentAction.setDescription(description);
         currentAction.setType(type);
