@@ -68,4 +68,65 @@ public class GoalsController {
         return ResponseEntity.ok(goal.getGoalName());
     }
 
+
+    private void checkTicks(Goal g){
+        List<GoalElement> subgoals = goalElementRepository.findGoalElementsByGoal(g);
+        boolean flag = true;
+        for (GoalElement subgoal: subgoals){
+            if(! subgoal.isAchieved()){
+                flag = false;
+                break;
+            }
+        }
+
+        // tu po ukońcczeniu ostatniego podcelu wywalamy cel z bazy
+        // troszkę kontrowersyjne, ale powinno działać
+
+        if(flag){
+            goalRepository.delete(g);
+            List<GoalElement> to_delete = goalElementRepository.findGoalElementsByGoal(g);
+            for(GoalElement subgoal: to_delete){
+                goalElementRepository.deleteById(subgoal.getId());
+            }
+        }
+    }
+
+    void tick(GoalElement goal){
+        if(goal.isAchieved()){
+            goal.setAchieved(false);
+            goalElementRepository.save(goal);
+        }
+        else {
+            goal.setAchieved(true);
+            goalElementRepository.save(goal);
+        }
+    }
+
+    @PutMapping("/goalElement/tick/{id}")
+    public ResponseEntity<?> tickGoalElement(@PathVariable Long id){
+        User user = userRepository.findTopByOrderByIdAsc();
+        GoalElement goal = goalElementRepository.getById(id);
+        tick(goal);
+        Goal g = goal.getGoal();
+        checkTicks(g);
+        return ResponseEntity.ok("GoalElement ticked");
+    }
+
+    @PutMapping("/tick/{id}")
+    public ResponseEntity<?> tickGoal(@PathVariable Long id){
+        User user = userRepository.findTopByOrderByIdAsc();
+        Goal goal = goalRepository.getById(id);
+        List<GoalElement> subgoals = goalElementRepository.findGoalElementsByGoal(goal);
+        for(GoalElement subgoal: subgoals){
+            if(! subgoal.isAchieved()) {
+                tick(subgoal);
+            }
+        }
+        goalRepository.delete(goal);
+        List<GoalElement> to_delete = goalElementRepository.findGoalElementsByGoal(goal);
+        for(GoalElement subgoal: to_delete){
+            goalElementRepository.deleteById(subgoal.getId());
+        }
+        return ResponseEntity.ok("Goal ticked and destroyed");
+    }
 }
