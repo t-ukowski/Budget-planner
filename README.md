@@ -27,3 +27,5 @@ How to add new goal element:
 Please remember to choose the existing goalName.
 ![image](https://user-images.githubusercontent.com/69384237/166660389-57db2a66-484f-4332-a51c-7e44a3219a63.png)
 
+How to add new income or expense:
+![image](https://user-images.githubusercontent.com/69384237/171825433-bb7c7a23-769f-487e-a048-885208319403.png)
