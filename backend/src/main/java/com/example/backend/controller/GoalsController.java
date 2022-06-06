@@ -49,13 +49,18 @@ public class GoalsController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteGoal(@PathVariable Long id){
-        User user = userRepository.findTopByOrderByIdAsc();
         Goal goal = goalRepository.getById(id);
         goalRepository.deleteById(id);
         List<GoalElement> to_delete = goalElementRepository.findGoalElementsByGoal(goal);
         for(GoalElement subgoal: to_delete){
             goalElementRepository.deleteById(subgoal.getId());
         }
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/goalElement/{id}")
+    public ResponseEntity<?> deleteGoalElement(@PathVariable Long id){
+        goalElementRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
 
