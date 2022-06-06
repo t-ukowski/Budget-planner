@@ -193,7 +193,13 @@ public class BalanceHistory {
         java.sql.Date logicalDate = this.billingDate;
         Calendar c = Calendar.getInstance();
         c.setTime(logicalDate);
-        c.add(Calendar.DATE, this.repeatInterval);
+        //c.add(Calendar.DATE, this.repeatInterval);
+        switch(timePeriod){
+            case dzień -> c.add(Calendar.DATE, this.repeatInterval);
+            case tydzień -> c.add(Calendar.DATE, this.repeatInterval * 7);
+            case miesiąc -> c.set(Calendar.MONTH, (c.get(Calendar.MONTH) + this.repeatInterval) % 12);
+            case rok -> c.set(Calendar.YEAR, c.get(Calendar.YEAR) + this.repeatInterval);
+        }
         this.billingDate = new java.sql.Date(c.getTimeInMillis());
     }
 }
