@@ -4,6 +4,8 @@ Frontend + backend of web application for income + expenses planner
 
 ### How to run the app with docker-compose:
 ```
+cd backend
+mvn clean install
 docker-compose build
 docker-compose up
 ```
