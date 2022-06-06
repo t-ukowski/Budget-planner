@@ -136,21 +136,6 @@ public class ApiController {
         User user = userRepository.findTopByOrderByIdAsc();
         bankAccount.setUser(user);
         bankAccountRepository.save(bankAccount);
-
-        /*
-        java.sql.Date action_date = new java.sql.Date(System.currentTimeMillis());
-        BalanceHistory account_change_log = new BalanceHistory(bankAccount,
-                action_date,
-                action_date,
-                0,
-                bankAccount.getAccountBalance(),
-                "account creation",
-                ActionType.Przychód,
-                bankAccount.getUser().getName());
-        balanceHistoryRepository.save(account_change_log);
-        account_change_log.setPaid(true);
-
-         */
         return new ResponseEntity("Account created",HttpStatus.CREATED);
     }
 
@@ -167,6 +152,7 @@ public class ApiController {
                 "account deleting",
                 ActionType.Wydatek,
                 bankAccount.getUser().getName());
+        account_change_log.setPaid(true);
         balanceHistoryRepository.save(account_change_log);
 
         bankAccountRepository.deleteById(id);
