@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import './styles/main.scss';
 import Sidebar from './components/sidebar/Sidebar';
 import Balance from './components/scoreboards/Balance';
@@ -10,6 +11,8 @@ import Goals from './components/goals/Goals';
 import Accounts from './components/accounts/Accounts';
 
 function App() {
+  const [updateNeeded, setUpdateNeeded] = useState(false);
+
   return (
     <div className="app">
       <aside>
@@ -19,15 +22,15 @@ function App() {
         <Element id="home"></Element>
         <Page>
           <Title text="Budget planner" />
-          <Balance />
+          <Balance updateNeeded={updateNeeded} />
         </Page>
         <Element id="account"></Element>
         <Page>
-          <Accounts />
+          <Accounts updateNeeded={updateNeeded} setUpdateNeeded={setUpdateNeeded} />
         </Page>
         <Element id="cashflow"></Element>
         <Page>
-          <MainChartPage></MainChartPage>
+          <MainChartPage updateNeeded={updateNeeded} setUpdateNeeded={setUpdateNeeded} />
         </Page>
         <Element id="objectives"></Element>
         <Page classNames="page-long">

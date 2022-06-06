@@ -9,7 +9,9 @@ export default function EditAccountModal({
   closeModal,
   accountName,
   accountBalance,
-  id
+  id,
+  updateNeeded,
+  setUpdateNeeded
 }) {
   const [newAccountName, setNewAccountName] = useState(accountName);
   const [newAccountBalance, setNewAccountBalance] = useState(accountBalance);
@@ -19,6 +21,7 @@ export default function EditAccountModal({
   function onClose() {
     setSent(false);
     setSuccess(false);
+    setUpdateNeeded(!updateNeeded);
     closeModal();
   }
 
@@ -71,7 +74,6 @@ export default function EditAccountModal({
             <input className="submitButton" type="submit" value="Aktualizuj" />
           </form>
         )}
-        {success && 'Zedytowano konto'}
         {sent && !success && 'Edycja konta nie powiodła się'}
       </div>
     </Modal>

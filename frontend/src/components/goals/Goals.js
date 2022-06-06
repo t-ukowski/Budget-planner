@@ -30,7 +30,7 @@ export default function Goals() {
 
   return (
     <>
-      <div className="titleCard">
+      <div className="goalTitleCard">
         <Title text="Cele" />
         <Button className="iconButton big" onClick={openModal}>
           <AddIcon className="icon" />
