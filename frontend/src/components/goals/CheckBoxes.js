@@ -8,7 +8,8 @@ import AddSubgoalModal from '../modals/AddSubgoalModal';
 import AddIcon from '@mui/icons-material/AddBox';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import axios from 'axios';
 import { Button } from '@mui/material';
 import EditGoalModal from '../modals/EditGoalModal';
@@ -25,7 +26,6 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
   const [accounts, setAccounts] = useState('');
   const [accountName, setAccountName] = useState('');
   const [accountNames, setAccountNames] = useState('');
-  const [achieved, setAchieved] = useState(false);
 
   const [showSubgoals, setShowSubgoals] = useState(false);
   const [affordable, setAffordable] = useState(false);
@@ -51,10 +51,10 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
 
   function handleAccountSelection() {
     setAffordable(false);
-    var result = accounts.filter((acc) => {
+    var result = accounts.find((acc) => {
       return acc.accountName === accountName;
     });
-    if (result[0].accountBalance >= paymentLeft) setAffordable(true);
+    if (result.accountBalance >= paymentLeft) setAffordable(true);
     setUpdateNeeded(!updateNeeded);
     console.log(affordable);
   }
@@ -141,16 +141,15 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
   }
 
   function handleTick() {
-    const account = accounts.filter((acc) => {
+    const account = accounts.find((acc) => {
       return acc.accountName === accountName;
     });
     axios({
       method: 'put',
-      url: `http://localhost:8080/goals/tick/${parentGoal.id}/${account[0].id}`
+      url: `http://localhost:8080/goals/tick/${parentGoal.id}/${account.id}`
     })
       .then((res) => console.log(res))
       .catch((err) => console.log(err.data));
-    setAchieved(!achieved);
     setUpdateNeeded(!updateNeeded);
   }
 
@@ -204,49 +203,61 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
           <Button sx={buttonStyleSmall} className="iconButton small" onClick={handleDelete}>
             <DeleteIcon className="icon" />
           </Button>
-          <Button sx={buttonStyleSmall} className="iconButton small" onClick={handleShowSubGoals}>
-            <KeyboardArrowDownIcon className="icon" />
-          </Button>
+          {!showSubgoals && (
+            <Button sx={buttonStyleSmall} className="iconButton small" onClick={handleShowSubGoals}>
+              <ArrowDropDownIcon className="icon" />
+            </Button>
+          )}
+          {showSubgoals && (
+            <Button sx={buttonStyleSmall} className="iconButton small" onClick={handleShowSubGoals}>
+              <ArrowDropUpIcon className="icon" />
+            </Button>
+          )}
           {showSubgoals && (
             <>
-              <div className="text-base scoreboard">
-                Pozostało jeszcze {paymentLeft} PLN z {sum} PLN
-              </div>
-              <Autocomplete
-                name="account"
-                id="select-account"
-                className="autocomplete"
-                value={accountName}
-                onChange={(event, newAccount) => {
-                  setAccountName(newAccount);
-                  handleAccountSelection();
-                }}
-                sx={{ width: 210 }}
-                options={accountNames}
-                isOptionEqualToValue={(option, value) => option === value || value === ''}
-                autoHighlight
-                renderOption={(props, option) => (
-                  <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-                    {option}
-                  </Box>
-                )}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    margin="normal"
-                    label="Konto"
-                    inputProps={{
-                      ...params.inputProps,
-                      autoComplete: 'new-password' // disable autocomplete and autofill
+              {paymentLeft > 0 && (
+                <>
+                  <div className="text-base scoreboard">
+                    Pozostało jeszcze {paymentLeft} PLN z {sum} PLN
+                  </div>
+                  <Autocomplete
+                    name="account"
+                    id="select-account"
+                    className="autocomplete"
+                    value={accountName}
+                    onChange={(event, newAccount) => {
+                      setAccountName(newAccount);
+                      handleAccountSelection();
                     }}
+                    sx={{ width: 210 }}
+                    options={accountNames}
+                    isOptionEqualToValue={(option, value) => option === value || value === ''}
+                    autoHighlight
+                    renderOption={(props, option) => (
+                      <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                        {option}
+                      </Box>
+                    )}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        margin="normal"
+                        label="Konto"
+                        inputProps={{
+                          ...params.inputProps,
+                          autoComplete: 'new-password' // disable autocomplete and autofill
+                        }}
+                      />
+                    )}
                   />
-                )}
-              />
-              {realizationDate !== '' && (
-                <div className="text-base italic">
-                  Najbliższa możliwa data realizacji: {realizationDate}
-                </div>
+                  {realizationDate !== '' && (
+                    <div className="text-base italic">
+                      Najbliższa możliwa data realizacji: {realizationDate}
+                    </div>
+                  )}
+                </>
               )}
+
               {children}
               <Button sx={buttonStyleVerySmall} className="iconButton small" onClick={openModal}>
                 <AddIcon className="icon" />
