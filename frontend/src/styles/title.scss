@@ -7,4 +7,10 @@
 
     border-bottom: 2px solid $bp-black;
     width: fit-content;
+    
+    &.small {
+        font-size: $font-size-medium-2;
+        border: 0;
+        line-height: $line-height-base;
+    }
 }

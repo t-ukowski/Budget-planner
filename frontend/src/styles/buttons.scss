@@ -1,0 +1,29 @@
+.iconButton {
+    background-color: $bp-blue !important;
+    display: flex;
+
+    &.big {
+        width: $icon-button-big-size;
+        height: $icon-button-big-size;
+        border-radius: $border-radius-small-objects;
+        left: -85%;
+        top: 30px;
+
+        .icon {
+            color: $bp-white !important;
+            width: $icon-button-big-icon-size;
+            height: $icon-button-big-icon-size;
+        }
+    }
+
+    &.small {
+        width: $icon-button-small-size !important;
+        height: $icon-button-small-size;
+
+        .icon {
+            color: $bp-white !important;
+            width: $icon-button-small-icon-size;
+            height: $icon-button-small-icon-size;
+        }
+    }
+}

@@ -16,6 +16,7 @@ import java.sql.Date;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/incomes-expenses")
 public class IncomesExpensesController {
     private final BalanceHistoryRepository balanceHistoryRepository;

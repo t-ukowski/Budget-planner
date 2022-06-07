@@ -1,0 +1,34 @@
+.submitButton {
+    background-color: $bp-blue;
+    font-family: $basic-font;
+    cursor: pointer;
+    font-size: $font-size-medium;
+    color: $bp-white;
+    width: $button-small-width;
+    height: $button-small-height;
+    border-radius: $border-radius-small-objects;
+    &:disabled {
+        background-color: grey;
+        cursor: auto;
+    }
+}
+
+.closeModalButton {
+    position: relative;
+    left: 95%;
+}
+
+.openModalButton {
+    // position: relative;
+    margin-top: 30px;
+    background-color: $bp-blue;
+    color: $bp-white;
+    border-radius: $border-radius-small-objects;
+    height: $button-big-height;
+    width: $button-big-width;
+}
+
+p {
+    font-family: $basic-font;
+    display: inline-block;
+}

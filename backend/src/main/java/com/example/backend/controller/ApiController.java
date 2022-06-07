@@ -137,6 +137,7 @@ public class ApiController {
         bankAccount.setUser(user);
         bankAccountRepository.save(bankAccount);
 
+        /*
         java.sql.Date action_date = new java.sql.Date(System.currentTimeMillis());
         BalanceHistory account_change_log = new BalanceHistory(bankAccount,
                 action_date,
@@ -147,6 +148,9 @@ public class ApiController {
                 ActionType.Przychód,
                 bankAccount.getUser().getName());
         balanceHistoryRepository.save(account_change_log);
+        account_change_log.setPaid(true);
+
+         */
         return new ResponseEntity("Account created",HttpStatus.CREATED);
     }
 
@@ -197,6 +201,7 @@ public class ApiController {
                 "account update",
                 what,
                 bankAccount.getUser().getName());
+        account_change_log.setPaid(true);
         balanceHistoryRepository.save(account_change_log);
         return new ResponseEntity("Account updated", HttpStatus.CREATED);
     }

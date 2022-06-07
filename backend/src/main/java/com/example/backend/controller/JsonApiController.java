@@ -89,17 +89,29 @@ public class JsonApiController {
         java.sql.Date currentDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
         updateRepetitiveTransaction(currentDate);
 
-        Calendar c = Calendar.getInstance();
+        final double todayBalance = currentMoneyAmount;
+        List<Goal> toRemoveCurrentDate = new ArrayList<>();
+        uncompletedGoalList.forEach(goal->
+                {
+                    double sum = goal.getGoalElementList().stream().filter(goalElement -> !goalElement.isAchieved()).mapToDouble(GoalElement::getCost).sum();
+                    if(sum <= todayBalance){
+                        goalRealizations.add(new GoalRealization(goal, currentDate));
+                        toRemoveCurrentDate.add(goal);
+                    }
+                }
+        );
 
-        c.setTime(currentDate);
-        c.add(Calendar.DATE, 0);
-        java.sql.Date futureDate = new java.sql.Date(c.getTimeInMillis());
+        for(Goal goal:toRemoveCurrentDate){
+            uncompletedGoalList.remove(goal);
+        }
+
 
         int i=0;
         while(uncompletedGoalList.size()>0 && i <3650) {
+            Calendar c = Calendar.getInstance();
             c.setTime(currentDate);
             c.add(Calendar.DATE, i);
-            futureDate = new java.sql.Date(c.getTimeInMillis());
+            java.sql.Date futureDate = new java.sql.Date(c.getTimeInMillis());
 
             List<BalanceHistory> balanceHistoryList = getBalanceHistoryForFuture(futureDate, 1);
 
@@ -116,12 +128,16 @@ public class JsonApiController {
 
             double finalCurrentMoneyAmount = currentMoneyAmount;
             List<Goal> toRemove = new ArrayList<>();
-            java.sql.Date finalFutureDate = futureDate;
+//            System.out.println(futureDate+" "+currentDate);
+            Calendar c1 = Calendar.getInstance();
+            c1.setTime(futureDate);
+            c1.add(Calendar.DATE, 1);
+            final java.sql.Date finalDate = new java.sql.Date(c1.getTimeInMillis());
             uncompletedGoalList.forEach(goal->
                     {
                         double sum = goal.getGoalElementList().stream().filter(goalElement -> !goalElement.isAchieved()).mapToDouble(GoalElement::getCost).sum();
                         if(sum <= finalCurrentMoneyAmount){
-                            goalRealizations.add(new GoalRealization(goal, finalFutureDate));
+                            goalRealizations.add(new GoalRealization(goal, finalDate));
                             toRemove.add(goal);
                         }
                     }
@@ -206,44 +222,47 @@ public class JsonApiController {
 
     private void updateRepetitiveTransaction(java.sql.Date currentDate) {
 
-        userRepository.findTopByOrderByIdAsc().getBankAccountList()
-                .forEach(bankAccount -> bankAccount.getBalanceHistories().stream()
-                        .filter(balanceHistory -> balanceHistory.getRepeatInterval() != 0)
-                        .filter(balanceHistory -> balanceHistory.getEndBillingDate().after(currentDate))
-                        .filter(balanceHistory -> balanceHistory.getBillingDate().before(currentDate))
-                        .forEach(balanceHistory -> {
-                                    while (balanceHistory.getBillingDate().before(currentDate)) {
-                                        balanceHistory.addToStartBillingDate();
-                                        if(balanceHistory.getType() == ActionType.Wydatek) {
-                                            balanceHistory.getBankAccount().subtractBalance(balanceHistory.getAmount());
-                                        }
-                                        if(balanceHistory.getType() == ActionType.Przychód) {
-                                            balanceHistory.getBankAccount().addBalance(balanceHistory.getAmount());
-                                        }
-                                        bankAccountRepository.save(balanceHistory.getBankAccount());
-                                    }
-                                    balanceHistoryRepository.save(balanceHistory);
-                                }
-                        ));
+        List<BankAccount> bankAccountList = userRepository.findTopByOrderByIdAsc().getBankAccountList();
 
-
-        userRepository.findTopByOrderByIdAsc().getBankAccountList()
-                .forEach(bankAccount -> bankAccount.getBalanceHistories().stream()
-                        .filter(balanceHistory -> balanceHistory.getRepeatInterval() == 0)
-                        .filter(balanceHistory -> balanceHistory.getBillingDate().before(currentDate))
-                        .filter(balanceHistory -> !balanceHistory.isPaid())
-                        .forEach(balanceHistory -> {
+        bankAccountList.forEach(bankAccount -> {
+            bankAccount.getBalanceHistories().stream()
+                    .filter(balanceHistory -> balanceHistory.getRepeatInterval() != 0)
+                    .filter(balanceHistory -> balanceHistory.getEndBillingDate().after(currentDate))
+                    .filter(balanceHistory -> balanceHistory.getBillingDate().before(currentDate))
+                    .forEach(balanceHistory -> {
+                                while (balanceHistory.getBillingDate().before(currentDate)) {
                                     if(balanceHistory.getType() == ActionType.Wydatek) {
                                         balanceHistory.getBankAccount().subtractBalance(balanceHistory.getAmount());
                                     }
                                     if(balanceHistory.getType() == ActionType.Przychód) {
                                         balanceHistory.getBankAccount().addBalance(balanceHistory.getAmount());
                                     }
-                                    bankAccountRepository.save(balanceHistory.getBankAccount());
-                                    balanceHistory.setPaid(true);
-                                    balanceHistoryRepository.save(balanceHistory);
+                                    balanceHistory.addToStartBillingDate();
                                 }
-                        ));
+                                balanceHistoryRepository.save(balanceHistory);
+                            }
+                    );
+            bankAccountRepository.save(bankAccount);
+        });
+
+
+        bankAccountList.forEach(bankAccount -> { bankAccount.getBalanceHistories().stream()
+                    .filter(balanceHistory -> balanceHistory.getRepeatInterval() == 0)
+                    .filter(balanceHistory -> balanceHistory.getBillingDate().before(currentDate))
+                    .filter(balanceHistory -> !balanceHistory.isPaid())
+                    .forEach(balanceHistory -> {
+                            if(balanceHistory.getType() == ActionType.Wydatek) {
+                                balanceHistory.getBankAccount().subtractBalance(balanceHistory.getAmount());
+                            }
+                            if(balanceHistory.getType() == ActionType.Przychód) {
+                                balanceHistory.getBankAccount().addBalance(balanceHistory.getAmount());
+                            }
+                            balanceHistory.setPaid(true);
+                            balanceHistoryRepository.save(balanceHistory);
+                        }
+                    );
+            bankAccountRepository.save(bankAccount);
+        });
     }
 
 }
