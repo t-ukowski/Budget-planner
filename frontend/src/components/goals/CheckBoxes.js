@@ -1,24 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import AddSubgoalModal from '../modals/AddSubgoalModal';
 import AddIcon from '@mui/icons-material/AddBox';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import axios from 'axios';
 import { Button } from '@mui/material';
 import EditGoalModal from '../modals/EditGoalModal';
 import { buttonStyleSmall } from '../../styles/buttonStyle';
 import { buttonStyleVerySmall } from '../../styles/buttonStyle';
 
-export default function CheckBoxes({ parentGoal }) {
+export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [subgoals, setSubgoals] = useState(parentGoal.subgoals);
   const [parent, setParent] = useState(parentGoal.name);
   const [deleted, setDeleted] = useState(false);
   const [realizationDate, setRealizationDate] = useState('');
+  const [accounts, setAccounts] = useState('');
+  const [accountName, setAccountName] = useState('');
+  // const [achieved, setAchieved] = useState(false);
+
+  const [showSubgoals, setShowSubgoals] = useState(false);
 
   function openModal() {
     setIsOpen(true);
@@ -26,6 +34,7 @@ export default function CheckBoxes({ parentGoal }) {
 
   function closeModal() {
     setIsOpen(false);
+    setUpdateNeeded(!updateNeeded);
   }
 
   function openEditModal() {
@@ -81,6 +90,12 @@ export default function CheckBoxes({ parentGoal }) {
             setParent(mainGoal.goalName);
           }
         });
+      fetch('http://localhost:8080/AccountsList')
+        .then((res) => res.json())
+        .then((json) => {
+          setAccounts(json.map((obj) => obj.accountName));
+        });
+      console.log(updateNeeded);
     }
   }, [modalIsOpen, editModalIsOpen]);
 
@@ -93,6 +108,22 @@ export default function CheckBoxes({ parentGoal }) {
       .catch((err) => console.log(err.data));
     setDeleted(true);
   }
+
+  function handleShowSubGoals() {
+    setShowSubgoals(!showSubgoals);
+  }
+
+  /*
+  function handleTick() {
+    axios({
+      method: 'put',
+      url: `http://localhost:8080/goals/tick/${parentGoal.id}`
+    })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err.data));
+    setAchieved(!achieved);
+  }
+  */
 
   const children = (
     <Box sx={{ display: 'flex', flexDirection: 'column', ml: 3 }}>
@@ -133,6 +164,8 @@ export default function CheckBoxes({ parentGoal }) {
                   }
                 }}
                 checked={!subgoals.map((s) => s.achieved).includes(false)}
+                disabled={true}
+                // onChange={handleTick}
               />
             }
           />
@@ -142,13 +175,51 @@ export default function CheckBoxes({ parentGoal }) {
           <Button sx={buttonStyleSmall} className="iconButton small" onClick={handleDelete}>
             <DeleteIcon className="icon" />
           </Button>
-          {realizationDate !== '' && (
-            <div className="text-base">Najbliższa możliwa data realizacji: {realizationDate}</div>
-          )}
-          {children}
-          <Button sx={buttonStyleVerySmall} className="iconButton small" onClick={openModal}>
-            <AddIcon className="icon" />
+          <Button sx={buttonStyleSmall} className="iconButton small" onClick={handleShowSubGoals}>
+            <KeyboardArrowDownIcon className="icon" />
           </Button>
+          {showSubgoals && (
+            <>
+              <Autocomplete
+                name="account"
+                id="select-account"
+                className="autocomplete"
+                value={accountName}
+                onChange={(event, newAccount) => {
+                  setAccountName(newAccount);
+                }}
+                sx={{ width: 210 }}
+                options={accounts}
+                isOptionEqualToValue={(option, value) => option === value || value === ''}
+                autoHighlight
+                renderOption={(props, option) => (
+                  <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                    {option}
+                  </Box>
+                )}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    margin="normal"
+                    label="Konto"
+                    inputProps={{
+                      ...params.inputProps,
+                      autoComplete: 'new-password' // disable autocomplete and autofill
+                    }}
+                  />
+                )}
+              />
+              {realizationDate !== '' && (
+                <div className="text-base">
+                  Najbliższa możliwa data realizacji: {realizationDate}
+                </div>
+              )}
+              {children}
+              <Button sx={buttonStyleVerySmall} className="iconButton small" onClick={openModal}>
+                <AddIcon className="icon" />
+              </Button>
+            </>
+          )}
           <AddSubgoalModal modalIsOpen={modalIsOpen} closeModal={closeModal} parent={parent} />
           <EditGoalModal
             modalIsOpen={editModalIsOpen}

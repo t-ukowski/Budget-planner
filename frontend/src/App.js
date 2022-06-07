@@ -34,7 +34,7 @@ function App() {
         </Page>
         <Element id="objectives"></Element>
         <Page classNames="page-long">
-          <Goals />
+          <Goals updateNeeded={updateNeeded} setUpdateNeeded={setUpdateNeeded} />
         </Page>
         <Element id="settings"></Element>
         <Page>

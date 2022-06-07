@@ -1,9 +1,15 @@
 .text-base {
     font-family: $basic-font;
-    display: inline-flex;
-    padding-left: 2%;
+    font-style: italic;
+    display: block;
+    padding-left: 25px;
 }
 
 .goalTitleCard {
     display: flex;
+}
+
+.autocomplete {
+    display: block;
+    padding-left: 25px;
 }
