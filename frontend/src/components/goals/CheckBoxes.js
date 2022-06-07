@@ -112,7 +112,6 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
         .then((json) => {
           setAccounts(json);
         });
-      console.log(sum);
     }
   }, [modalIsOpen, editModalIsOpen, updateNeeded]);
 
@@ -206,7 +205,7 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
           </Button>
           {showSubgoals && (
             <>
-              <div className="text-base">
+              <div className="text-base scoreboard">
                 Pozostało jeszcze {paymentLeft} PLN z {sum} PLN
               </div>
               <Autocomplete
