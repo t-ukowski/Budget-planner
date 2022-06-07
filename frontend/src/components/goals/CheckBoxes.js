@@ -24,9 +24,12 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
   const [realizationDate, setRealizationDate] = useState('');
   const [accounts, setAccounts] = useState('');
   const [accountName, setAccountName] = useState('');
+  const [accountNames, setAccountNames] = useState('');
   // const [achieved, setAchieved] = useState(false);
 
   const [showSubgoals, setShowSubgoals] = useState(false);
+  const [affordable, setAffordable] = useState(false);
+  const [sum, setSum] = useState(0);
 
   function openModal() {
     setIsOpen(true);
@@ -45,6 +48,14 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
     setEditModalIsOpen(false);
   }
 
+  function handleAccountSelection() {
+    setAffordable(false);
+    var result = accounts.filter((acc) => {
+      return acc.accountName === accountName;
+    });
+    if (result.accountBalance >= 0) setAffordable(true);
+  }
+
   useEffect(() => {
     if (!deleted) {
       fetch('http://localhost:8080/GoalRealization')
@@ -58,6 +69,7 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
             Object.prototype.hasOwnProperty.call(mainGoal.goal, 'goalName')
           ) {
             setSubgoals(mainGoal.goal.goalElementList);
+            setSum(subgoals.reduce((accumulator, curr) => accumulator + curr));
             setParent(mainGoal.goal.goalName);
             if (Object.prototype.hasOwnProperty.call(mainGoal, 'date')) {
               setRealizationDate(mainGoal.date);
@@ -93,9 +105,17 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
       fetch('http://localhost:8080/AccountsList')
         .then((res) => res.json())
         .then((json) => {
-          setAccounts(json.map((obj) => obj.accountName));
+          setAccountNames(json.map((obj) => obj.accountName));
+        });
+      fetch('http://localhost:8080/AccountsList')
+        .then((res) => res.json())
+        .then((json) => {
+          setAccounts(json);
         });
       console.log(updateNeeded);
+      console.log(accountNames);
+      console.log(accounts);
+      console.log(sum);
     }
   }, [modalIsOpen, editModalIsOpen]);
 
@@ -164,7 +184,7 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
                   }
                 }}
                 checked={!subgoals.map((s) => s.achieved).includes(false)}
-                disabled={true}
+                disabled={affordable}
                 // onChange={handleTick}
               />
             }
@@ -187,9 +207,10 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
                 value={accountName}
                 onChange={(event, newAccount) => {
                   setAccountName(newAccount);
+                  handleAccountSelection();
                 }}
                 sx={{ width: 210 }}
-                options={accounts}
+                options={accountNames}
                 isOptionEqualToValue={(option, value) => option === value || value === ''}
                 autoHighlight
                 renderOption={(props, option) => (
