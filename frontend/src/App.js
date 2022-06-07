@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './styles/main.scss';
 import Sidebar from './components/sidebar/Sidebar';
-import Balance from './components/scoreboards/Balance';
+import MainPage from './components/main_page/MainPage';
 import Title from './components/page/Title';
 import Page from './components/page/Page';
 import { Element, Link } from 'react-scroll';
@@ -22,7 +22,7 @@ function App() {
         <Element id="home"></Element>
         <Page>
           <Title text="Budget planner" />
-          <Balance updateNeeded={updateNeeded} />
+          <MainPage updateNeeded={updateNeeded} />
         </Page>
         <Element id="account"></Element>
         <Page>

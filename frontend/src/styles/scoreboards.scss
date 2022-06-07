@@ -1,16 +1,37 @@
 .scoreboard {
     background-color: $bp-white;
     border-radius: $border-radius-small-objects;
+    margin: 22px;
+    padding: 11px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 
     &.large {
-        width: $large-box-width;
-        height: $large-box-height;
+        max-width: $large-box-width;
+        max-height: $large-box-height;
+        flex-grow: 1;
     }
 
     &.small {
         width: $small-box-width;
-        height: $small-box-height;
+        max-height: $small-box-height;
     }
+}
+
+.income_scoreboards {
+    display: flex;
+    max-height: $large-box-height;
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+.main_page {
+    display: flex;
+    flex-direction: column;
+    height: 80%;
 }
 
 .heading1 {
@@ -31,5 +52,47 @@
     line-height: $line-height-base;
 
     color: $bp-black;
-    padding-top: $base-padding;
+}
+
+.more_button_container {
+    font-family: $basic-font;
+    font-style: normal;
+    font-weight: $font-weight-bold;
+
+    flex-shrink: 0;
+    
+    cursor: pointer;
+    :hover {
+        color: $bp-blue-highlighted;
+    }
+}
+
+ul.incomes_list {
+    font-family: $basic-font;
+    font-style: normal;
+    list-style-type: none;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    padding: 0;
+    margin: 2px;
+    margin-right: 10px;
+}
+
+ul.goals_list {
+    font-family: $basic-font;
+    font-size: $font-size-small;
+    font-style: normal;
+    list-style-type: none;
+    display: grid;
+    grid-template-columns: auto auto;
+    padding: 0;
+    margin: 2px;
+    margin-right: 100px;
+}
+.li_goal {
+    font-weight: $font-weight-bold;
+}
+
+.content {
+    flex-grow: 1;
 }
