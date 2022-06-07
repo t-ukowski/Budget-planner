@@ -66,3 +66,29 @@
         color: $bp-blue-highlighted;
     }
 }
+
+ul.incomes_list {
+    font-family: $basic-font;
+    font-style: normal;
+    list-style-type: none;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    padding: 0;
+    margin: 2px;
+    margin-right: 10px;
+}
+
+ul.goals_list {
+    font-family: $basic-font;
+    font-style: normal;
+    list-style-type: none;
+    display: grid;
+    grid-template-columns: auto auto;
+    padding: 0;
+    margin: 2px;
+    margin-right: 100px;
+}
+
+.content {
+    flex-grow: 1;
+}
