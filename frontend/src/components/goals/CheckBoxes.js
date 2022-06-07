@@ -104,17 +104,21 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
     setUpdateNeeded(!updateNeeded);
   }
 
-  function handleElementTick() {
-    const account = accounts.find((acc) => {
-      return acc.accountName === selectedAccountName;
-    });
-    axios({
-      method: 'put',
-      url: `http://localhost:8080/goals/goalElement/tick/${parentGoal.id}/${account.id}`
-    })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err.data));
-    setUpdateNeeded(!updateNeeded);
+  function handleElementTick(subgoalId) {
+    if (accounts !== '') {
+      const account = accounts.find((acc) => {
+        return acc.accountName === selectedAccountName;
+      });
+      if (account != undefined) {
+        axios({
+          method: 'put',
+          url: `http://localhost:8080/goals/goalElement/tick/${subgoalId}/${account.id}`
+        })
+          .then((res) => console.log(res))
+          .catch((err) => console.log(err.data));
+        setUpdateNeeded(!updateNeeded);
+      }
+    }
   }
 
   useEffect(() => {
@@ -191,7 +195,7 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
                   }
                 }}
                 checked={subgoal.achieved}
-                onChange={handleElementTick}
+                onClick={() => handleElementTick(subgoal.id)}
                 disabled={!isGoalElementAffordable(subgoal.cost)}
               />
             }
