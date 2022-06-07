@@ -21,7 +21,6 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
   const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const [subgoals, setSubgoals] = useState(parentGoal.subgoals);
   const [parent, setParent] = useState(parentGoal.name);
-  const [deleted, setDeleted] = useState(false);
   const [realizationDate, setRealizationDate] = useState('');
   const [accounts, setAccounts] = useState('');
   const [selectedAccountName, setSelectedAccountName] = useState('');
@@ -31,6 +30,8 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
   const [affordable, setAffordable] = useState(false);
   const [sum, setSum] = useState(0);
   const [paymentLeft, setPaymentLeft] = useState(0);
+
+  const [deleted, setDeleted] = useState(false);
 
   function openModal() {
     setIsOpen(true);

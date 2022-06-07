@@ -26,7 +26,7 @@ export default function Goals({ updateNeeded, setUpdateNeeded }) {
     fetch('http://localhost:8080/UncompletedGoals')
       .then((res) => res.json())
       .then((json) => setUncompletedGoals(json));
-  }, [modalIsOpen]);
+  }, [modalIsOpen, updateNeeded]);
 
   return (
     <>
