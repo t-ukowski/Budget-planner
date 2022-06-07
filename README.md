@@ -2,6 +2,19 @@
 Frontend + backend of web application for income + expenses planner
 
 
+### How to run the app with docker-compose:
+```
+cd backend
+mvnw clean install
+docker-compose build
+docker-compose up
+```
+
+To quit app:
+```
+docker-compose down
+```
+
 w application.properties nalezy ustawic:
 
 spring.datasource.url=
