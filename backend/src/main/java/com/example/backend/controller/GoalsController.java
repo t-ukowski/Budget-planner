@@ -122,6 +122,16 @@ public class GoalsController {
                 tick(subgoal, accountId);
             }
         }
-        return ResponseEntity.ok("Goal ticked and destroyed");
+        return ResponseEntity.ok("Goal ticked ");
+    }
+
+    @PutMapping("/untick/{id}/{accountId}")
+    public ResponseEntity<?> untickGoal(@PathVariable Long id, @PathVariable Long accountId){
+        Goal goal = goalRepository.getById(id);
+        List<GoalElement> subgoals = goalElementRepository.findGoalElementsByGoal(goal);
+        for(GoalElement subgoal: subgoals){
+            tick(subgoal, accountId);
+        }
+        return ResponseEntity.ok("Goal unticked ");
     }
 }
