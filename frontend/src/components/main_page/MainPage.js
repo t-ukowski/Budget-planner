@@ -79,7 +79,7 @@ function MainPage({ updateNeeded }) {
           console.log(i);
           tempGoalsPanel.push(
             <li key={i}>
-              <b>{goal.goal.goalName}</b>
+              <div className="li_goal">{goal.goal.goalName}</div>
             </li>
           );
           tempGoalsPanel.push(

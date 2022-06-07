@@ -80,6 +80,7 @@ ul.incomes_list {
 
 ul.goals_list {
     font-family: $basic-font;
+    font-size: $font-size-small;
     font-style: normal;
     list-style-type: none;
     display: grid;
@@ -87,6 +88,9 @@ ul.goals_list {
     padding: 0;
     margin: 2px;
     margin-right: 100px;
+}
+.li_goal {
+    font-weight: $font-weight-bold;
 }
 
 .content {
