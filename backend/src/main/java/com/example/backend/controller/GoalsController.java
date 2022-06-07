@@ -107,6 +107,7 @@ public class GoalsController {
     }
 
     @PutMapping("/goalElement/tick/{id}/{accountId}")
+    @CrossOrigin
     public ResponseEntity<?> tickGoalElement(@PathVariable Long id, @PathVariable Long accountId){
         GoalElement goal = goalElementRepository.getById(id);
         tick(goal, accountId);
@@ -114,6 +115,7 @@ public class GoalsController {
     }
 
     @PutMapping("/tick/{id}/{accountId}")
+    @CrossOrigin
     public ResponseEntity<?> tickGoal(@PathVariable Long id, @PathVariable Long accountId){
         Goal goal = goalRepository.getById(id);
         List<GoalElement> subgoals = goalElementRepository.findGoalElementsByGoal(goal);

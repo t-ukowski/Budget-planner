@@ -1,9 +1,19 @@
 .text-base {
     font-family: $basic-font;
-    display: inline-flex;
-    padding-left: 2%;
+    display: block;
+    margin-left: 25px;
+    padding: 5px;
+    &.italic {
+        font-style: italic;
+    }
+    max-width: fit-content;
 }
 
 .goalTitleCard {
     display: flex;
+}
+
+.autocomplete {
+    display: block;
+    padding-left: 25px;
 }

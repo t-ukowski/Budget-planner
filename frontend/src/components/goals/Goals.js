@@ -5,7 +5,7 @@ import AddIcon from '@mui/icons-material/AddBox';
 import Title from '../page/Title';
 import AddGoalModal from '../modals/AddGoalModal';
 
-export default function Goals() {
+export default function Goals({ updateNeeded, setUpdateNeeded }) {
   const [completedGoals, setCompletedGoals] = useState([]);
   const [uncompletedGoals, setUncompletedGoals] = useState([]);
 
@@ -26,7 +26,7 @@ export default function Goals() {
     fetch('http://localhost:8080/UncompletedGoals')
       .then((res) => res.json())
       .then((json) => setUncompletedGoals(json));
-  }, [modalIsOpen]);
+  }, [modalIsOpen, updateNeeded]);
 
   return (
     <>
@@ -38,9 +38,15 @@ export default function Goals() {
       </div>
       <AddGoalModal modalIsOpen={modalIsOpen} closeModal={closeModal} />
       <div className="heading2">W trakcie realizacji</div>
-      <GoalsTable goalsData={uncompletedGoals}></GoalsTable>
+      <GoalsTable
+        goalsData={uncompletedGoals}
+        updateNeeded={updateNeeded}
+        setUpdateNeeded={setUpdateNeeded}></GoalsTable>
       <div className="heading2">Zrealizowane</div>
-      <GoalsTable goalsData={completedGoals}></GoalsTable>
+      <GoalsTable
+        goalsData={completedGoals}
+        updateNeeded={updateNeeded}
+        setUpdateNeeded={setUpdateNeeded}></GoalsTable>
     </>
   );
 }
