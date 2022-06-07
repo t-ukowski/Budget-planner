@@ -1,6 +1,22 @@
 version: '3.7'
 
 services:
+  # Database Service (Mysql)
+  db:
+    image: mysql:8
+    ports:
+      - "3366:3366"
+    security_opt:
+      - seccomp:unconfined
+    environment:
+      MYSQL_DATABASE: iodb
+      MYSQL_PASSWORD: admin123
+      MYSQL_ROOT_PASSWORD: admin123
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - backend
+  
   # App backend service
   backend:
     build:
@@ -31,22 +47,6 @@ services:
       - backend
     networks:
       - frontend
-
-  # Database Service (Mysql)
-  db:
-    image: mysql:8
-    ports:
-      - "3366:3366"
-    security_opt:
-      - seccomp:unconfined
-    environment:
-      MYSQL_DATABASE: iodb
-      MYSQL_PASSWORD: admin123
-      MYSQL_ROOT_PASSWORD: admin123
-    volumes:
-      - db-data:/var/lib/mysql
-    networks:
-      - backend
   
 # Volumes
 volumes:
