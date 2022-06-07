@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Math.abs;
+
 @Controller
 public class ApiController {
 
@@ -136,21 +138,6 @@ public class ApiController {
         User user = userRepository.findTopByOrderByIdAsc();
         bankAccount.setUser(user);
         bankAccountRepository.save(bankAccount);
-
-        /*
-        java.sql.Date action_date = new java.sql.Date(System.currentTimeMillis());
-        BalanceHistory account_change_log = new BalanceHistory(bankAccount,
-                action_date,
-                action_date,
-                0,
-                bankAccount.getAccountBalance(),
-                "account creation",
-                ActionType.Przychód,
-                bankAccount.getUser().getName());
-        balanceHistoryRepository.save(account_change_log);
-        account_change_log.setPaid(true);
-
-         */
         return new ResponseEntity("Account created",HttpStatus.CREATED);
     }
 
@@ -158,17 +145,6 @@ public class ApiController {
     @DeleteMapping("/deleteAccount/{id}")
     public ResponseEntity deleteAccount(@PathVariable Long id){
         BankAccount bankAccount = bankAccountRepository.getById(id);
-        java.sql.Date action_date = new java.sql.Date(System.currentTimeMillis());
-        BalanceHistory account_change_log = new BalanceHistory(bankAccount,
-                action_date,
-                action_date,
-                0,
-                bankAccount.getAccountBalance(),
-                "account deleting",
-                ActionType.Wydatek,
-                bankAccount.getUser().getName());
-        balanceHistoryRepository.save(account_change_log);
-
         bankAccountRepository.deleteById(id);
         return new ResponseEntity("Account deleted", HttpStatus.ACCEPTED);
     }
@@ -197,7 +173,7 @@ public class ApiController {
                 action_date,
                 action_date,
                 0,
-                accountBalance,
+                abs(diff),
                 "account update",
                 what,
                 bankAccount.getUser().getName());
