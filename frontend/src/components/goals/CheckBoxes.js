@@ -25,7 +25,7 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
   const [accounts, setAccounts] = useState('');
   const [accountName, setAccountName] = useState('');
   const [accountNames, setAccountNames] = useState('');
-  // const [achieved, setAchieved] = useState(false);
+  const [achieved, setAchieved] = useState(false);
 
   const [showSubgoals, setShowSubgoals] = useState(false);
   const [affordable, setAffordable] = useState(false);
@@ -54,7 +54,9 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
     var result = accounts.filter((acc) => {
       return acc.accountName === accountName;
     });
-    if (result.accountBalance >= 0) setAffordable(true);
+    if (result[0].accountBalance >= paymentLeft) setAffordable(true);
+    setUpdateNeeded(!updateNeeded);
+    console.log(affordable);
   }
 
   useEffect(() => {
@@ -138,17 +140,19 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
     );
   }
 
-  /*
   function handleTick() {
+    const account = accounts.filter((acc) => {
+      return acc.accountName === accountName;
+    });
     axios({
       method: 'put',
-      url: `http://localhost:8080/goals/tick/${parentGoal.id}`
+      url: `http://localhost:8080/goals/tick/${parentGoal.id}/${account[0].id}`
     })
       .then((res) => console.log(res))
       .catch((err) => console.log(err.data));
     setAchieved(!achieved);
+    setUpdateNeeded(!updateNeeded);
   }
-  */
 
   const children = (
     <Box sx={{ display: 'flex', flexDirection: 'column', ml: 3 }}>
@@ -189,8 +193,8 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
                   }
                 }}
                 checked={!subgoals.map((s) => s.achieved).includes(false)}
-                disabled={affordable}
-                // onChange={handleTick}
+                disabled={!affordable || accountName === ''}
+                onChange={handleTick}
               />
             }
           />
