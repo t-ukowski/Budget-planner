@@ -95,6 +95,15 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
     const account = accounts.find((acc) => {
       return acc.accountName === selectedAccountName;
     });
+    if (!subgoals.map((s) => s.achieved).includes(false)) {
+      axios({
+        method: 'put',
+        url: `http://localhost:8080/goals/untick/${parentGoal.id}/${account.id}`
+      })
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err.data));
+      setUpdateNeeded(!updateNeeded);
+    }
     axios({
       method: 'put',
       url: `http://localhost:8080/goals/tick/${parentGoal.id}/${account.id}`
