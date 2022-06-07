@@ -69,7 +69,6 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
             Object.prototype.hasOwnProperty.call(mainGoal.goal, 'goalName')
           ) {
             setSubgoals(mainGoal.goal.goalElementList);
-            setSum(subgoals.reduce((accumulator, curr) => accumulator + curr));
             setParent(mainGoal.goal.goalName);
             if (Object.prototype.hasOwnProperty.call(mainGoal, 'date')) {
               setRealizationDate(mainGoal.date);
@@ -112,12 +111,9 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
         .then((json) => {
           setAccounts(json);
         });
-      console.log(updateNeeded);
-      console.log(accountNames);
-      console.log(accounts);
       console.log(sum);
     }
-  }, [modalIsOpen, editModalIsOpen]);
+  }, [modalIsOpen, editModalIsOpen, updateNeeded]);
 
   function handleDelete() {
     axios({
@@ -131,6 +127,9 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
 
   function handleShowSubGoals() {
     setShowSubgoals(!showSubgoals);
+    setSum(
+      subgoals.map((subgoal) => subgoal.cost).reduce((accumulator, curr) => accumulator + curr)
+    );
   }
 
   /*
@@ -189,6 +188,7 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
               />
             }
           />
+          <div className="text-sum">{sum} PLN</div>
           <Button sx={buttonStyleSmall} className="iconButton small" onClick={openEditModal}>
             <EditIcon className="icon" />
           </Button>
@@ -200,6 +200,7 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
           </Button>
           {showSubgoals && (
             <>
+              <div className="text-sum">{sum} PLN</div>
               <Autocomplete
                 name="account"
                 id="select-account"
