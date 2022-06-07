@@ -72,11 +72,15 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
     setSum(
       subgoals.map((subgoal) => subgoal.cost).reduce((accumulator, curr) => accumulator + curr)
     );
+    const subGoalsLeft = subgoals.filter((subgoal) => !subgoal.achieved).length > 0;
+
     setPaymentLeft(
-      subgoals
-        .filter((subgoal) => !subgoal.achieved)
-        .map((subgoal) => subgoal.cost)
-        .reduce((accumulator, curr) => accumulator + curr)
+      subGoalsLeft
+        ? subgoals
+            .filter((subgoal) => !subgoal.achieved)
+            .map((subgoal) => subgoal.cost)
+            .reduce((accumulator, curr) => accumulator + curr)
+        : 0
     );
   }
 
