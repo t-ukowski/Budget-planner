@@ -24,7 +24,7 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
   const [deleted, setDeleted] = useState(false);
   const [realizationDate, setRealizationDate] = useState('');
   const [accounts, setAccounts] = useState('');
-  const [accountName, setAccountName] = useState('');
+  const [selectedAccountName, setSelectedAccountName] = useState('');
   const [accountNames, setAccountNames] = useState('');
 
   const [showSubgoals, setShowSubgoals] = useState(false);
@@ -49,14 +49,47 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
     setEditModalIsOpen(false);
   }
 
-  function handleAccountSelection() {
+  function handleAccountSelection(newAccount) {
     setAffordable(false);
-    var result = accounts.find((acc) => {
-      return acc.accountName === accountName;
-    });
-    if (result.accountBalance >= paymentLeft) setAffordable(true);
+    const found = accounts.filter(({ accountName }) => accountName === newAccount);
+    if (found[0].accountBalance >= paymentLeft) setAffordable(true);
     setUpdateNeeded(!updateNeeded);
-    console.log(affordable);
+  }
+
+  function handleDelete() {
+    axios({
+      method: 'delete',
+      url: `http://localhost:8080/goals/${parentGoal.id}`
+    })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err.data));
+    setDeleted(true);
+  }
+
+  function handleShowSubGoals() {
+    setShowSubgoals(!showSubgoals);
+    setSum(
+      subgoals.map((subgoal) => subgoal.cost).reduce((accumulator, curr) => accumulator + curr)
+    );
+    setPaymentLeft(
+      subgoals
+        .filter((subgoal) => !subgoal.achieved)
+        .map((subgoal) => subgoal.cost)
+        .reduce((accumulator, curr) => accumulator + curr)
+    );
+  }
+
+  function handleTick() {
+    const account = accounts.find((acc) => {
+      return acc.accountName === selectedAccountName;
+    });
+    axios({
+      method: 'put',
+      url: `http://localhost:8080/goals/tick/${parentGoal.id}/${account.id}`
+    })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err.data));
+    setUpdateNeeded(!updateNeeded);
   }
 
   useEffect(() => {
@@ -117,42 +150,6 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
     }
   }, [modalIsOpen, editModalIsOpen, updateNeeded]);
 
-  function handleDelete() {
-    axios({
-      method: 'delete',
-      url: `http://localhost:8080/goals/${parentGoal.id}`
-    })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err.data));
-    setDeleted(true);
-  }
-
-  function handleShowSubGoals() {
-    setShowSubgoals(!showSubgoals);
-    setSum(
-      subgoals.map((subgoal) => subgoal.cost).reduce((accumulator, curr) => accumulator + curr)
-    );
-    setPaymentLeft(
-      subgoals
-        .filter((subgoal) => !subgoal.achieved)
-        .map((subgoal) => subgoal.cost)
-        .reduce((accumulator, curr) => accumulator + curr)
-    );
-  }
-
-  function handleTick() {
-    const account = accounts.find((acc) => {
-      return acc.accountName === accountName;
-    });
-    axios({
-      method: 'put',
-      url: `http://localhost:8080/goals/tick/${parentGoal.id}/${account.id}`
-    })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err.data));
-    setUpdateNeeded(!updateNeeded);
-  }
-
   const children = (
     <Box sx={{ display: 'flex', flexDirection: 'column', ml: 3 }}>
       {subgoals.map((subgoal) => {
@@ -192,7 +189,7 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
                   }
                 }}
                 checked={!subgoals.map((s) => s.achieved).includes(false)}
-                disabled={!affordable || accountName === ''}
+                disabled={!affordable || selectedAccountName === ''}
                 onChange={handleTick}
               />
             }
@@ -221,13 +218,13 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
                     Pozostało jeszcze {paymentLeft} PLN z {sum} PLN
                   </div>
                   <Autocomplete
-                    name="account"
+                    name="select-account"
                     id="select-account"
                     className="autocomplete"
-                    value={accountName}
+                    value={selectedAccountName}
                     onChange={(event, newAccount) => {
-                      setAccountName(newAccount);
-                      handleAccountSelection();
+                      setSelectedAccountName(newAccount);
+                      handleAccountSelection(newAccount);
                     }}
                     sx={{ width: 210 }}
                     options={accountNames}

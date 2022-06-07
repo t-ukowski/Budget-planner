@@ -124,6 +124,6 @@ public class GoalsController {
                 tick(subgoal, accountId);
             }
         }
-        return ResponseEntity.ok("Goal ticked and destroyed");
+        return ResponseEntity.ok("Goal ticked");
     }
 }
