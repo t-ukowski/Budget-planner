@@ -1,13 +1,10 @@
 .text-base {
     font-family: $basic-font;
-    font-style: italic;
     display: block;
     padding-left: 25px;
-}
-
-.text-sum {
-    font-family: $basic-font;
-    display: inline;
+    &.italic {
+        font-style: italic;
+    }
 }
 
 .goalTitleCard {

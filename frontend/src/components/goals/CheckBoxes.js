@@ -30,6 +30,7 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
   const [showSubgoals, setShowSubgoals] = useState(false);
   const [affordable, setAffordable] = useState(false);
   const [sum, setSum] = useState(0);
+  const [paymentLeft, setPaymentLeft] = useState(0);
 
   function openModal() {
     setIsOpen(true);
@@ -130,6 +131,12 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
     setSum(
       subgoals.map((subgoal) => subgoal.cost).reduce((accumulator, curr) => accumulator + curr)
     );
+    setPaymentLeft(
+      subgoals
+        .filter((subgoal) => !subgoal.achieved)
+        .map((subgoal) => subgoal.cost)
+        .reduce((accumulator, curr) => accumulator + curr)
+    );
   }
 
   /*
@@ -188,7 +195,6 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
               />
             }
           />
-          <div className="text-sum">{sum} PLN</div>
           <Button sx={buttonStyleSmall} className="iconButton small" onClick={openEditModal}>
             <EditIcon className="icon" />
           </Button>
@@ -200,7 +206,9 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
           </Button>
           {showSubgoals && (
             <>
-              <div className="text-sum">{sum} PLN</div>
+              <div className="text-base">
+                Pozostało jeszcze {paymentLeft} PLN z {sum} PLN
+              </div>
               <Autocomplete
                 name="account"
                 id="select-account"
@@ -232,7 +240,7 @@ export default function CheckBoxes({ parentGoal, updateNeeded, setUpdateNeeded }
                 )}
               />
               {realizationDate !== '' && (
-                <div className="text-base">
+                <div className="text-base italic">
                   Najbliższa możliwa data realizacji: {realizationDate}
                 </div>
               )}
