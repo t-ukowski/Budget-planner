@@ -1,17 +1,17 @@
 # Budget-planner
 Web application for income + expenses planner.
 
+### Presentation
 https://prezi.com/view/g7zzhV9vtOOGQUXPgk4Q/
 
-### How to run the app with docker-compose:
+### Running the app
+#### Prerequisites
+You need to have Docker installed. Installation process is described [here](https://docs.docker.com/compose/install/).
+
+#### Docker
 ```
 git clone https://github.com/t-ukowski/Budget-planner.git
-cd Budget-planner/backend
-mvnw clean install
-To run the app you need to have installed Docker from here: https://docs.docker.com/compose/install/
-
-### How to run the app with docker-compose:
-```
+cd Budget-planner
 docker-compose build
 docker-compose up
 ```
