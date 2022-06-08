@@ -6,24 +6,6 @@ export default function BalancePieChart() {
   const [isMouseInside, setIsMouseInside] = useState(false);
   const [accountsList, setAccountsList] = useState([]);
 
-  /*
-  useEffect(() => {
-    fetch('http://localhost:8080/AccountsList')
-      .then((res) => res.json())
-      .then((json) => setAccountsList(json))
-      .then(
-        accountsList.map((item, index) => {
-          let insert = {
-            color: colors[index],
-            title: `${item.accountName} ${item.accountBalance}`,
-            value: parseInt(`${item.accountBalance}`)
-          };
-          chartData.push(insert);
-        })
-      )
-      .then(accountsList.forEach((item) => (sum = sum + item.accountBalance)));
-  });
-*/
   let sum = 0.0;
   let chartData = [];
 
@@ -45,7 +27,7 @@ export default function BalancePieChart() {
     let insert = {
       color: piechartColors[index],
       title: `${item.accountName} ${item.accountBalance}`,
-      value: parseInt(`${item.accountBalance}`)
+      value: Math.abs(parseInt(`${item.accountBalance}`))
     };
 
     chartData.push(insert);
