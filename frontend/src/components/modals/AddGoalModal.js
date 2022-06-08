@@ -68,11 +68,12 @@ export default function AddGoalModal({ modalIsOpen, closeModal }) {
             />
             <br />
             <br />
-            <input className="submitButton" type="submit" value="Dodaj" />
+            <input disabled={cost < 0} className="submitButton" type="submit" value="Dodaj" />
           </form>
         )}
         {success && 'Dodano cel'}
         {sent && !success && 'Dodawanie celu nie powiodło się'}
+        {cost < 0 && 'Cel nie może mieć kwoty mniejszej niż 0'}
       </div>
     </Modal>
   );

@@ -21,18 +21,6 @@ export default function Accounts({ updateNeeded, setUpdateNeeded }) {
     setUpdateNeeded(!updateNeeded);
   }
 
-  /*
-  function addColor() {
-    const accountsWithColors = accountsList.map(({ id, accountBalance, accountName }, index) => ({
-      id: id,
-      accountBalance: accountBalance,
-      accountName: accountName,
-      color: piechartColors[index]
-    }));
-    setAccountsList(accountsWithColors);
-  }
-*/
-
   useEffect(() => {
     fetch('http://localhost:8080/AccountsList')
       .then((res) => res.json())
@@ -46,17 +34,21 @@ export default function Accounts({ updateNeeded, setUpdateNeeded }) {
           }))
         );
       });
-    // .then(addColor());
   }, [updateNeeded]);
 
   return (
     <>
       <Title text="Saldo" />
-      <AddAccountModal modalIsOpen={modalIsOpen} closeModal={closeModal} />
+      <AddAccountModal
+        modalIsOpen={modalIsOpen}
+        closeModal={closeModal}
+        updateNeeded={updateNeeded}
+        setUpdateNeeded={setUpdateNeeded}
+      />
       <table>
         <tbody>
           <tr>
-            <th>Konto</th>
+            <th>Kolor</th>
             <th>Konto</th>
             <th>Saldo</th>
           </tr>
@@ -75,9 +67,15 @@ export default function Accounts({ updateNeeded, setUpdateNeeded }) {
       </table>
       <br />
       <br />
-      <Button className="iconButton small" sx={addButtonStyleSmall} onClick={openModal}>
-        <AddIcon className="icon" />
-      </Button>
+      {accountsList.length < 10 && (
+        <Button className="iconButton small" sx={addButtonStyleSmall} onClick={openModal}>
+          <AddIcon className="icon" />
+        </Button>
+      )}
+      {accountsList.length === 10 && (
+        <div className="text-base italic marg">Osiągnięto maksymalną liczbę kont</div>
+      )}
+
       <BalancePieChart />
     </>
   );
