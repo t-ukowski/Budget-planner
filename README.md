@@ -1,6 +1,7 @@
 # Budget-planner
 Frontend + backend of web application for income + expenses planner
 
+https://prezi.com/view/g7zzhV9vtOOGQUXPgk4Q/
 
 ### How to run the app with docker-compose:
 ```
@@ -10,6 +11,8 @@ mvnw clean install
 docker-compose build
 docker-compose up
 ```
+
+Open your browser and type in localhost:3000
 
 To quit app:
 ```
