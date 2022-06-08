@@ -4,7 +4,8 @@ Frontend + backend of web application for income + expenses planner
 
 ### How to run the app with docker-compose:
 ```
-cd backend
+git clone https://github.com/t-ukowski/Budget-planner.git
+cd Budget-planner/backend
 mvnw clean install
 docker-compose build
 docker-compose up
