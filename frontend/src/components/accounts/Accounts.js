@@ -39,7 +39,12 @@ export default function Accounts({ updateNeeded, setUpdateNeeded }) {
   return (
     <>
       <Title text="Saldo" />
-      <AddAccountModal modalIsOpen={modalIsOpen} closeModal={closeModal} />
+      <AddAccountModal
+        modalIsOpen={modalIsOpen}
+        closeModal={closeModal}
+        updateNeeded={updateNeeded}
+        setUpdateNeeded={setUpdateNeeded}
+      />
       <table>
         <tbody>
           <tr>
