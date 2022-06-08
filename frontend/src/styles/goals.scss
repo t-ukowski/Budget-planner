@@ -5,6 +5,9 @@
     padding: 5px;
     &.italic {
         font-style: italic;
+        &.marg {
+            margin-left: 5px;
+        }
     }
     max-width: fit-content;
 }
